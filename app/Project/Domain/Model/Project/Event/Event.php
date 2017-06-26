@@ -5,12 +5,14 @@ namespace Teamo\Project\Domain\Model\Project\Event;
 use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Collaborator\Author;
+use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Collaborator\Creator;
 
 class Event extends Entity
 {
+    use Attachments;
     protected $projectId;
     protected $eventId;
     protected $creator;
@@ -19,7 +21,7 @@ class Event extends Entity
     protected $startsAt;
     protected $archived;
 
-    public function __construct(ProjectId $projectId, EventId $eventId, Creator $creator, $name, $details, $startsAt)
+    public function __construct(ProjectId $projectId, EventId $eventId, Creator $creator, $name, $details, $startsAt, Collection $attachments = null)
     {
         $this->setProjectId($projectId);
         $this->setEventId($eventId);
@@ -28,6 +30,7 @@ class Event extends Entity
         $this->setDetails($details);
         $this->setStartsAt($startsAt);
         $this->setArchived(false);
+        $this->setAttachments($attachments ?: new Collection());
     }
 
     private function setProjectId(ProjectId $projectId)

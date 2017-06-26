@@ -51,6 +51,14 @@ class Project extends Entity
     }
 
     /**
+     * @return TenantId
+     */
+    public function tenantId()
+    {
+        return $this->tenantId;
+    }
+
+    /**
      * @return ProjectId
      */
     public function projectId()

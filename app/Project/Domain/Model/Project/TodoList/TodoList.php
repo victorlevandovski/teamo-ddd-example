@@ -21,15 +21,14 @@ class TodoList extends Entity
      */
     private $todos;
 
-    public function __construct(ProjectId $projectId, TodoListId $todoListId, Creator $creator, $name)
+    public function __construct(ProjectId $projectId, TodoListId $todoListId, Creator $creator, $name, TodoCollection $todos = null)
     {
         $this->setProjectId($projectId);
         $this->setTodoListId($todoListId);
         $this->setCreator($creator);
         $this->setName($name);
         $this->setArchived(false);
-
-        $this->todos = new TodoCollection();
+        $this->setTodos($todos ?: new TodoCollection());
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -59,12 +58,33 @@ class TodoList extends Entity
         $this->archived = $archived;
     }
 
+    private function setTodos(TodoCollection $todos)
+    {
+        $this->todos = $todos;
+    }
+
+    /**
+     * @return ProjectId
+     */
+    public function projectId()
+    {
+        return $this->projectId;
+    }
+
     /**
      * @return TodoListId
      */
     public function todoListId()
     {
         return $this->todoListId;
+    }
+
+    /**
+     * @return Creator
+     */
+    public function creator()
+    {
+        return $this->creator;
     }
 
     /**

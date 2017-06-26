@@ -24,6 +24,18 @@ class ProjectTest extends TestCase
         $this->project = new Project(new TenantId('id-1'), new ProjectId('id-1'), 'My Project');
     }
 
+    public function testConstructedProjectIsValid()
+    {
+        $tenantId = new TenantId('tenant');
+        $projectId = new ProjectId('project');
+
+        $project = new Project($tenantId, $projectId, 'My Project');
+
+        $this->assertSame($tenantId, $project->tenantId());
+        $this->assertSame($projectId, $project->projectId());
+        $this->assertEquals('My Project', $project->name());
+    }
+
     public function testProjectCanStartDiscussion()
     {
         $author = new Author('id-1', 'John Doe');

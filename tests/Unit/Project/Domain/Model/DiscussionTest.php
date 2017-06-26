@@ -2,6 +2,9 @@
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
+use Illuminate\Support\Collection;
+use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
+use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
@@ -24,6 +27,23 @@ class DiscussionTest extends TestCase
             new Author('id-1', 'John Doe'),
             'My Topic',
             'My Content');
+    }
+
+    public function testConstructedDiscussionIsValid()
+    {
+        $projectId = new ProjectId('project-1');
+        $discussionId = new DiscussionId('discussion-1');
+        $author = new Author('author-1', 'John Doe');
+        $attachments = new Collection(new Attachment(new AttachmentId('attachment-1'), 'Attachment.txt'));
+
+        $discussion = new Discussion($projectId, $discussionId, $author, 'Topic', 'Content', $attachments);
+
+        $this->assertSame($projectId, $discussion->projectId());
+        $this->assertSame($discussionId, $discussion->discussionId());
+        $this->assertSame($author, $discussion->author());
+        $this->assertEquals('Topic', $discussion->topic());
+        $this->assertEquals('Content', $discussion->content());
+        $this->assertSame($attachments, $discussion->attachments());
     }
 
     public function testDiscussionCanBeCommented()

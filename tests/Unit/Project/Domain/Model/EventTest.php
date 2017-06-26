@@ -2,7 +2,10 @@
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
+use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Collaborator\Author;
+use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
+use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Event\EventComment;
 use Teamo\Project\Domain\Model\Project\Event\EventId;
@@ -27,6 +30,24 @@ class EventTest extends TestCase
             'Event Details',
             '2020-01-01 00:00:00'
         );
+    }
+
+    public function testConstructedEventIsValid()
+    {
+        $projectId = new ProjectId();
+        $eventId = new EventId();
+        $creator = new Creator('author-1', 'John Doe');
+        $attachments = new Collection(new Attachment(new AttachmentId(), 'Attachment.txt'));
+
+        $event = new Event($projectId, $eventId, $creator, 'Name', 'Details', '2020-01-01 00:00:00', $attachments);
+
+        $this->assertSame($projectId, $event->projectId());
+        $this->assertSame($eventId, $event->eventId());
+        $this->assertSame($creator, $event->creator());
+        $this->assertEquals('Name', $event->name());
+        $this->assertEquals('Details', $event->details());
+        $this->assertEquals('2020-01-01 00:00:00', $event->startsAt());
+        $this->assertSame($attachments, $event->attachments());
     }
 
     public function testEventCanBeCommented()

@@ -4,12 +4,15 @@ namespace Teamo\Project\Domain\Model\Project\Discussion;
 
 use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
+use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Collaborator\Author;
 
 class Discussion extends Entity
 {
+    use Attachments;
+
     private $projectId;
     private $discussionId;
     private $author;
@@ -17,7 +20,7 @@ class Discussion extends Entity
     private $content;
     private $archived;
 
-    public function __construct(ProjectId $projectId, DiscussionId $discussionId, Author $author, $topic, $content)
+    public function __construct(ProjectId $projectId, DiscussionId $discussionId, Author $author, $topic, $content, Collection $attachments = null)
     {
         $this->setProjectId($projectId);
         $this->setDiscussionId($discussionId);
@@ -25,6 +28,7 @@ class Discussion extends Entity
         $this->setTopic($topic);
         $this->setContent($content);
         $this->setArchived(false);
+        $this->setAttachments($attachments ?: new Collection());
     }
 
     private function setProjectId(ProjectId $projectId)

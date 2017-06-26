@@ -3,6 +3,9 @@
 namespace Tests\Unit\Project\Domain\Model\Project;
 
 use Teamo\Project\Domain\Model\Collaborator\Assignee;
+use Teamo\Project\Domain\Model\Project\TodoList\Todo;
+use Teamo\Project\Domain\Model\Project\TodoList\TodoCollection;
+use Teamo\Project\Domain\Model\Project\TodoList\TodoId;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoComment;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
@@ -26,6 +29,40 @@ class TodoListTest extends TestCase
             new Creator('id-1', 'John Doe'),
             'My Todo List'
         );
+    }
+
+    public function testConstructedTodoListIsValid()
+    {
+        $projectId = new ProjectId();
+        $todoListId = new TodoListId();
+        $creator = new Creator('author-1', 'John Doe');
+
+        $todos = new TodoCollection(new Todo($todoListId, new TodoId(), 'Todo'));
+        //$attachments = new Collection(new Attachment(new AttachmentId(), 'Attachment.txt'));
+
+        $todoList = new TodoList($projectId, $todoListId, $creator, 'Name', $todos);
+
+        $this->assertSame($projectId, $todoList->projectId());
+        $this->assertSame($todoListId, $todoList->todoListId());
+        $this->assertSame($creator, $todoList->creator());
+        $this->assertEquals('Name', $todoList->name());
+        $this->assertSame($todos, $todoList->todos());
+    }
+
+    public function testConstructedTodoIsValid()
+    {
+        $todoListId = new TodoListId();
+        $todoId = new TodoId();
+        $assignee = new Assignee('author-1', 'John Doe');
+
+        $todo = new Todo($todoListId, $todoId, 'Name', $assignee, '2020-01-01 00:00:00', true);
+
+        $this->assertSame($todoListId, $todo->todoListId());
+        $this->assertSame($todoId, $todo->todoId());
+        $this->assertEquals('Name', $todo->name());
+        $this->assertSame($assignee, $todo->assignee());
+        $this->assertEquals('2020-01-01 00:00:00', $todo->deadline());
+        $this->assertTrue($todo->isCompleted());
     }
 
     public function testTodoListCanBeRenamed()
