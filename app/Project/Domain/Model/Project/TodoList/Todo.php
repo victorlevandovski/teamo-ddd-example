@@ -17,14 +17,14 @@ class Todo extends Entity
     private $deadline;
     private $completed;
 
-    public function __construct(TodoListId $todoListId, TodoId $todoId, $name, Assignee $assignee = null, $deadline = null, $completed = false)
+    public function __construct(TodoListId $todoListId, TodoId $todoId, $name, Assignee $assignee = null, $deadline = null)
     {
         $this->setTodoListId($todoListId);
         $this->setTodoId($todoId);
         $this->setName($name);
         $this->setAssignee($assignee);
         $this->setDeadline($deadline);
-        $this->setCompleted($completed);
+        $this->setCompleted(false);
     }
 
     private function setTodoListId(TodoListId $todoListId)

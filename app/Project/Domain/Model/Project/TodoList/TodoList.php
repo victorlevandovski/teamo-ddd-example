@@ -2,7 +2,6 @@
 
 namespace Teamo\Project\Domain\Model\Project\TodoList;
 
-use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Collaborator\Assignee;
@@ -21,14 +20,14 @@ class TodoList extends Entity
      */
     private $todos;
 
-    public function __construct(ProjectId $projectId, TodoListId $todoListId, Creator $creator, $name, TodoCollection $todos = null)
+    public function __construct(ProjectId $projectId, TodoListId $todoListId, Creator $creator, $name)
     {
         $this->setProjectId($projectId);
         $this->setTodoListId($todoListId);
         $this->setCreator($creator);
         $this->setName($name);
         $this->setArchived(false);
-        $this->setTodos($todos ?: new TodoCollection());
+        $this->setTodos(new TodoCollection());
     }
 
     private function setProjectId(ProjectId $projectId)

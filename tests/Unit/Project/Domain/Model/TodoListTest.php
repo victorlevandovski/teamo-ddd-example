@@ -37,16 +37,12 @@ class TodoListTest extends TestCase
         $todoListId = new TodoListId();
         $creator = new Creator('author-1', 'John Doe');
 
-        $todos = new TodoCollection(new Todo($todoListId, new TodoId(), 'Todo'));
-        //$attachments = new Collection(new Attachment(new AttachmentId(), 'Attachment.txt'));
-
-        $todoList = new TodoList($projectId, $todoListId, $creator, 'Name', $todos);
+        $todoList = new TodoList($projectId, $todoListId, $creator, 'Name');
 
         $this->assertSame($projectId, $todoList->projectId());
         $this->assertSame($todoListId, $todoList->todoListId());
         $this->assertSame($creator, $todoList->creator());
         $this->assertEquals('Name', $todoList->name());
-        $this->assertSame($todos, $todoList->todos());
     }
 
     public function testConstructedTodoIsValid()
@@ -55,14 +51,13 @@ class TodoListTest extends TestCase
         $todoId = new TodoId();
         $assignee = new Assignee('author-1', 'John Doe');
 
-        $todo = new Todo($todoListId, $todoId, 'Name', $assignee, '2020-01-01 00:00:00', true);
+        $todo = new Todo($todoListId, $todoId, 'Name', $assignee, '2020-01-01 00:00:00');
 
         $this->assertSame($todoListId, $todo->todoListId());
         $this->assertSame($todoId, $todo->todoId());
         $this->assertEquals('Name', $todo->name());
         $this->assertSame($assignee, $todo->assignee());
         $this->assertEquals('2020-01-01 00:00:00', $todo->deadline());
-        $this->assertTrue($todo->isCompleted());
     }
 
     public function testTodoListCanBeRenamed()

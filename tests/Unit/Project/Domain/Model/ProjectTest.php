@@ -2,6 +2,9 @@
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
+use Illuminate\Support\Collection;
+use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
+use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Project;
@@ -39,7 +42,9 @@ class ProjectTest extends TestCase
     public function testProjectCanStartDiscussion()
     {
         $author = new Author('id-1', 'John Doe');
-        $discussion = $this->project->startDiscussion($author, 'New Discussion', 'Discussion content');
+        $attachments = new Collection(new Attachment(new AttachmentId(), 'attachment.txt'));
+
+        $discussion = $this->project->startDiscussion($author, 'New Discussion', 'Discussion content', $attachments);
 
         $this->assertInstanceOf(Discussion::class, $discussion);
     }
@@ -55,7 +60,9 @@ class ProjectTest extends TestCase
     public function testProjectCanScheduleEvent()
     {
         $creator = new Creator('id-1', 'John Doe');
-        $event = $this->project->scheduleEvent($creator, 'My Event', 'Event details', '2020-01-01 00:00:00');
+        $attachments = new Collection(new Attachment(new AttachmentId(), 'attachment.txt'));
+
+        $event = $this->project->scheduleEvent($creator, 'My Event', 'Event details', '2020-01-01 00:00:00', $attachments);
 
         $this->assertInstanceOf(Event::class, $event);
     }

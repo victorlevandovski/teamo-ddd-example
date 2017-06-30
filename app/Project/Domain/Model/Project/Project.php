@@ -2,6 +2,7 @@
 
 namespace Teamo\Project\Domain\Model\Project;
 
+use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
@@ -97,9 +98,9 @@ class Project extends Entity
         $this->archived = false;
     }
 
-    public function startDiscussion(Author $author, $topic, $content)
+    public function startDiscussion(Author $author, $topic, $content, Collection $attachments = null)
     {
-        return new Discussion($this->projectId(), new DiscussionId(), $author, $topic, $content);
+        return new Discussion($this->projectId(), new DiscussionId(), $author, $topic, $content, $attachments);
     }
 
     public function createTodoList(Creator $creator, $name)
@@ -107,8 +108,8 @@ class Project extends Entity
         return new TodoList($this->projectId(), new TodoListId(), $creator, $name);
     }
 
-    public function scheduleEvent(Creator $creator, $name, $details, $startsAt)
+    public function scheduleEvent(Creator $creator, $name, $details, $startsAt, Collection $attachments = null)
     {
-        return new Event($this->projectId(), new EventId(), $creator, $name, $details, $startsAt);
+        return new Event($this->projectId(), new EventId(), $creator, $name, $details, $startsAt, $attachments);
     }
 }

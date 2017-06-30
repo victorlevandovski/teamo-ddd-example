@@ -28,7 +28,7 @@ class Discussion extends Entity
         $this->setTopic($topic);
         $this->setContent($content);
         $this->setArchived(false);
-        $this->setAttachments($attachments ?: new Collection());
+        $this->setAttachments($attachments);
     }
 
     private function setProjectId(ProjectId $projectId)

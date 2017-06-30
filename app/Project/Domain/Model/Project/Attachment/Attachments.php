@@ -11,8 +11,12 @@ trait Attachments
      */
     protected $attachments;
 
-    protected function setAttachments(Collection $attachments)
+    protected function setAttachments(Collection $attachments = null)
     {
+        if (null === $attachments) {
+            $attachments = new Collection();
+        }
+
         $this->attachments = $attachments;
     }
 

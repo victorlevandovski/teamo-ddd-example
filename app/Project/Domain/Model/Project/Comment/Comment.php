@@ -19,7 +19,7 @@ abstract class Comment extends Entity
     {
         $this->setCommentId($commentId);
         $this->setAuthor($author);
-        $this->setContentAndAttachments($content, $attachments ?: new Collection());
+        $this->setContentAndAttachments($content, $attachments);
     }
 
     protected function setCommentId(CommentId $commentId)
@@ -37,9 +37,9 @@ abstract class Comment extends Entity
         $this->content = $content;
     }
 
-    protected function setContentAndAttachments($content, Collection $attachments)
+    protected function setContentAndAttachments($content, Collection $attachments = null)
     {
-        if ($attachments->isEmpty()) {
+        if (null === $attachments || $attachments->isEmpty()) {
             $this->assertArgumentNotEmpty($content, 'Content cannot be empty');
         }
 

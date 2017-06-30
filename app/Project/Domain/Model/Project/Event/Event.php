@@ -13,13 +13,14 @@ use Teamo\Project\Domain\Model\Collaborator\Creator;
 class Event extends Entity
 {
     use Attachments;
-    protected $projectId;
-    protected $eventId;
-    protected $creator;
-    protected $name;
-    protected $details;
-    protected $startsAt;
-    protected $archived;
+
+    private $projectId;
+    private $eventId;
+    private $creator;
+    private $name;
+    private $details;
+    private $startsAt;
+    private $archived;
 
     public function __construct(ProjectId $projectId, EventId $eventId, Creator $creator, $name, $details, $startsAt, Collection $attachments = null)
     {
@@ -30,7 +31,7 @@ class Event extends Entity
         $this->setDetails($details);
         $this->setStartsAt($startsAt);
         $this->setArchived(false);
-        $this->setAttachments($attachments ?: new Collection());
+        $this->setAttachments($attachments);
     }
 
     private function setProjectId(ProjectId $projectId)
