@@ -12,26 +12,26 @@ use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
 use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Collaborator\Creator;
-use Teamo\Project\Domain\Model\Tenant\TenantId;
+use Teamo\Project\Domain\Model\Owner\OwnerId;
 
 class Project extends Entity
 {
-    private $tenantId;
+    private $ownerId;
     private $projectId;
     private $name;
     private $archived;
 
-    public function __construct(TenantId $tenantId, ProjectId $projectId, $name)
+    public function __construct(OwnerId $ownerId, ProjectId $projectId, $name)
     {
-        $this->setTenantId($tenantId);
+        $this->setOwnerId($ownerId);
         $this->setProjectId($projectId);
         $this->setName($name);
         $this->setArchived(false);
     }
 
-    private function setTenantId(TenantId $tenantId)
+    private function setOwnerId(OwnerId $ownerId)
     {
-        $this->tenantId = $tenantId;
+        $this->ownerId = $ownerId;
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -52,11 +52,11 @@ class Project extends Entity
     }
 
     /**
-     * @return TenantId
+     * @return OwnerId
      */
-    public function tenantId()
+    public function ownerId()
     {
-        return $this->tenantId;
+        return $this->ownerId;
     }
 
     /**
