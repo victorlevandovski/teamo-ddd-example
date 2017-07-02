@@ -8,15 +8,9 @@ use Teamo\Project\Domain\Model\Project\TodoList\TodoId;
 
 class Favorites extends ValueObject
 {
-    /**
-     * @var TodoId[]
-     */
     private $todoIds;
 
-    /**
-     * @param TodoId[] $todoIds
-     */
-    public function __construct($todoIds)
+    public function __construct(array $todoIds)
     {
         $this->todoIds = $todoIds;
     }
@@ -24,12 +18,12 @@ class Favorites extends ValueObject
     /**
      * @return TodoId[]
      */
-    public function favoriteTodos()
+    public function favoriteTodos(): array
     {
         return $this->todoIds;
     }
 
-    public function addTodoToFavorites(TodoId $todoId)
+    public function addTodoToFavorites(TodoId $todoId): self
     {
         $this->todoIds[] = $todoId;
 

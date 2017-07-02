@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Attachment;
 
@@ -9,7 +10,7 @@ class AttachmentType
 
     private $type;
 
-    public function __construct($type)
+    public function __construct(string $type)
     {
         if (!in_array($type, [self::FILE, self::IMAGE])) {
             throw new \InvalidArgumentException('Invalid attachment type');
@@ -18,17 +19,17 @@ class AttachmentType
         $this->type = $type;
     }
 
-    public function isImage()
+    public function isImage(): bool
     {
         return $this->type == self::IMAGE;
     }
 
-    public function isFile()
+    public function isFile(): bool
     {
         return $this->type == self::FILE;
     }
 
-    public static function fromName($name)
+    public static function fromName($name): self
     {
         $ext = pathinfo($name, PATHINFO_EXTENSION);
         $type = in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif']) ? self::IMAGE : self::FILE;

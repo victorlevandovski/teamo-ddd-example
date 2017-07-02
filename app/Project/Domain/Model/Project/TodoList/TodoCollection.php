@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\TodoList;
 
@@ -6,16 +7,12 @@ use Illuminate\Support\Collection;
 
 class TodoCollection extends Collection
 {
-    /**
-     * @param TodoId $todoId
-     * @return Todo
-     */
-    public function ofId(TodoId $todoId)
+    public function ofId(TodoId $todoId): Todo
     {
         return $this->get($todoId->id());
     }
 
-    public function reorder($id, $position)
+    public function reorder(string $id, int $position)
     {
         $position = min(intval($position), $this->count());
         if ($position < 1) {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Event;
 
@@ -34,98 +35,42 @@ class Event extends Entity
         $this->setAttachments($attachments);
     }
 
-    private function setProjectId(ProjectId $projectId)
-    {
-        $this->projectId = $projectId;
-    }
-
-    private function setEventId(EventId $eventId)
-    {
-        $this->eventId = $eventId;
-    }
-
-    private function setCreator(Creator $creator)
-    {
-        $this->creator = $creator;
-    }
-
-    private function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    private function setDetails($details)
-    {
-        $this->details = $details;
-    }
-
-    private function setStartsAt($startsAt)
-    {
-        $this->startsAt = $startsAt;
-    }
-
-    private function setArchived($archived)
-    {
-        $this->archived = $archived;
-    }
-
-    /**
-     * @return ProjectId
-     */
-    public function projectId()
+    public function projectId(): ProjectId
     {
         return $this->projectId;
     }
 
-    /**
-     * @return EventId
-     */
-    public function eventId()
+    public function eventId(): EventId
     {
         return $this->eventId;
     }
 
-    /**
-     * @return Creator
-     */
-    public function creator()
+    public function creator(): Creator
     {
         return $this->creator;
     }
 
-    /**
-     * @return string
-     */
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function details()
+    public function details(): string
     {
         return $this->details;
     }
 
-    /**
-     * @return string
-     */
-    public function startsAt()
+    public function startsAt(): string
     {
         return $this->startsAt;
     }
 
-    /**
-     * @return bool
-     */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return $this->archived;
     }
 
-    public function update($name, $details)
+    public function update(string $name, string $details)
     {
         $this->setName($name);
         $this->setDetails($details);
@@ -141,8 +86,43 @@ class Event extends Entity
         $this->archived = false;
     }
 
-    public function comment(Author $author, $content, Collection $attachments = null)
+    public function comment(Author $author, string $content, Collection $attachments = null)
     {
         return new EventComment($this->eventId(), new CommentId(), $author, $content, $attachments);
+    }
+
+    private function setProjectId(ProjectId $projectId)
+    {
+        $this->projectId = $projectId;
+    }
+
+    private function setEventId(EventId $eventId)
+    {
+        $this->eventId = $eventId;
+    }
+
+    private function setCreator(Creator $creator)
+    {
+        $this->creator = $creator;
+    }
+
+    private function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    private function setDetails(string $details)
+    {
+        $this->details = $details;
+    }
+
+    private function setStartsAt(string $startsAt)
+    {
+        $this->startsAt = $startsAt;
+    }
+
+    private function setArchived(bool $archived)
+    {
+        $this->archived = $archived;
     }
 }

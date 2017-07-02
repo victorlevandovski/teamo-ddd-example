@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Collaborator;
 
@@ -9,29 +10,29 @@ class Collaborator extends ValueObject
     protected $id;
     protected $name;
 
-    public function __construct($id, $name)
+    public function __construct(string $id, string $name)
     {
         $this->setId($id);
         $this->setName($name);
     }
 
-    protected function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    protected function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    public function id()
+    public function id(): string
     {
         return $this->id;
     }
 
-    public function name()
+    public function name(): string
     {
         return $this->name;
+    }
+
+    protected function setId(string $id)
+    {
+        $this->id = $id;
+    }
+
+    protected function setName(string $name)
+    {
+        $this->name = $name;
     }
 }

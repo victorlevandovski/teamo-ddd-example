@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Attachment;
 
@@ -23,7 +24,7 @@ trait Attachments
     /**
      * @return Collection|Attachment[]
      */
-    public function attachments()
+    public function attachments(): Collection
     {
         return $this->attachments;
     }

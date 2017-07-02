@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Event;
 
@@ -11,20 +12,20 @@ class EventComment extends Comment
 {
     private $eventId;
 
-    public function __construct(EventId $eventId, CommentId $commentId, Author $author, $content, Collection $attachments = null)
+    public function __construct(EventId $eventId, CommentId $commentId, Author $author, string $content, Collection $attachments = null)
     {
         parent::__construct($commentId, $author, $content, $attachments);
 
         $this->setEventId($eventId);
     }
 
+    public function eventId(): EventId
+    {
+        return $this->eventId;
+    }
+
     private function setEventId(EventId $eventId)
     {
         $this->eventId = $eventId;
-    }
-
-    public function eventId()
-    {
-        return $this->eventId;
     }
 }

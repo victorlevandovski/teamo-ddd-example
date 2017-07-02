@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Comment;
 
@@ -15,11 +16,31 @@ abstract class Comment extends Entity
     protected $author;
     protected $content;
 
-    public function __construct(CommentId $commentId, Author $author, $content, Collection $attachments = null)
+    public function __construct(CommentId $commentId, Author $author, string $content, Collection $attachments = null)
     {
         $this->setCommentId($commentId);
         $this->setAuthor($author);
         $this->setContentAndAttachments($content, $attachments);
+    }
+
+    public function commentId(): CommentId
+    {
+        return $this->commentId;
+    }
+
+    public function author(): Author
+    {
+        return $this->author;
+    }
+
+    public function content(): string
+    {
+        return $this->content;
+    }
+
+    public function update(string $content)
+    {
+        $this->setContent($content);
     }
 
     protected function setCommentId(CommentId $commentId)
@@ -32,12 +53,12 @@ abstract class Comment extends Entity
         $this->author = $author;
     }
 
-    protected function setContent($content)
+    protected function setContent(string $content)
     {
         $this->content = $content;
     }
 
-    protected function setContentAndAttachments($content, Collection $attachments = null)
+    protected function setContentAndAttachments(string $content, Collection $attachments = null)
     {
         if (null === $attachments || $attachments->isEmpty()) {
             $this->assertArgumentNotEmpty($content, 'Content cannot be empty');
@@ -45,25 +66,5 @@ abstract class Comment extends Entity
 
         $this->setContent($content);
         $this->setAttachments($attachments);
-    }
-
-    public function commentId()
-    {
-        return $this->commentId;
-    }
-
-    public function author()
-    {
-        return $this->author;
-    }
-
-    public function content()
-    {
-        return $this->content;
-    }
-
-    public function update($newContent)
-    {
-        $this->setContent($newContent);
     }
 }

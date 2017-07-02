@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
 
-namespace Teamo\Project\Domain\Project;
-
-use Teamo\Project\Domain\Model\Project\ProjectId;
+namespace Teamo\Project\Domain\Model\Project;
 
 interface ProjectRepository
 {
-    public function ofId(ProjectId $projectId);
+    public function ofId(ProjectId $projectId): Project;
 }

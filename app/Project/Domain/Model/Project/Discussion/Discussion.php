@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Discussion;
 
@@ -20,7 +21,7 @@ class Discussion extends Entity
     private $content;
     private $archived;
 
-    public function __construct(ProjectId $projectId, DiscussionId $discussionId, Author $author, $topic, $content, Collection $attachments = null)
+    public function __construct(ProjectId $projectId, DiscussionId $discussionId, Author $author, string $topic, string $content, Collection $attachments = null)
     {
         $this->setProjectId($projectId);
         $this->setDiscussionId($discussionId);
@@ -29,6 +30,57 @@ class Discussion extends Entity
         $this->setContent($content);
         $this->setArchived(false);
         $this->setAttachments($attachments);
+    }
+
+    public function projectId(): ProjectId
+    {
+        return $this->projectId;
+    }
+
+    public function discussionId(): DiscussionId
+    {
+        return $this->discussionId;
+    }
+
+    public function author(): Author
+    {
+        return $this->author;
+    }
+
+    public function topic(): string
+    {
+        return $this->topic;
+    }
+
+    public function content(): string
+    {
+        return $this->content;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function update(string $topic, string $content)
+    {
+        $this->setTopic($topic);
+        $this->setContent($content);
+    }
+
+    public function archive()
+    {
+        $this->archived = true;
+    }
+
+    public function restore()
+    {
+        $this->archived = false;
+    }
+
+    public function comment(Author $author, string $content, Collection $attachments = null)
+    {
+        return new DiscussionComment($this->discussionId(), new CommentId(), $author, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -46,87 +98,18 @@ class Discussion extends Entity
         $this->author = $author;
     }
 
-    private function setTopic($topic)
+    private function setTopic(string $topic)
     {
         $this->topic = $topic;
     }
 
-    private function setContent($content)
+    private function setContent(string $content)
     {
         $this->content = $content;
     }
 
-    private function setArchived($archived)
+    private function setArchived(bool $archived)
     {
         $this->archived = $archived;
-    }
-
-    /**
-     * @return ProjectId
-     */
-    public function projectId()
-    {
-        return $this->projectId;
-    }
-
-    /**
-     * @return DiscussionId
-     */
-    public function discussionId()
-    {
-        return $this->discussionId;
-    }
-
-    /**
-     * @return Author
-     */
-    public function author()
-    {
-        return $this->author;
-    }
-
-    /**
-     * @return string
-     */
-    public function topic()
-    {
-        return $this->topic;
-    }
-
-    /**
-     * @return string
-     */
-    public function content()
-    {
-        return $this->content;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isArchived()
-    {
-        return $this->archived;
-    }
-
-    public function update($newTopic, $newContent)
-    {
-        $this->setTopic($newTopic);
-        $this->setContent($newContent);
-    }
-
-    public function archive()
-    {
-        $this->archived = true;
-    }
-
-    public function restore()
-    {
-        $this->archived = false;
-    }
-
-    public function comment(Author $author, $content, Collection $attachments = null)
-    {
-        return new DiscussionComment($this->discussionId(), new CommentId(), $author, $content, $attachments);
     }
 }

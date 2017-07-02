@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Discussion;
 
@@ -11,20 +12,20 @@ class DiscussionComment extends Comment
 {
     private $discussionId;
 
-    public function __construct(DiscussionId $discussionId, CommentId $commentId, Author $author, $content, Collection $attachments = null)
+    public function __construct(DiscussionId $discussionId, CommentId $commentId, Author $author, string $content, Collection $attachments = null)
     {
         parent::__construct($commentId, $author, $content, $attachments);
 
         $this->setDiscussionId($discussionId);
     }
 
+    public function discussionId(): DiscussionId
+    {
+        return $this->discussionId;
+    }
+
     private function setDiscussionId(DiscussionId $discussionId)
     {
         $this->discussionId = $discussionId;
-    }
-
-    public function discussionId()
-    {
-        return $this->discussionId;
     }
 }

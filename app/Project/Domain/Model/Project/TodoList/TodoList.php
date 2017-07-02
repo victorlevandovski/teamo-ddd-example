@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\TodoList;
 
@@ -20,7 +21,7 @@ class TodoList extends Entity
      */
     private $todos;
 
-    public function __construct(ProjectId $projectId, TodoListId $todoListId, Creator $creator, $name)
+    public function __construct(ProjectId $projectId, TodoListId $todoListId, Creator $creator, string $name)
     {
         $this->setProjectId($projectId);
         $this->setTodoListId($todoListId);
@@ -28,6 +29,73 @@ class TodoList extends Entity
         $this->setName($name);
         $this->setArchived(false);
         $this->setTodos(new TodoCollection());
+    }
+
+    public function projectId(): ProjectId
+    {
+        return $this->projectId;
+    }
+
+    public function todoListId(): TodoListId
+    {
+        return $this->todoListId;
+    }
+
+    public function creator(): Creator
+    {
+        return $this->creator;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function todos(): TodoCollection
+    {
+        return $this->todos;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function rename(string $name)
+    {
+        $this->setName($name);
+    }
+
+    public function archive()
+    {
+        $this->archived = true;
+    }
+
+    public function restore()
+    {
+        $this->archived = false;
+    }
+
+    public function addTodo(string $name, Assignee $assignee = null, $deadline = null)
+    {
+        $todo = new Todo($this->todoListId(), new TodoId(), $name, $assignee, $deadline);
+        $this->todos->put($todo->todoId()->id(), $todo);
+
+        return $todo->todoId();
+    }
+
+    public function removeTodo(TodoId $todoId)
+    {
+        $this->assertTodoExists($todoId);
+
+        $this->todos->forget($todoId->id());
+    }
+
+    public function reorderTodo(TodoId $todoId, int $position)
+    {
+        $this->assertTodoExists($todoId);
+
+        $this->todos->reorder($todoId->id(), $position);
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -45,14 +113,14 @@ class TodoList extends Entity
         $this->creator = $creator;
     }
 
-    private function setName($name)
+    private function setName(string $name)
     {
         $this->assertArgumentNotEmpty($name, 'Todo List name cannot be empty');
 
         $this->name = $name;
     }
 
-    private function setArchived($archived)
+    private function setArchived(bool $archived)
     {
         $this->archived = $archived;
     }
@@ -60,91 +128,6 @@ class TodoList extends Entity
     private function setTodos(TodoCollection $todos)
     {
         $this->todos = $todos;
-    }
-
-    /**
-     * @return ProjectId
-     */
-    public function projectId()
-    {
-        return $this->projectId;
-    }
-
-    /**
-     * @return TodoListId
-     */
-    public function todoListId()
-    {
-        return $this->todoListId;
-    }
-
-    /**
-     * @return Creator
-     */
-    public function creator()
-    {
-        return $this->creator;
-    }
-
-    /**
-     * @return string
-     */
-    public function name()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return TodoCollection
-     */
-    public function todos()
-    {
-        return $this->todos;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isArchived()
-    {
-        return $this->archived;
-    }
-
-    public function rename($newName)
-    {
-        $this->setName($newName);
-    }
-
-    public function archive()
-    {
-        $this->archived = true;
-    }
-
-    public function restore()
-    {
-        $this->archived = false;
-    }
-
-    public function addTodo($name, Assignee $assignee = null, $deadline = null)
-    {
-        $todo = new Todo($this->todoListId(), new TodoId(), $name, $assignee, $deadline);
-        $this->todos->put($todo->todoId()->id(), $todo);
-
-        return $todo->todoId();
-    }
-
-    public function removeTodo(TodoId $todoId)
-    {
-        $this->assertTodoExists($todoId);
-
-        $this->todos->forget($todoId->id());
-    }
-
-    public function reorderTodo(TodoId $todoId, $position)
-    {
-        $this->assertTodoExists($todoId);
-
-        $this->todos->reorder($todoId->id(), $position);
     }
 
     private function assertTodoExists(TodoId $todoId)

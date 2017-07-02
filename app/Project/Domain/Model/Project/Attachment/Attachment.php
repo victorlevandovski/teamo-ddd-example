@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Attachment;
 
@@ -10,7 +11,7 @@ class Attachment extends Entity
     private $name;
     private $type;
 
-    public function __construct(AttachmentId $attachmentId, $name)
+    public function __construct(AttachmentId $attachmentId, string $name)
     {
         $this->setAttachmentId($attachmentId);
         $this->setName($name);
@@ -22,7 +23,7 @@ class Attachment extends Entity
         $this->attachmentId = $attachmentId;
     }
 
-    private function setName($name)
+    private function setName(string $name)
     {
         $this->name = $name;
     }
@@ -32,26 +33,17 @@ class Attachment extends Entity
         $this->type = $type;
     }
 
-    /**
-     * @return AttachmentId
-     */
-    public function attachmentId()
+    public function attachmentId(): AttachmentId
     {
         return $this->attachmentId;
     }
 
-    /**
-     * @return string
-     */
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return AttachmentType
-     */
-    public function type()
+    public function type(): AttachmentType
     {
         return $this->type;
     }

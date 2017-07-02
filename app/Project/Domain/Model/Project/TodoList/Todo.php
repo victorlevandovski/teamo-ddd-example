@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\TodoList;
 
@@ -17,7 +18,7 @@ class Todo extends Entity
     private $deadline;
     private $completed;
 
-    public function __construct(TodoListId $todoListId, TodoId $todoId, $name, Assignee $assignee = null, $deadline = null)
+    public function __construct(TodoListId $todoListId, TodoId $todoId, string $name, Assignee $assignee = null, string $deadline = null)
     {
         $this->setTodoListId($todoListId);
         $this->setTodoId($todoId);
@@ -27,56 +28,18 @@ class Todo extends Entity
         $this->setCompleted(false);
     }
 
-    private function setTodoListId(TodoListId $todoListId)
-    {
-        $this->todoListId = $todoListId;
-    }
-
-    private function setTodoId(TodoId $todoId)
-    {
-        $this->todoId = $todoId;
-    }
-
-    private function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    private function setAssignee(Assignee $assignee = null)
-    {
-        $this->assignee = $assignee;
-    }
-
-    private function setDeadline($deadline = null)
-    {
-        $this->deadline = $deadline;
-    }
-
-    private function setCompleted($completed)
-    {
-        $this->completed = $completed;
-    }
-
-    /**
-     * @return TodoListId
-     */
-    public function todoListId()
+    public function todoListId(): TodoListId
     {
         return $this->todoListId;
     }
 
-    /**
-     * @return TodoId
-     */
-    public function todoId()
+
+    public function todoId(): TodoId
     {
         return $this->todoId;
     }
 
-    /**
-     * @return string
-     */
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }
@@ -97,10 +60,7 @@ class Todo extends Entity
         return $this->deadline;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCompleted()
+    public function isCompleted(): bool
     {
         return $this->completed;
     }
@@ -115,15 +75,45 @@ class Todo extends Entity
         $this->setCompleted(false);
     }
 
-    public function update($name, Assignee $assignee = null, $deadline = null)
+    public function update(string $name, Assignee $assignee = null, $deadline = null)
     {
         $this->setName($name);
         $this->setAssignee($assignee);
         $this->setDeadline($deadline);
     }
 
-    public function comment(Author $author, $content, Collection $attachments = null)
+    public function comment(Author $author, string $content, Collection $attachments = null)
     {
         return new TodoComment($this->todoId(), new CommentId(), $author, $content, $attachments);
+    }
+
+    private function setTodoListId(TodoListId $todoListId)
+    {
+        $this->todoListId = $todoListId;
+    }
+
+    private function setTodoId(TodoId $todoId)
+    {
+        $this->todoId = $todoId;
+    }
+
+    private function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    private function setAssignee(Assignee $assignee = null)
+    {
+        $this->assignee = $assignee;
+    }
+
+    private function setDeadline(string $deadline = null)
+    {
+        $this->deadline = $deadline;
+    }
+
+    private function setCompleted(bool $completed)
+    {
+        $this->completed = $completed;
     }
 }

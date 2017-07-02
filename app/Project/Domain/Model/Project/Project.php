@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project;
 
@@ -21,7 +22,7 @@ class Project extends Entity
     private $name;
     private $archived;
 
-    public function __construct(OwnerId $ownerId, ProjectId $projectId, $name)
+    public function __construct(OwnerId $ownerId, ProjectId $projectId, string $name)
     {
         $this->setOwnerId($ownerId);
         $this->setProjectId($projectId);
@@ -29,63 +30,29 @@ class Project extends Entity
         $this->setArchived(false);
     }
 
-    private function setOwnerId(OwnerId $ownerId)
-    {
-        $this->ownerId = $ownerId;
-    }
-
-    private function setProjectId(ProjectId $projectId)
-    {
-        $this->projectId = $projectId;
-    }
-
-    private function setName($name)
-    {
-        $this->assertArgumentNotEmpty($name, 'Project name cannot be empty');
-
-        $this->name = $name;
-    }
-
-    private function setArchived($archived)
-    {
-        $this->archived = $archived;
-    }
-
-    /**
-     * @return OwnerId
-     */
-    public function ownerId()
+    public function ownerId(): OwnerId
     {
         return $this->ownerId;
     }
 
-    /**
-     * @return ProjectId
-     */
-    public function projectId()
+    public function projectId(): ProjectId
     {
         return $this->projectId;
     }
 
-    /**
-     * @return string
-     */
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return $this->archived;
     }
 
-    public function rename($newName)
+    public function rename(string $name)
     {
-        $this->setName($newName);
+        $this->setName($name);
     }
 
     public function archive()
@@ -98,18 +65,40 @@ class Project extends Entity
         $this->archived = false;
     }
 
-    public function startDiscussion(Author $author, $topic, $content, Collection $attachments = null)
+    public function startDiscussion(Author $author, string $topic, string $content, Collection $attachments = null)
     {
         return new Discussion($this->projectId(), new DiscussionId(), $author, $topic, $content, $attachments);
     }
 
-    public function createTodoList(Creator $creator, $name)
+    public function createTodoList(Creator $creator, string $name)
     {
         return new TodoList($this->projectId(), new TodoListId(), $creator, $name);
     }
 
-    public function scheduleEvent(Creator $creator, $name, $details, $startsAt, Collection $attachments = null)
+    public function scheduleEvent(Creator $creator, string $name, string $details, string $startsAt, Collection $attachments = null)
     {
         return new Event($this->projectId(), new EventId(), $creator, $name, $details, $startsAt, $attachments);
+    }
+
+    private function setOwnerId(OwnerId $ownerId)
+    {
+        $this->ownerId = $ownerId;
+    }
+
+    private function setProjectId(ProjectId $projectId)
+    {
+        $this->projectId = $projectId;
+    }
+
+    private function setName(string $name)
+    {
+        $this->assertArgumentNotEmpty($name, 'Project name cannot be empty');
+
+        $this->name = $name;
+    }
+
+    private function setArchived(bool $archived)
+    {
+        $this->archived = $archived;
     }
 }
