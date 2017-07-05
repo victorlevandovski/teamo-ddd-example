@@ -80,7 +80,7 @@ class Discussion extends Entity
 
     public function comment(Author $author, string $content, Collection $attachments = null)
     {
-        return new DiscussionComment($this->discussionId(), new CommentId(), $author, $content, $attachments);
+        return new DiscussionComment($this->discussionId(), CommentId::generate(), $author, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)

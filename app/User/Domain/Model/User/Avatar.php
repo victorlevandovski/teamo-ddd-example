@@ -14,6 +14,11 @@ class Avatar extends ValueObject
         $this->path = $path;
     }
 
+    public static function default()
+    {
+        return new self('');
+    }
+
     public function path()
     {
         return $this->path;

@@ -88,7 +88,7 @@ class Event extends Entity
 
     public function comment(Author $author, string $content, Collection $attachments = null)
     {
-        return new EventComment($this->eventId(), new CommentId(), $author, $content, $attachments);
+        return new EventComment($this->eventId(), CommentId::generate(), $author, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)

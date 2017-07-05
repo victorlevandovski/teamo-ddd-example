@@ -11,11 +11,11 @@ class AttachmentTest extends TestCase
 {
     public function testAttachmentSetsCorrectType()
     {
-        $attachment = new Attachment(new AttachmentId(), 'image.jpg');
+        $attachment = new Attachment(AttachmentId::generate(), 'image.jpg');
         $this->assertTrue($attachment->type()->isImage());
         $this->assertFalse($attachment->type()->isFile());
 
-        $attachment = new Attachment(new AttachmentId(), 'document.txt');
+        $attachment = new Attachment(AttachmentId::generate(), 'document.txt');
         $this->assertTrue($attachment->type()->isFile());
         $this->assertFalse($attachment->type()->isImage());
     }

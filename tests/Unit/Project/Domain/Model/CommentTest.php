@@ -21,12 +21,12 @@ class CommentTest extends TestCase
 
     public function setUp()
     {
-        $this->comment = new DiscussionComment(new DiscussionId(), new CommentId('id-1'), new Author('id-1', 'John Doe'), 'Comment content');
+        $this->comment = new DiscussionComment(DiscussionId::generate(), new CommentId('id-1'), new Author('id-1', 'John Doe'), 'Comment content');
     }
 
     public function testCommentCanAddAndRemoveAttachment()
     {
-        $attachment = new Attachment(new AttachmentId(), 'Image.jpg');
+        $attachment = new Attachment(AttachmentId::generate(), 'Image.jpg');
         $this->comment->attach($attachment);
 
         /** @var Attachment[] $attachments */
@@ -41,13 +41,13 @@ class CommentTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        new DiscussionComment(new DiscussionId(), new CommentId(), new Author('id-1', 'John Doe'), '');
+        new DiscussionComment(DiscussionId::generate(), CommentId::generate(), new Author('id-1', 'John Doe'), '');
     }
 
     public function testCommentCanHaveEmptyContentIfAttachmentPresent()
     {
-        $attachment = new Attachment(new AttachmentId(), 'Image.png');
+        $attachment = new Attachment(AttachmentId::generate(), 'Image.png');
 
-        new DiscussionComment(new DiscussionId(), new CommentId(), new Author('id-1', 'John Doe'), '', new Collection([$attachment]));
+        new DiscussionComment(DiscussionId::generate(), CommentId::generate(), new Author('id-1', 'John Doe'), '', new Collection([$attachment]));
     }
 }

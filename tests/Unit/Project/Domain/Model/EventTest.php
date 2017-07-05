@@ -35,10 +35,10 @@ class EventTest extends TestCase
 
     public function testConstructedEventIsValid()
     {
-        $projectId = new ProjectId();
-        $eventId = new EventId();
+        $projectId = ProjectId::generate();
+        $eventId = EventId::generate();
         $creator = new Creator('author-1', 'John Doe');
-        $attachments = new Collection(new Attachment(new AttachmentId(), 'Attachment.txt'));
+        $attachments = new Collection(new Attachment(AttachmentId::generate(), 'Attachment.txt'));
 
         $event = new Event($projectId, $eventId, $creator, 'Name', 'Details', '2020-01-01 00:00:00', $attachments);
 

@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace Teamo\Common\Domain;
 
-use Ramsey\Uuid\Uuid;
-
 abstract class Id
 {
     protected $id;
 
-    public function __construct(string $id = null)
+    public function __construct(string $id)
     {
         $this->setId($id);
     }
@@ -19,19 +17,14 @@ abstract class Id
         return $this->id;
     }
 
-    protected function setId(string $id = null)
+    protected function setId(string $id)
     {
-        if (null === $id) {
-            $id = Uuid::uuid4()->toString();
+        if (!$id) {
+            throw new \InvalidArgumentException('Id string cannot be empty');
         } else if (strlen($id) > 36) {
             throw new \InvalidArgumentException('Id string is too long');
         }
 
         $this->id = $id;
-    }
-
-    public function equalsTo(Id $id): bool
-    {
-        return $this->id() == $id->id();
     }
 }

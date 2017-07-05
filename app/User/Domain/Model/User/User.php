@@ -11,16 +11,12 @@ class User extends Entity
     private $name;
     private $email;
     private $password;
-    private $avatar;
     private $preferences;
+    private $avatar;
 
-    public function __construct(UserId $userId, string $name, string $email, string $password, string $timezone = '')
+    public static function register(string $email, string $password, string $name, string $timezone)
     {
-        $this->setUserId($userId);
-        $this->setName($name);
-        $this->setEmail($email);
-        $this->setPassword($password);
-        $this->setPreferences(Preferences::default($timezone));
+        return new self(UserId::generate(), $email, $password, $name, $timezone, Preferences::default($timezone), Avatar::default());
     }
 
     public function rename(string $name)
@@ -76,6 +72,16 @@ class User extends Entity
     public function preferences(): Preferences
     {
         return $this->preferences;
+    }
+
+    private function __construct(UserId $userId, string $email, string $password, string $name, string $timezone, Preferences $preferences, Avatar $avatar)
+    {
+        $this->setUserId($userId);
+        $this->setEmail($email);
+        $this->setPassword($password);
+        $this->setName($name);
+        $this->setPreferences($preferences);
+        $this->setAvatar($avatar);
     }
 
     private function setUserId(UserId $userId)

@@ -67,17 +67,17 @@ class Project extends Entity
 
     public function startDiscussion(Author $author, string $topic, string $content, Collection $attachments = null)
     {
-        return new Discussion($this->projectId(), new DiscussionId(), $author, $topic, $content, $attachments);
+        return new Discussion($this->projectId(), DiscussionId::generate(), $author, $topic, $content, $attachments);
     }
 
     public function createTodoList(Creator $creator, string $name)
     {
-        return new TodoList($this->projectId(), new TodoListId(), $creator, $name);
+        return new TodoList($this->projectId(), TodoListId::generate(), $creator, $name);
     }
 
     public function scheduleEvent(Creator $creator, string $name, string $details, string $startsAt, Collection $attachments = null)
     {
-        return new Event($this->projectId(), new EventId(), $creator, $name, $details, $startsAt, $attachments);
+        return new Event($this->projectId(), EventId::generate(), $creator, $name, $details, $startsAt, $attachments);
     }
 
     private function setOwnerId(OwnerId $ownerId)

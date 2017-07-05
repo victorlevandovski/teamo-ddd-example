@@ -43,7 +43,7 @@ class ProjectTest extends TestCase
     public function testProjectCanStartDiscussion()
     {
         $author = new Author('id-1', 'John Doe');
-        $attachments = new Collection(new Attachment(new AttachmentId(), 'attachment.txt'));
+        $attachments = new Collection(new Attachment(AttachmentId::generate(), 'attachment.txt'));
 
         $discussion = $this->project->startDiscussion($author, 'New Discussion', 'Discussion content', $attachments);
 
@@ -61,7 +61,7 @@ class ProjectTest extends TestCase
     public function testProjectCanScheduleEvent()
     {
         $creator = new Creator('id-1', 'John Doe');
-        $attachments = new Collection(new Attachment(new AttachmentId(), 'attachment.txt'));
+        $attachments = new Collection(new Attachment(AttachmentId::generate(), 'attachment.txt'));
 
         $event = $this->project->scheduleEvent($creator, 'My Event', 'Event details', '2020-01-01 00:00:00', $attachments);
 

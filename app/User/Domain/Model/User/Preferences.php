@@ -18,8 +18,8 @@ class Preferences extends ValueObject
 {
     private $language;
     private $timezone;
-    private $timeFormat;
     private $dateFormat;
+    private $timeFormat;
     private $firstDayOfWeek;
     private $showTodoListsAs;
     private $notifications;
@@ -27,16 +27,16 @@ class Preferences extends ValueObject
     public function __construct(
         string $language,
         string $timezone,
-        int $timeFormat,
         string $dateFormat,
+        int $timeFormat,
         int $firstDayOfWeek,
         string $showTodoListsAs,
         Notifications $notifications
     ) {
         $this->setLanguage($language);
         $this->setTimezone($timezone);
-        $this->setTimeFormat($timeFormat);
         $this->setDateFormat($dateFormat);
+        $this->setTimeFormat($timeFormat);
         $this->setFirstDayOfWeek($firstDayOfWeek);
         $this->setShowTodoListsAs($showTodoListsAs);
         $this->setNotifications($notifications);
@@ -46,7 +46,7 @@ class Preferences extends ValueObject
     {
         $notifications = new Notifications(true, true, true, true, true, true, true);
 
-        return new self('en', $timezone, 24, 'dd.mm.yyyy', 1, 'todo_lists', $notifications);
+        return new self('en', $timezone, 'dd.mm.yyyy', 24, 1, 'todo_lists', $notifications);
     }
 
     public function updateNotifications(Notifications $notifications)
@@ -54,8 +54,8 @@ class Preferences extends ValueObject
         return new self(
             $this->language(),
             $this->timezone(),
-            $this->timeFormat(),
             $this->dateFormat(),
+            $this->timeFormat(),
             $this->firstDayOfWeek(),
             $this->showTodoListsAs(),
             $notifications
@@ -99,7 +99,7 @@ class Preferences extends ValueObject
 
     private function setLanguage(string $language)
     {
-        if (!in_array($language, ['en', 'ru'])) {
+        if (!in_array($language, ['en', 'us'])) {
             throw new \InvalidArgumentException('Unknown language');
         }
 

@@ -34,8 +34,8 @@ class TodoListTest extends TestCase
 
     public function testConstructedTodoListIsValid()
     {
-        $projectId = new ProjectId();
-        $todoListId = new TodoListId();
+        $projectId = ProjectId::generate();
+        $todoListId = TodoListId::generate();
         $creator = new Creator('author-1', 'John Doe');
 
         $todoList = new TodoList($projectId, $todoListId, $creator, 'Name');
@@ -48,8 +48,8 @@ class TodoListTest extends TestCase
 
     public function testConstructedTodoIsValid()
     {
-        $todoListId = new TodoListId();
-        $todoId = new TodoId();
+        $todoListId = TodoListId::generate();
+        $todoId = TodoId::generate();
         $assignee = new Assignee('author-1', 'John Doe');
 
         $todo = new Todo($todoListId, $todoId, 'Name', $assignee, '2020-01-01 00:00:00');

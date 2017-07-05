@@ -13,14 +13,14 @@ class UserTest extends TestCase
 {
     public function setUp()
     {
-        //$this->project = new Project(new OwnerId('id-1'), new ProjectId('id-1'), 'My Project');
+        //
     }
 
-    public function testConstructedUserIsValid()
+    public function testUserCanBeRegistered()
     {
-        $user = new User(new UserId('user-1'), 'John Doe', 'user1@example.com', 'p4ssw0rd', 'Europe/Amsterdam');
+        $user = User::register('user1@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
 
-        $this->assertSame('user-1', $user->userId()->id());
+        $this->assertNotNull($user->userId());
         $this->assertEquals('John Doe', $user->name());
         $this->assertEquals('user1@example.com', $user->email());
         $this->assertEquals('p4ssw0rd', $user->password());
@@ -30,7 +30,7 @@ class UserTest extends TestCase
 
     public function testUserCanBeUpdated()
     {
-        $user = new User(new UserId('user-1'), 'John Doe', 'user1@example.com', 'p4ssw0rd', 'Europe/Amsterdam');
+        $user = User::register('user1@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
 
         $user->rename('Jack Doe');
         $this->assertEquals('Jack Doe', $user->name());
@@ -47,9 +47,9 @@ class UserTest extends TestCase
         $user->updatePreferences($preferences);
         $this->assertFalse($user->preferences()->notifications()->whenDiscussionStarted());
 
-        $preferences = new Preferences('ru', 'America/New_York', 12, 'mm/dd/yyyy', 7, 'todos', $user->preferences()->notifications());
+        $preferences = new Preferences('us', 'America/New_York', 'mm/dd/yyyy', 12, 7, 'todos', $user->preferences()->notifications());
         $user->updatePreferences($preferences);
-        $this->assertEquals('ru', $user->preferences()->language());
+        $this->assertEquals('us', $user->preferences()->language());
         $this->assertFalse($user->preferences()->notifications()->whenDiscussionStarted());
     }
 }
