@@ -18,7 +18,7 @@ class UserTest extends TestCase
 
     public function testUserCanBeRegistered()
     {
-        $user = User::register('user1@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
+        $user = User::register(new UserId('1'), 'user1@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
 
         $this->assertNotNull($user->userId());
         $this->assertEquals('John Doe', $user->name());
@@ -30,7 +30,7 @@ class UserTest extends TestCase
 
     public function testUserCanBeUpdated()
     {
-        $user = User::register('user1@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
+        $user = User::register(new UserId('1'), 'user1@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
 
         $user->rename('Jack Doe');
         $this->assertEquals('Jack Doe', $user->name());

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Teamo\User\Infrastructure\Persistence\InMemory;
 
+use Ramsey\Uuid\Uuid;
 use Teamo\Common\Infrastructure\Persistence\InMemory\InMemoryRepository;
 use Teamo\User\Domain\Model\User\User;
 use Teamo\User\Domain\Model\User\UserId;
@@ -23,5 +24,10 @@ class InMemoryUserRepository extends InMemoryRepository implements UserRepositor
     public function ofId(UserId $userId): User
     {
         return $this->findOrFail($userId->id(), 'Invalid user id');
+    }
+
+    public function nextIdentity(): UserId
+    {
+        return new UserId(Uuid::uuid4()->toString());
     }
 }

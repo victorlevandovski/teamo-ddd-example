@@ -21,12 +21,12 @@ class CommentTest extends TestCase
 
     public function setUp()
     {
-        $this->comment = new DiscussionComment(DiscussionId::generate(), new CommentId('id-1'), new Author('id-1', 'John Doe'), 'Comment content');
+        $this->comment = new DiscussionComment(new DiscussionId('1'), new CommentId('id-1'), new Author('id-1', 'John Doe'), 'Comment content', new Collection());
     }
 
     public function testCommentCanAddAndRemoveAttachment()
     {
-        $attachment = new Attachment(AttachmentId::generate(), 'Image.jpg');
+        $attachment = new Attachment(new AttachmentId('1'), 'Image.jpg');
         $this->comment->attach($attachment);
 
         /** @var Attachment[] $attachments */
@@ -41,13 +41,13 @@ class CommentTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        new DiscussionComment(DiscussionId::generate(), CommentId::generate(), new Author('id-1', 'John Doe'), '');
+        new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new Author('id-1', 'John Doe'), '', new Collection());
     }
 
     public function testCommentCanHaveEmptyContentIfAttachmentPresent()
     {
-        $attachment = new Attachment(AttachmentId::generate(), 'Image.png');
+        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'Image.png'));
 
-        new DiscussionComment(DiscussionId::generate(), CommentId::generate(), new Author('id-1', 'John Doe'), '', new Collection([$attachment]));
+        new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new Author('id-1', 'John Doe'), '', $attachments);
     }
 }

@@ -82,9 +82,9 @@ class Todo extends Entity
         $this->setDeadline($deadline);
     }
 
-    public function comment(Author $author, string $content, Collection $attachments = null)
+    public function comment(CommentId $commentId, Author $author, string $content, Collection $attachments)
     {
-        return new TodoComment($this->todoId(), CommentId::generate(), $author, $content, $attachments);
+        return new TodoComment($this->todoId(), $commentId, $author, $content, $attachments);
     }
 
     private function setTodoListId(TodoListId $todoListId)

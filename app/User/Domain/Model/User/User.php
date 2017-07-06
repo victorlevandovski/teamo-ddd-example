@@ -14,9 +14,9 @@ class User extends Entity
     private $preferences;
     private $avatar;
 
-    public static function register(string $email, string $password, string $name, string $timezone)
+    public static function register(UserId $userId, string $email, string $password, string $name, string $timezone): self
     {
-        return new self(UserId::generate(), $email, $password, $name, $timezone, Preferences::default($timezone), Avatar::default());
+        return new self($userId, $email, $password, $name, $timezone, Preferences::default($timezone), Avatar::default());
     }
 
     public function rename(string $name)

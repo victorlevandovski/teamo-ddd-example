@@ -7,13 +7,16 @@ use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
+use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
 use Teamo\Project\Domain\Model\Project\Event\Event;
+use Teamo\Project\Domain\Model\Project\Event\EventId;
 use Teamo\Project\Domain\Model\Project\Project;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
 use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Collaborator\Creator;
 use Teamo\Project\Domain\Model\Owner\OwnerId;
+use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
@@ -43,9 +46,9 @@ class ProjectTest extends TestCase
     public function testProjectCanStartDiscussion()
     {
         $author = new Author('id-1', 'John Doe');
-        $attachments = new Collection(new Attachment(AttachmentId::generate(), 'attachment.txt'));
+        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'attachment.txt'));
 
-        $discussion = $this->project->startDiscussion($author, 'New Discussion', 'Discussion content', $attachments);
+        $discussion = $this->project->startDiscussion(new DiscussionId('1'), $author, 'New Discussion', 'Discussion content', $attachments);
 
         $this->assertInstanceOf(Discussion::class, $discussion);
     }
@@ -53,7 +56,7 @@ class ProjectTest extends TestCase
     public function testProjectCanCreateTodoList()
     {
         $creator = new Creator('id-1', 'John Doe');
-        $todoList = $this->project->createTodoList($creator, 'New Todo List');
+        $todoList = $this->project->createTodoList(new TodoListId('1'), $creator, 'New Todo List');
 
         $this->assertInstanceOf(TodoList::class, $todoList);
     }
@@ -61,9 +64,9 @@ class ProjectTest extends TestCase
     public function testProjectCanScheduleEvent()
     {
         $creator = new Creator('id-1', 'John Doe');
-        $attachments = new Collection(new Attachment(AttachmentId::generate(), 'attachment.txt'));
+        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'attachment.txt'));
 
-        $event = $this->project->scheduleEvent($creator, 'My Event', 'Event details', '2020-01-01 00:00:00', $attachments);
+        $event = $this->project->scheduleEvent(new EventId('1'), $creator, 'My Event', 'Event details', '2020-01-01 00:00:00', $attachments);
 
         $this->assertInstanceOf(Event::class, $event);
     }

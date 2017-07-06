@@ -65,19 +65,19 @@ class Project extends Entity
         $this->archived = false;
     }
 
-    public function startDiscussion(Author $author, string $topic, string $content, Collection $attachments = null)
+    public function startDiscussion(DiscussionId $discussionId, Author $author, string $topic, string $content, Collection $attachments): Discussion
     {
-        return new Discussion($this->projectId(), DiscussionId::generate(), $author, $topic, $content, $attachments);
+        return new Discussion($this->projectId(), $discussionId, $author, $topic, $content, $attachments);
     }
 
-    public function createTodoList(Creator $creator, string $name)
+    public function createTodoList(TodoListId $todoListId, Creator $creator, string $name): TodoList
     {
-        return new TodoList($this->projectId(), TodoListId::generate(), $creator, $name);
+        return new TodoList($this->projectId(), $todoListId, $creator, $name);
     }
 
-    public function scheduleEvent(Creator $creator, string $name, string $details, string $startsAt, Collection $attachments = null)
+    public function scheduleEvent(EventId $eventId, Creator $creator, string $name, string $details, string $startsAt, Collection $attachments): Event
     {
-        return new Event($this->projectId(), EventId::generate(), $creator, $name, $details, $startsAt, $attachments);
+        return new Event($this->projectId(), $eventId, $creator, $name, $details, $startsAt, $attachments);
     }
 
     private function setOwnerId(OwnerId $ownerId)

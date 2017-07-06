@@ -12,7 +12,7 @@ class DiscussionComment extends Comment
 {
     private $discussionId;
 
-    public function __construct(DiscussionId $discussionId, CommentId $commentId, Author $author, string $content, Collection $attachments = null)
+    public function __construct(DiscussionId $discussionId, CommentId $commentId, Author $author, string $content, Collection $attachments)
     {
         parent::__construct($commentId, $author, $content, $attachments);
 

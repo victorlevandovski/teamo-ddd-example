@@ -8,6 +8,7 @@ use Teamo\User\Application\Command\User\RegisterUserHandler;
 use Teamo\User\Application\Command\User\UpdateUserProfileCommand;
 use Teamo\User\Application\Command\User\UpdateUserProfileHandler;
 use Teamo\User\Domain\Model\User\User;
+use Teamo\User\Domain\Model\User\UserId;
 use Teamo\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository;
 use Tests\TestCase;
 
@@ -38,7 +39,7 @@ class UserHandlersTest extends TestCase
 
     public function testUpdateUserProfileHandlerUpdatesUserNameAndPreferences()
     {
-        $user = User::register('john.doe@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
+        $user = User::register(new UserId('1'), 'john.doe@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
         $this->userRepository->add($user);
 
         $command = new UpdateUserProfileCommand($user->userId()->id(), 'Jake Doe', 'America/New_York', 'mm/dd/yyyy', 12, 7, 'us');

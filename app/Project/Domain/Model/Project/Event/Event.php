@@ -23,7 +23,7 @@ class Event extends Entity
     private $startsAt;
     private $archived;
 
-    public function __construct(ProjectId $projectId, EventId $eventId, Creator $creator, $name, $details, $startsAt, Collection $attachments = null)
+    public function __construct(ProjectId $projectId, EventId $eventId, Creator $creator, $name, $details, $startsAt, Collection $attachments)
     {
         $this->setProjectId($projectId);
         $this->setEventId($eventId);
@@ -86,9 +86,9 @@ class Event extends Entity
         $this->archived = false;
     }
 
-    public function comment(Author $author, string $content, Collection $attachments = null)
+    public function comment(CommentId $commentId, Author $author, string $content, Collection $attachments)
     {
-        return new EventComment($this->eventId(), CommentId::generate(), $author, $content, $attachments);
+        return new EventComment($this->eventId(), $commentId, $author, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)

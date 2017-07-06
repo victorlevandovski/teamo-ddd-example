@@ -6,6 +6,7 @@ namespace Tests\Unit\Project\Domain\Model\Project;
 use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
+use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
@@ -27,7 +28,9 @@ class DiscussionTest extends TestCase
             new DiscussionId('id-1'),
             new Author('id-1', 'John Doe'),
             'My Topic',
-            'My Content');
+            'My Content',
+            new Collection()
+        );
     }
 
     public function testConstructedDiscussionIsValid()
@@ -51,7 +54,7 @@ class DiscussionTest extends TestCase
     {
         $author = new Author('id-1', 'John Doe');
 
-        $comment = $this->discussion->comment($author, 'Comment content');
+        $comment = $this->discussion->comment(new CommentId('1'), $author, 'Comment content', new Collection());
 
         $this->assertInstanceOf(DiscussionComment::class, $comment);
     }

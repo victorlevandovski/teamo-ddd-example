@@ -12,7 +12,7 @@ class TodoComment extends Comment
 {
     private $todoId;
 
-    public function __construct(TodoId $todoId, CommentId $commentId, Author $author, string $content, Collection $attachments = null)
+    public function __construct(TodoId $todoId, CommentId $commentId, Author $author, string $content, Collection $attachments)
     {
         parent::__construct($commentId, $author, $content, $attachments);
 

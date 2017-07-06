@@ -76,9 +76,9 @@ class TodoList extends Entity
         $this->archived = false;
     }
 
-    public function addTodo(string $name, Assignee $assignee = null, $deadline = null)
+    public function addTodo(TodoId $todoId, string $name, Assignee $assignee = null, $deadline = null): TodoId
     {
-        $todo = new Todo($this->todoListId(), TodoId::generate(), $name, $assignee, $deadline);
+        $todo = new Todo($this->todoListId(), $todoId, $name, $assignee, $deadline);
         $this->todos->put($todo->todoId()->id(), $todo);
 
         return $todo->todoId();

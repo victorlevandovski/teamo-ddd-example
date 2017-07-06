@@ -21,7 +21,7 @@ class Discussion extends Entity
     private $content;
     private $archived;
 
-    public function __construct(ProjectId $projectId, DiscussionId $discussionId, Author $author, string $topic, string $content, Collection $attachments = null)
+    public function __construct(ProjectId $projectId, DiscussionId $discussionId, Author $author, string $topic, string $content, Collection $attachments)
     {
         $this->setProjectId($projectId);
         $this->setDiscussionId($discussionId);
@@ -78,9 +78,9 @@ class Discussion extends Entity
         $this->archived = false;
     }
 
-    public function comment(Author $author, string $content, Collection $attachments = null)
+    public function comment(CommentId $commentId, Author $author, string $content, Collection $attachments)
     {
-        return new DiscussionComment($this->discussionId(), CommentId::generate(), $author, $content, $attachments);
+        return new DiscussionComment($this->discussionId(), $commentId, $author, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)

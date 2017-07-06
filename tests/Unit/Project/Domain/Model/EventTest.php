@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
+use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Event\EventComment;
 use Teamo\Project\Domain\Model\Project\Event\EventId;
@@ -29,16 +30,17 @@ class EventTest extends TestCase
             new Creator('id-1', 'John Doe'),
             'My Event',
             'Event Details',
-            '2020-01-01 00:00:00'
+            '2020-01-01 00:00:00',
+            new Collection()
         );
     }
 
     public function testConstructedEventIsValid()
     {
-        $projectId = ProjectId::generate();
-        $eventId = EventId::generate();
-        $creator = new Creator('author-1', 'John Doe');
-        $attachments = new Collection(new Attachment(AttachmentId::generate(), 'Attachment.txt'));
+        $projectId = new ProjectId('p-1');
+        $eventId = new EventId('e-1');
+        $creator = new Creator('c-1', 'John Doe');
+        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'Attachment.txt'));
 
         $event = new Event($projectId, $eventId, $creator, 'Name', 'Details', '2020-01-01 00:00:00', $attachments);
 
@@ -55,7 +57,7 @@ class EventTest extends TestCase
     {
         $author = new Author('id-1', 'John Doe');
 
-        $comment = $this->event->comment($author, 'Comment content');
+        $comment = $this->event->comment(new CommentId('1'), $author, 'Comment content', new Collection());
 
         $this->assertInstanceOf(EventComment::class, $comment);
     }
