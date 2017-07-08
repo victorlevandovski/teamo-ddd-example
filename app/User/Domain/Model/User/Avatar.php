@@ -16,7 +16,7 @@ class Avatar extends ValueObject
 
     public static function default()
     {
-        return new self('');
+        return new self('default');
     }
 
     public function path()

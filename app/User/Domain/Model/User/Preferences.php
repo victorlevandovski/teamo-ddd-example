@@ -42,14 +42,14 @@ class Preferences extends ValueObject
         $this->setNotifications($notifications);
     }
 
-    public static function default(string $timezone = 'UTC')
+    public static function default(string $timezone)
     {
         $notifications = new Notifications(true, true, true, true, true, true, true);
 
         return new self('en', $timezone, 'dd.mm.yyyy', 24, 1, 'todo_lists', $notifications);
     }
 
-    public function updateNotifications(Notifications $notifications)
+    public function updateNotifications(Notifications $notifications): self
     {
         return new self(
             $this->language(),

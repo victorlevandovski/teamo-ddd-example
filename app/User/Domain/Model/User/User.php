@@ -24,14 +24,18 @@ class User extends Entity
         $this->setName($name);
     }
 
-    public function changeEmail(string $email)
+    public function changeEmail(string $email, string $currentPassword)
     {
+        $this->assertCorrectPassword($currentPassword);
+
         $this->setEmail($email);
     }
 
-    public function changePassword(string $password)
+    public function changePassword(string $newPassword, string $currentPassword)
     {
-        $this->setPassword($password);
+        $this->assertCorrectPassword($currentPassword);
+
+        $this->setPassword($newPassword);
     }
 
     public function updatePreferences(Preferences $preferences)
@@ -39,9 +43,19 @@ class User extends Entity
         $this->setPreferences($preferences);
     }
 
+    public function updateNotifications(Notifications $notifications)
+    {
+        $this->setPreferences($this->preferences()->updateNotifications($notifications));
+    }
+
     public function updateAvatar(Avatar $avatar)
     {
         $this->setAvatar($avatar);
+    }
+
+    public function removeAvatar()
+    {
+        $this->setAvatar(Avatar::default());
     }
 
     public function userId(): UserId
@@ -112,5 +126,12 @@ class User extends Entity
     private function setPreferences(Preferences $preferences)
     {
         $this->preferences = $preferences;
+    }
+
+    private function assertCorrectPassword(string $password)
+    {
+        if ($this->password != $password) {
+            throw new \InvalidArgumentException('Invalid password');
+        }
     }
 }
