@@ -177,6 +177,8 @@ return [
         Teamo\Common\Providers\EventServiceProvider::class,
         Teamo\Common\Providers\RouteServiceProvider::class,
 
+        LaravelDoctrine\ORM\DoctrineServiceProvider::class,
+        LaravelDoctrine\Migrations\MigrationsServiceProvider::class,
     ],
 
     /*

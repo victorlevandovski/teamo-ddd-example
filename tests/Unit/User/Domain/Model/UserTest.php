@@ -26,7 +26,7 @@ class UserTest extends TestCase
         $this->assertEquals('user1@example.com', $user->email());
         $this->assertEquals('p4ssw0rd', $user->password());
         $this->assertEquals('Europe/Amsterdam', $user->preferences()->timezone());
-        $this->assertTrue($user->preferences()->notifications()->whenDiscussionStarted());
+        $this->assertTrue($user->notifications()->whenDiscussionStarted());
     }
 
     public function testUserCanBeUpdated()
@@ -36,15 +36,15 @@ class UserTest extends TestCase
         $user->rename('Jack Doe');
         $this->assertEquals('Jack Doe', $user->name());
 
-        $this->assertTrue($user->preferences()->notifications()->whenDiscussionStarted());
+        $this->assertTrue($user->notifications()->whenDiscussionStarted());
         $notifications = new Notifications(false, false, false, false, false, false, false);
-        $user->updateNotifications($notifications);
-        $this->assertFalse($user->preferences()->notifications()->whenDiscussionStarted());
+        $user->updateNotificationSettings($notifications);
+        $this->assertFalse($user->notifications()->whenDiscussionStarted());
 
-        $preferences = new Preferences('us', 'America/New_York', 'mm/dd/yyyy', 12, 7, 'todos', $user->preferences()->notifications());
+        $preferences = new Preferences('us', 'America/New_York', 'mm/dd/yyyy', 12, 7, 'todos');
         $user->updatePreferences($preferences);
         $this->assertEquals('us', $user->preferences()->language());
-        $this->assertFalse($user->preferences()->notifications()->whenDiscussionStarted());
+        $this->assertFalse($user->notifications()->whenDiscussionStarted());
 
         $user->updateAvatar(new Avatar('user_avatar.jpg'));
         $this->assertEquals('user_avatar.jpg', $user->avatar()->path());

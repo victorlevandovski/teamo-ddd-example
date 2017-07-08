@@ -121,12 +121,12 @@ class UserHandlersTest extends TestCase
         $handler = new UpdateUserNotificationSettingsHandler($this->userRepository);
         $handler->handle($command);
 
-        $this->assertFalse($user->preferences()->notifications()->whenDiscussionStarted());
-        $this->assertFalse($user->preferences()->notifications()->whenDiscussionCommented());
-        $this->assertFalse($user->preferences()->notifications()->whenTodoListCreated());
-        $this->assertFalse($user->preferences()->notifications()->whenTodoCommented());
-        $this->assertFalse($user->preferences()->notifications()->whenTodoAssignedToMe());
-        $this->assertFalse($user->preferences()->notifications()->whenEventAdded());
-        $this->assertFalse($user->preferences()->notifications()->whenEventCommented());
+        $this->assertFalse($user->notifications()->whenDiscussionStarted());
+        $this->assertFalse($user->notifications()->whenDiscussionCommented());
+        $this->assertFalse($user->notifications()->whenTodoListCreated());
+        $this->assertFalse($user->notifications()->whenTodoCommented());
+        $this->assertFalse($user->notifications()->whenTodoAssignedToMe());
+        $this->assertFalse($user->notifications()->whenEventAdded());
+        $this->assertFalse($user->notifications()->whenEventCommented());
     }
 }

@@ -22,8 +22,7 @@ class UpdateUserProfileHandler extends UserHandler
             $command->dateFormat(),
             $command->timeFormat(),
             $command->firstDayOfWeek(),
-            $user->preferences()->showTodoListsAs(),
-            $user->preferences()->notifications()
+            $user->preferences()->showTodoListsAs()
         ));
     }
 }

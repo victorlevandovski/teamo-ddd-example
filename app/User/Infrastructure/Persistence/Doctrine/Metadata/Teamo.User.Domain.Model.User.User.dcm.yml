@@ -1,0 +1,23 @@
+Teamo\User\Domain\Model\User\User:
+  type: entity
+  repositoryClass: Teamo\User\Infrastructure\Persistence\Doctrine\DoctrineUserRepository
+  table: users
+
+  fields:
+    name:
+      type: string
+    email:
+      type: string
+    password:
+      type: string
+
+  embedded:
+    userId:
+      class: UserId
+      columnPrefix: false
+    preferences:
+      class: Preferences
+    notifications:
+      class: Notifications
+    avatar:
+      class: Avatar

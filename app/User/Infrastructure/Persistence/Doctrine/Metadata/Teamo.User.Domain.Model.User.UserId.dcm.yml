@@ -1,0 +1,6 @@
+Teamo\User\Domain\Model\User\UserId:
+  type: embeddable
+  id:
+    id:
+      type: string
+      length: 36

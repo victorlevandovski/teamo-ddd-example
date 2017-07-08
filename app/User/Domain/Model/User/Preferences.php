@@ -22,7 +22,6 @@ class Preferences extends ValueObject
     private $timeFormat;
     private $firstDayOfWeek;
     private $showTodoListsAs;
-    private $notifications;
 
     public function __construct(
         string $language,
@@ -30,8 +29,7 @@ class Preferences extends ValueObject
         string $dateFormat,
         int $timeFormat,
         int $firstDayOfWeek,
-        string $showTodoListsAs,
-        Notifications $notifications
+        string $showTodoListsAs
     ) {
         $this->setLanguage($language);
         $this->setTimezone($timezone);
@@ -39,27 +37,11 @@ class Preferences extends ValueObject
         $this->setTimeFormat($timeFormat);
         $this->setFirstDayOfWeek($firstDayOfWeek);
         $this->setShowTodoListsAs($showTodoListsAs);
-        $this->setNotifications($notifications);
     }
 
     public static function default(string $timezone)
     {
-        $notifications = new Notifications(true, true, true, true, true, true, true);
-
-        return new self('en', $timezone, 'dd.mm.yyyy', 24, 1, 'todo_lists', $notifications);
-    }
-
-    public function updateNotifications(Notifications $notifications): self
-    {
-        return new self(
-            $this->language(),
-            $this->timezone(),
-            $this->dateFormat(),
-            $this->timeFormat(),
-            $this->firstDayOfWeek(),
-            $this->showTodoListsAs(),
-            $notifications
-        );
+        return new self('en', $timezone, 'dd.mm.yyyy', 24, 1, 'todo_lists');
     }
 
     public function language(): string
@@ -90,11 +72,6 @@ class Preferences extends ValueObject
     public function showTodoListsAs(): string
     {
         return $this->showTodoListsAs;
-    }
-
-    public function notifications(): Notifications
-    {
-        return $this->notifications;
     }
 
     private function setLanguage(string $language)
@@ -145,10 +122,5 @@ class Preferences extends ValueObject
         }
 
         $this->showTodoListsAs = $showTodoListsAs;
-    }
-
-    private function setNotifications(Notifications $notifications)
-    {
-        $this->notifications = $notifications;
     }
 }

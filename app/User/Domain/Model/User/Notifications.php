@@ -33,6 +33,11 @@ class Notifications extends ValueObject
         $this->eventCommented = $whenEventCommented;
     }
 
+    public static function default(): self
+    {
+        return new self(true, true, true, true, true, true, true);
+    }
+
     public function whenDiscussionStarted(): bool
     {
         return $this->discussionStarted;

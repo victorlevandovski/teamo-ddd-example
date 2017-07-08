@@ -1,0 +1,5 @@
+Teamo\User\Domain\Model\User\Avatar:
+  type: embeddable
+  fields:
+    path:
+      type: string

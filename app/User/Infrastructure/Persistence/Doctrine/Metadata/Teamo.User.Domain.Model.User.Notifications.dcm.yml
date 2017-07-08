@@ -1,0 +1,17 @@
+Teamo\User\Domain\Model\User\Notifications:
+  type: embeddable
+  fields:
+    discussionStarted:
+      type: boolean
+    discussionCommented:
+      type: boolean
+    todoListCreated:
+      type: boolean
+    todoCommented:
+      type: boolean
+    todoAssignedToMe:
+      type: boolean
+    eventAdded:
+      type: boolean
+    eventCommented:
+      type: boolean

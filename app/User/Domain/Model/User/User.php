@@ -12,11 +12,21 @@ class User extends Entity
     private $email;
     private $password;
     private $preferences;
+    private $notifications;
     private $avatar;
 
     public static function register(UserId $userId, string $email, string $password, string $name, string $timezone): self
     {
-        return new self($userId, $email, $password, $name, $timezone, Preferences::default($timezone), Avatar::default());
+        return new self(
+            $userId,
+            $email,
+            $password,
+            $name,
+            $timezone,
+            Preferences::default($timezone),
+            Notifications::default(),
+            Avatar::default()
+        );
     }
 
     public function rename(string $name)
@@ -43,9 +53,9 @@ class User extends Entity
         $this->setPreferences($preferences);
     }
 
-    public function updateNotifications(Notifications $notifications)
+    public function updateNotificationSettings(Notifications $notifications)
     {
-        $this->setPreferences($this->preferences()->updateNotifications($notifications));
+        $this->setNotifications($notifications);
     }
 
     public function updateAvatar(Avatar $avatar)
@@ -88,13 +98,27 @@ class User extends Entity
         return $this->preferences;
     }
 
-    private function __construct(UserId $userId, string $email, string $password, string $name, string $timezone, Preferences $preferences, Avatar $avatar)
+    public function notifications(): Notifications
     {
+        return $this->notifications;
+    }
+
+    private function __construct(
+        UserId $userId,
+        string $email,
+        string $password,
+        string $name,
+        string $timezone,
+        Preferences $preferences,
+        Notifications $notifications,
+        Avatar $avatar
+    ) {
         $this->setUserId($userId);
         $this->setEmail($email);
         $this->setPassword($password);
         $this->setName($name);
         $this->setPreferences($preferences);
+        $this->setNotifications($notifications);
         $this->setAvatar($avatar);
     }
 
@@ -126,6 +150,11 @@ class User extends Entity
     private function setPreferences(Preferences $preferences)
     {
         $this->preferences = $preferences;
+    }
+
+    private function setNotifications(Notifications $notifications)
+    {
+        $this->notifications = $notifications;
     }
 
     private function assertCorrectPassword(string $password)

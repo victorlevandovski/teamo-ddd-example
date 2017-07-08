@@ -12,7 +12,7 @@ class UpdateUserNotificationSettingsHandler extends UserHandler
     {
         $user = $this->userRepository->ofId(new UserId($command->userId()));
 
-        $notifications = new Notifications(
+        $user->updateNotificationSettings(new Notifications(
             $command->whenDiscussionStarted(),
             $command->whenDiscussionCommented(),
             $command->whenTodoListCreated(),
@@ -20,8 +20,6 @@ class UpdateUserNotificationSettingsHandler extends UserHandler
             $command->whenTodoAssignedToMe(),
             $command->whenEventAdded(),
             $command->whenEventCommented()
-        );
-
-        $user->updateNotifications($notifications);
+        ));
     }
 }

@@ -1,0 +1,15 @@
+Teamo\User\Domain\Model\User\Preferences:
+  type: embeddable
+  fields:
+    language:
+      type: string
+    timezone:
+      type: string
+    dateFormat:
+      type: string
+    timeFormat:
+      type: integer
+    firstDayOfWeek:
+      type: integer
+    showTodoListsAs:
+      type: string
