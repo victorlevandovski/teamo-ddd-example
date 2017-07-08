@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+require base_path('app/User/Presentation/Http/routes.php');

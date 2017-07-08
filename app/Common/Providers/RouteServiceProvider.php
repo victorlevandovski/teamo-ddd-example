@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Teamo\Http\Controllers';
+    protected $namespace = 'Teamo';
 
     /**
      * Define your route model bindings, pattern filters, etc.
