@@ -1,0 +1,245 @@
+.w40p {
+	width: 40%;
+}
+
+.w50p {
+	width: 50%;
+}
+
+.w100 {
+	width: 100px;
+}
+
+.w150 {
+	width: 150px;
+}
+
+.w200 {
+	width: 200px;
+}
+
+.w250 {
+	width: 250px;
+}
+
+.w300 {
+	width: 300px;
+}
+
+.w400 {
+	width: 400px;
+}
+
+.w500 {
+	width: 500px;
+}
+
+.w600 {
+	width: 600px;
+}
+
+.mt0 {
+	margin-top: 0 !important;
+}
+
+.mt5 {
+	margin-top: 5px !important;
+}
+
+.mt10 {
+	margin-top: 10px !important;
+}
+
+.mt15 {
+	margin-top: 15px !important;
+}
+
+.mt20 {
+	margin-top: 20px !important;
+}
+
+.mt25 {
+	margin-top: 25px !important;
+}
+
+.mt30 {
+	margin-top: 30px !important;
+}
+
+.mb0 {
+	margin-bottom: 0 !important;
+}
+
+.mb5 {
+	margin-bottom: 5px !important;
+}
+
+.mb10 {
+	margin-bottom: 10px !important;
+}
+
+.mb15 {
+	margin-bottom: 15px !important;
+}
+
+.mb20 {
+	margin-bottom: 20px !important;
+}
+
+.mb25 {
+	margin-bottom: 25px !important;
+}
+
+.mb30 {
+	margin-bottom: 30px !important;
+}
+
+.ml0 {
+	margin-left: 0 !important;
+}
+
+.ml5 {
+	margin-left: 5px !important;
+}
+
+.ml10 {
+	margin-left: 10px !important;
+}
+
+.ml15 {
+	margin-left: 15px !important;
+}
+
+.ml20 {
+	margin-left: 20px !important;
+}
+
+.ml25 {
+	margin-left: 25px !important;
+}
+
+.ml30 {
+	margin-left: 30px !important;
+}
+
+.mr0 {
+	margin-right: 0 !important;
+}
+
+.mr5 {
+	margin-right: 5px !important;
+}
+
+.mr10 {
+	margin-right: 10px !important;
+}
+
+.mr15 {
+	margin-right: 15px !important;
+}
+
+.mr20 {
+	margin-right: 20px !important;
+}
+
+.mr25 {
+	margin-right: 25px !important;
+}
+
+.mr30 {
+	margin-right: 30px !important;
+}
+
+.fs10 {
+	font-size: 1.0rem !important;
+}
+
+.fs11 {
+	font-size: 1.1rem !important;
+}
+
+.fs12 {
+	font-size: 1.2rem !important;
+}
+
+.fs13 {
+	font-size: 1.3rem !important;
+}
+
+.fs14 {
+	font-size: 1.4rem !important;
+}
+
+.fs16 {
+	font-size: 1.6rem !important;
+}
+
+.fs18 {
+	font-size: 1.8rem !important;
+}
+
+.fs20 {
+	font-size: 2.0rem !important;
+}
+
+.fs22 {
+	font-size: 2.2rem !important;
+}
+
+.c333 {
+	color: #333333 !important;
+}
+
+.c666 {
+	color: #666666 !important;
+}
+
+.c999 {
+	color: #999999 !important;
+}
+
+.uli {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.uli li {
+	display: inline-block;
+}
+
+.ulb {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.ulb li {
+	padding: 3px 0;
+	margin: 0;
+}
+
+.red {
+	color: #aa0000 !important;
+}
+
+.red:hover {
+	color: #aa0000 !important;
+}
+
+.btn {
+	text-decoration: none !important;
+}
+
+.btn-teamo {
+	padding: 3px 8px !important;
+	text-decoration: none !important;
+}
+
+.center {
+	text-align: center !important;
+}
+
+.lowercase {
+	text-transform: lowercase;
+}

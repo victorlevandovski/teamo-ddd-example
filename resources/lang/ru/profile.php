@@ -1,0 +1,46 @@
+<?php
+
+// {{ trans('profile.key') }}
+
+return [
+    'logout' => 'Выйти',
+    'profile' => 'Профиль пользователя',
+    'name' => 'Имя',
+    'time_zone' => 'Часовой пояс',
+    'time_format' => 'Формат времени',
+    'date_format' => 'Формат даты',
+    'week_start' => 'Первый день недели',
+    'language' => 'Язык',
+    'email' => 'Эл. почта',
+    'password' => 'Пароль',
+    'avatar' => 'Аватар',
+    'change_email_action' => 'Изменить эл. почту',
+    'change_password_action' => 'Изменить пароль',
+    'change_avatar_action' => 'Изменить аватар',
+    'change_email' => 'Изменение адреса электронной почты',
+    'change_password' => 'Изменение пароля',
+    'change_avatar' => 'Загрузка аватара',
+    'confirm_avatar' => 'Вы действительно хотите удалить аватар?',
+    'current_password' => 'Текущий пароль',
+    'new_password' => 'Новый пароль',
+    'new_email' => 'Новый адрес эл. почты',
+    'preview' => 'Предпросмотр',
+    'min_size' => 'Минимальный размер',
+
+    'account_status' => 'Статус аккаунта',
+    'paid_account' => 'Платный Аккаунт',
+    'free_account' => 'Бесплатный Аккаунт',
+    'paid_till' => 'Оплачен до',
+    'support' => 'Поддержка',
+
+    'notifications_settings' => 'Настройки уведомлений',
+    'you_will_receive' => 'Вы будете получать уведомления на эл. почту в следующих случаях',
+    'notify_new_discussion' => 'Начата новая дискуссия',
+    'notify_new_discussion_comment' => 'Добавлен новый комментарий',
+    'notify_new_todo' => 'Создан новый список задач',
+    'notify_new_todo_comment' => 'Добавлен новый комментарий',
+    'notify_new_todo_assigned' => 'На вас назначена новая задача',
+    'notify_new_event' => 'Добавлено новое событие',
+    'notify_new_event_comment' => 'Добавлен новый комментарий',
+    'back_to_settings' => 'Вернуться в настройки профиля',
+];

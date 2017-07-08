@@ -1,0 +1,46 @@
+<?php
+
+// {{ trans('profile.key') }}
+
+return [
+    'logout' => 'Logout',
+    'profile' => 'Profile',
+    'name' => 'Name',
+    'time_zone' => 'Time zone',
+    'time_format' => 'Time format',
+    'date_format' => 'Date format',
+    'week_start' => 'First day of the week',
+    'language' => 'Language',
+    'email' => 'Email',
+    'password' => 'Password',
+    'avatar' => 'Avatar',
+    'change_email_action' => 'Change email',
+    'change_password_action' => 'Change password',
+    'change_avatar_action' => 'Change avatar',
+    'change_email' => 'Change email',
+    'change_password' => 'Change password',
+    'change_avatar' => 'Change avatar',
+    'confirm_avatar' => 'Remove the avatar?',
+    'current_password' => 'Current password',
+    'new_password' => 'New password',
+    'new_email' => 'New email',
+    'preview' => 'Preview',
+    'min_size' => 'Minimal size',
+
+    'account_status' => 'Account status',
+    'paid_account' => 'Paid Account',
+    'free_account' => 'Free Account',
+    'paid_till' => 'Paid till',
+    'support' => 'Support',
+
+    'notifications_settings' => 'Notifications settings',
+    'you_will_receive' => 'You will receive notifications when',
+    'notify_new_discussion' => 'New discussion started',
+    'notify_new_discussion_comment' => 'New comment posted',
+    'notify_new_todo' => 'New to-do added',
+    'notify_new_todo_comment' => 'New comment posted',
+    'notify_new_todo_assigned' => 'Task has been assigned to you',
+    'notify_new_event' => 'New event created',
+    'notify_new_event_comment' => 'New comment posted',
+    'back_to_settings' => 'Back to profile settings',
+];

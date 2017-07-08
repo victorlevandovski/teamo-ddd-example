@@ -1,0 +1,144 @@
+body {
+	/*background-color: #f2f2f2;*/
+	/*background: url('/img/noisev2.png');*/
+	/*background: url('/img/noise08.png') #f2f2f2;*/
+}
+
+header {
+	min-width: 980px;
+	line-height: 40px;
+	background: rgba(0, 0, 0, 0.05);
+	border-bottom: 1px solid #dddddd;
+	/*box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.35);*/
+	font-size: 1.3rem;
+}
+
+header .header {
+	width: 980px;
+	margin: 0 auto;
+}
+
+header nav .btn {
+	padding: 4px 10px;
+}
+
+header nav .btn-default {
+	background-color: transparent;
+	border-color: #a0a0a0;
+	color: #333333;
+	text-decoration: none;
+	font-size: 1.3rem;
+}
+
+header nav .btn-default:hover {
+	background-color: transparent;
+	border-color: #666666;
+	color: #333333;
+}
+
+header nav .nav-button {
+	margin-bottom: 2px;
+}
+
+header nav {
+	float: right;
+}
+
+header nav a {
+	color: #333333;
+	text-decoration: none;
+}
+
+header nav a:hover {
+	color: #333333;
+	text-decoration: underline;
+
+}
+
+header nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+header nav ul li {
+	display: inline-block;
+	margin: 1px 0 0 0;
+	padding: 0 0 0 10px;
+}
+
+footer {
+	min-width: 980px;
+	padding: 20px 0;
+	margin: 0 auto;
+	text-align: center;
+	color: #333333;
+	/*background-color: #666666;*/
+	font-size: 1.2rem;
+}
+
+footer a {
+	margin-left: 10px;
+	text-decoration: underline;
+}
+
+.public-container {
+	padding: 30px 0;
+	min-width: 980px;
+}
+
+.public-container h3 {
+	font-size: 1.8rem;
+}
+
+.index-drawing {
+
+}
+
+article.index {
+	width: 700px;
+	margin: 50px auto 0 auto;
+	font-size: 1.3rem;
+}
+
+article.index p+p {
+	padding: 0;
+	margin: 15px 0 0 0;
+	line-height: 1.65em;
+}
+
+article.index h1 {
+	margin: 0;
+	font-size: 2rem;
+	text-align: center;
+	font-weight: normal;
+}
+
+.flying {
+	background-color: #fafafa;
+	padding: 25px;
+	border: 2px solid #e5e5e5;
+	/*border-color: #cccccc;*/
+	/*border-radius: 4px;*/
+	/*box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.25);*/
+}
+
+.form-container {
+	width: 400px;
+	margin: 50px auto;
+}
+
+.form-title {
+	text-align: center;
+	font-size: 2.2rem;
+	margin-bottom: 10px;
+	font-weight: 600;
+}
+
+.info-block-title {
+	font-size: 2.8rem; font-weight: 200;
+}
+
+.info-block-content {
+	font-size: 1.4rem; font-weight: 400; line-height: 1.65em;
+}
