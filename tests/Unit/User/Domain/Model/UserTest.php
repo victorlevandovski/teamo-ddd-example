@@ -24,7 +24,6 @@ class UserTest extends TestCase
         $this->assertNotNull($user->userId());
         $this->assertEquals('John Doe', $user->name());
         $this->assertEquals('user1@example.com', $user->email());
-        $this->assertEquals('p4ssw0rd', $user->password());
         $this->assertEquals('Europe/Amsterdam', $user->preferences()->timezone());
         $this->assertTrue($user->notifications()->whenDiscussionStarted());
     }
@@ -69,7 +68,6 @@ class UserTest extends TestCase
         $user = User::register(new UserId('1'), 'user1@example.com', 'p4ssw0rd', 'John Doe', 'UTC');
 
         $user->changePassword('pa55word', 'p4ssw0rd');
-        $this->assertEquals('pa55word', $user->password());
 
         $this->expectException(\InvalidArgumentException::class);
         $user->changePassword('pa55w0rd', 'wrong_password');

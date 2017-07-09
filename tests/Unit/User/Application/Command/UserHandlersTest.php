@@ -48,7 +48,6 @@ class UserHandlersTest extends TestCase
 
         $this->assertSame('user-1', $user->userId()->id());
         $this->assertEquals('john.doe@example.com', $user->email());
-        $this->assertEquals('p4ssw0rd', $user->password());
         $this->assertEquals('John Doe', $user->name());
         $this->assertEquals('Europe/Amsterdam', $user->preferences()->timezone());
     }
@@ -87,8 +86,6 @@ class UserHandlersTest extends TestCase
         $command = new ChangeUserPasswordCommand($user->userId()->id(), 'newP4ssw0rd', 'p4ssw0rd');
         $handler = new ChangeUserPasswordHandler($this->userRepository);
         $handler->handle($command);
-
-        $this->assertEquals('newP4ssw0rd', $user->password());
     }
 
     public function testRemoveUserAvatarHandlerRemovesAvatar()

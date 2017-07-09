@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Teamo\User::class,
+            'model' => Teamo\Common\Authentication\User::class,
         ],
 
         // 'users' => [

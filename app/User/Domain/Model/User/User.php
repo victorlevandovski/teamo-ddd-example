@@ -137,11 +137,6 @@ class User extends Entity
         $this->email = $email;
     }
 
-    private function setPassword(string $password)
-    {
-        $this->password = $password;
-    }
-
     private function setAvatar(Avatar $avatar)
     {
         $this->avatar = $avatar;
@@ -157,9 +152,14 @@ class User extends Entity
         $this->notifications = $notifications;
     }
 
+    private function setPassword(string $password)
+    {
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
+    }
+
     private function assertCorrectPassword(string $password)
     {
-        if ($this->password != $password) {
+        if (!password_verify($password, $this->password)) {
             throw new \InvalidArgumentException('Invalid password');
         }
     }
