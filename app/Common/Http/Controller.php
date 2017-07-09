@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamo\Common\Http\Controllers;
+namespace Teamo\Common\Http;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;

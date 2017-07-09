@@ -6,17 +6,20 @@ namespace Teamo\User\Presentation\Http\Controller;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 use Teamo\Common\Application\CommandBus;
-use Teamo\Common\Http\Controllers\Controller;
+use Teamo\Common\Http\Controller;
 use Teamo\User\Application\Command\User\RegisterUserCommand;
 use Teamo\User\Presentation\Http\Request\RegisterUserRequest;
 
 class RegistrationController extends Controller
 {
-    private $dashboard = '/my';
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
 
     public function registration()
     {
-        return view('user.registration.register', ['email' => '']);
+        return view('user.registration.registration', ['email' => '']);
     }
 
     public function register(RegisterUserRequest $request, CommandBus $commandBus)
@@ -28,6 +31,6 @@ class RegistrationController extends Controller
 
         Auth::loginUsingId($userId);
 
-        return redirect($this->dashboard);
+        return redirect('/my');
     }
 }
