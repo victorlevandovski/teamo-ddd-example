@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Teamo\User\Infrastructure\Persistence\Doctrine;
 
 use Doctrine\ORM\EntityRepository;
-use Ramsey\Uuid\Uuid;
 use Teamo\User\Domain\Model\User\User;
 use Teamo\User\Domain\Model\User\UserId;
 use Teamo\User\Domain\Model\User\UserRepository;
@@ -30,10 +29,5 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
         }
 
         return $user;
-    }
-
-    public function nextIdentity(): UserId
-    {
-        return new UserId(Uuid::uuid4()->toString());
     }
 }

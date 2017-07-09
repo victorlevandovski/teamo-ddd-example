@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamo\Common\Providers;
+namespace Teamo\Common\Provider;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

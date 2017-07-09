@@ -171,11 +171,13 @@ return [
         /*
          * Application Service Providers...
          */
-        Teamo\Common\Providers\AppServiceProvider::class,
-        Teamo\Common\Providers\AuthServiceProvider::class,
+        Teamo\Common\Provider\AppServiceProvider::class,
+        Teamo\Common\Provider\AuthServiceProvider::class,
         // Teamo\Providers\BroadcastServiceProvider::class,
-        Teamo\Common\Providers\EventServiceProvider::class,
-        Teamo\Common\Providers\RouteServiceProvider::class,
+        Teamo\Common\Provider\EventServiceProvider::class,
+        Teamo\Common\Provider\RouteServiceProvider::class,
+        Teamo\Common\Provider\CommandBusServiceProvider::class,
+        Teamo\Common\Provider\RepositoryServiceProvider::class,
 
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,
         LaravelDoctrine\Migrations\MigrationsServiceProvider::class,

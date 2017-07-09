@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamo\Common\Providers;
+namespace Teamo\Common\Provider;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;

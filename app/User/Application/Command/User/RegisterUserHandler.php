@@ -8,10 +8,10 @@ use Teamo\User\Domain\Model\User\UserId;
 
 class RegisterUserHandler extends UserHandler
 {
-    public function handle(RegisterUserCommand $command): UserId
+    public function handle(RegisterUserCommand $command)
     {
         $user = User::register(
-            $this->userRepository->nextIdentity(),
+            new UserId($command->userId()),
             $command->email(),
             $command->password(),
             $command->name(),
@@ -19,7 +19,5 @@ class RegisterUserHandler extends UserHandler
         );
 
         $this->userRepository->add($user);
-
-        return $user->userId();
     }
 }

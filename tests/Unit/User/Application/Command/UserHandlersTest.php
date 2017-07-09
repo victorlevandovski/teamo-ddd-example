@@ -40,13 +40,13 @@ class UserHandlersTest extends TestCase
 
     public function testRegisterUserHandlerAddsUserToRepository()
     {
-        $command = new RegisterUserCommand('john.doe@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
+        $command = new RegisterUserCommand('user-1', 'john.doe@example.com', 'p4ssw0rd', 'John Doe', 'Europe/Amsterdam');
         $handler = new RegisterUserHandler($this->userRepository);
-        $userId = $handler->handle($command);
+        $handler->handle($command);
 
-        $user = $this->userRepository->ofId($userId);
+        $user = $this->userRepository->ofId(new UserId('user-1'));
 
-        $this->assertSame($userId, $user->userId());
+        $this->assertSame('user-1', $user->userId()->id());
         $this->assertEquals('john.doe@example.com', $user->email());
         $this->assertEquals('p4ssw0rd', $user->password());
         $this->assertEquals('John Doe', $user->name());

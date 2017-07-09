@@ -10,6 +10,4 @@ interface UserRepository
     public function remove(User $user);
 
     public function ofId(UserId $userId): User;
-
-    public function nextIdentity(): UserId;
 }

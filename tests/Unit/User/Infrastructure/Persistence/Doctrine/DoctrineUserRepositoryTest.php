@@ -5,6 +5,7 @@ namespace Tests\Unit\User\Infrastructure\Persistence\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Teamo\User\Domain\Model\User\User;
+use Teamo\User\Domain\Model\User\UserId;
 use Teamo\User\Domain\Model\User\UserRepository;
 use Tests\TestCase;
 
@@ -26,7 +27,7 @@ class DoctrineUserRepositoryTest extends TestCase
 
     public function testRepositoryCanAddAndRemoveUser()
     {
-        $userId = $this->repository->nextIdentity();
+        $userId = new UserId('user-1');
         $user = User::register($userId, 'john.doe@example.com', 'p4ssw0rd', 'John Doe', 'UTC');
 
         $this->repository->add($user);

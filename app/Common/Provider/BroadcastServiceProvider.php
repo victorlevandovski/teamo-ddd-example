@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamo\Common\Providers;
+namespace Teamo\Common\Provider;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
