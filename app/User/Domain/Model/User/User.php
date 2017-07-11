@@ -34,18 +34,14 @@ class User extends Entity
         $this->setName($name);
     }
 
-    public function changeEmail(string $email, string $currentPassword)
+    public function changeEmail(string $email)
     {
-        $this->assertCorrectPassword($currentPassword);
-
         $this->setEmail($email);
     }
 
-    public function changePassword(string $newPassword, string $currentPassword)
+    public function changePassword(string $password)
     {
-        $this->assertCorrectPassword($currentPassword);
-
-        $this->setPassword($newPassword);
+        $this->setPassword($password);
     }
 
     public function updatePreferences(Preferences $preferences)
@@ -154,13 +150,6 @@ class User extends Entity
 
     private function setPassword(string $password)
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT);
-    }
-
-    private function assertCorrectPassword(string $password)
-    {
-        if (!password_verify($password, $this->password)) {
-            throw new \InvalidArgumentException('Invalid password');
-        }
+        $this->password = $password;
     }
 }

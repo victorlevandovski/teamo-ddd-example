@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamo\Common\Exceptions;
+namespace Teamo\Common\Exception;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;

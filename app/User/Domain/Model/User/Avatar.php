@@ -7,20 +7,32 @@ use Teamo\Common\Domain\ValueObject;
 
 class Avatar extends ValueObject
 {
-    private $path;
+    private $pathTo48pxAvatar;
+    private $pathTo96pxAvatar;
 
-    public function __construct($path)
+    public function __construct(string $pathTo48pxAvatar, string $pathTo96pxAvatar)
     {
-        $this->path = $path;
+        $this->pathTo48pxAvatar = $pathTo48pxAvatar;
+        $this->pathTo96pxAvatar = $pathTo96pxAvatar;
     }
 
-    public static function default()
+    public static function default(): self
     {
-        return new self('default');
+        return new self('/avatars/avatar48.jpg', '/avatars/avatar96.jpg');
     }
 
-    public function path()
+    public function pathTo48pxAvatar(): string
     {
-        return $this->path;
+        return $this->pathTo48pxAvatar;
+    }
+
+    public function pathTo96pxAvatar(): string
+    {
+        return $this->pathTo96pxAvatar;
+    }
+
+    public function  isDefault(): bool
+    {
+        return $this->pathTo48pxAvatar == '/avatars/avatar48.jpg' && $this->pathTo96pxAvatar == '/avatars/avatar96.jpg';
     }
 }

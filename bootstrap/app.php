@@ -38,7 +38,7 @@ $app->singleton(
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    Teamo\Common\Exceptions\Handler::class
+    Teamo\Common\Exception\Handler::class
 );
 
 /*

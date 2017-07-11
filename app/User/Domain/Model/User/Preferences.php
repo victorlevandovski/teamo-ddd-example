@@ -76,7 +76,7 @@ class Preferences extends ValueObject
 
     private function setLanguage(string $language)
     {
-        if (!in_array($language, ['en', 'us'])) {
+        if (!in_array($language, ['en', 'ru'])) {
             throw new \InvalidArgumentException('Unknown language');
         }
 

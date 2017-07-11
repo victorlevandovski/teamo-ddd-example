@@ -12,6 +12,6 @@ class UpdateUserAvatarHandler extends UserHandler
     {
         $user = $this->userRepository->ofId(new UserId($command->userId()));
 
-        $user->updateAvatar(new Avatar($command->file()));
+        $user->updateAvatar(new Avatar($command->pathTo48pxAvatar(), $command->pathTo96pxAvatar()));
     }
 }

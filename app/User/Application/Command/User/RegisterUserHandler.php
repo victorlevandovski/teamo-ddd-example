@@ -13,7 +13,7 @@ class RegisterUserHandler extends UserHandler
         $user = User::register(
             new UserId($command->userId()),
             $command->email(),
-            $command->password(),
+            bcrypt($command->password()),
             $command->name(),
             $command->timezone()
         );

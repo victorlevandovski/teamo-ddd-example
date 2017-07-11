@@ -6,12 +6,14 @@ namespace Teamo\User\Application\Command\User;
 class UpdateUserAvatarCommand
 {
     private $userId;
-    private $file;
+    private $pathTo48pxAvatar;
+    private $pathTo96pxAvatar;
 
-    public function __construct(string $userId, string $file)
+    public function __construct(string $userId, string $pathTo48pxAvatar, string $pathTo96pxAvatar)
     {
         $this->userId = $userId;
-        $this->file = $file;
+        $this->pathTo48pxAvatar = $pathTo48pxAvatar;
+        $this->pathTo96pxAvatar = $pathTo96pxAvatar;
     }
 
     public function userId(): string
@@ -19,8 +21,13 @@ class UpdateUserAvatarCommand
         return $this->userId;
     }
 
-    public function file(): string
+    public function pathTo48pxAvatar(): string
     {
-        return $this->file;
+        return $this->pathTo48pxAvatar;
+    }
+
+    public function pathTo96pxAvatar(): string
+    {
+        return $this->pathTo96pxAvatar;
     }
 }

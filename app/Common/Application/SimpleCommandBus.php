@@ -31,7 +31,7 @@ class SimpleCommandBus implements CommandBus
                 $this->em->flush();
             }
         } else {
-            throw new \InvalidArgumentException("Command {$commandClass} does not have any handler mapped");
+            throw new \Exception("Command {$commandClass} does not have any handler mapped");
         }
     }
 }
