@@ -21,12 +21,9 @@ class Project extends Entity
     private $name;
     private $archived;
 
-    public function __construct(TeamMemberId $ownerId, ProjectId $projectId, string $name)
+    public static function start(TeamMemberId $ownerId, ProjectId $projectId, string $name): self
     {
-        $this->setOwnerId($ownerId);
-        $this->setProjectId($projectId);
-        $this->setName($name);
-        $this->setArchived(false);
+        return new self($ownerId, $projectId, $name, false);
     }
 
     public function ownerId(): TeamMemberId
@@ -77,6 +74,14 @@ class Project extends Entity
     public function scheduleEvent(EventId $eventId, TeamMemberId $creatorId, string $name, string $details, Carbon $startsAt, Collection $attachments): Event
     {
         return new Event($this->projectId(), $eventId, $creatorId, $name, $details, $startsAt, $attachments);
+    }
+
+    public function __construct(TeamMemberId $ownerId, ProjectId $projectId, string $name, bool $archived)
+    {
+        $this->setOwnerId($ownerId);
+        $this->setProjectId($projectId);
+        $this->setName($name);
+        $this->setArchived($archived);
     }
 
     private function setOwnerId(TeamMemberId $ownerId)

@@ -1,0 +1,18 @@
+Teamo\Project\Domain\Model\Project\Project:
+  type: entity
+  repositoryClass: Teamo\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectRepository
+  table: projects
+
+  fields:
+    name:
+      type: string
+    archived:
+      type: boolean
+      column: is_archived
+
+  embedded:
+    projectId:
+      class: ProjectId
+      columnPrefix: false
+    ownerId:
+      class: Teamo\Project\Domain\Model\Team\TeamMemberId

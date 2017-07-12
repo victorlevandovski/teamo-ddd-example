@@ -64,11 +64,11 @@ class UserHandlersTest extends TestCase
 
     public function testUpdateUserProfileHandlerUpdatesUserNameAndPreferences()
     {
-        $user = $this->user;
-
-        $command = new UpdateUserProfileCommand($user->userId()->id(), 'Jake Doe', 'America/New_York', 'mm/dd/yyyy', 12, 7, 'ru');
+        $command = new UpdateUserProfileCommand($this->user->userId()->id(), 'Jake Doe', 'America/New_York', 'mm/dd/yyyy', 12, 7, 'ru');
         $handler = new UpdateUserProfileHandler($this->userRepository);
         $handler->handle($command);
+
+        $user = $this->userRepository->ofId($this->user->userId());
 
         $this->assertEquals('Jake Doe', $user->name());
         $this->assertEquals('America/New_York', $user->preferences()->timezone());
@@ -80,11 +80,11 @@ class UserHandlersTest extends TestCase
 
     public function testChangeUserEmailHandlerUpdatesEmail()
     {
-        $user = $this->user;
-
-        $command = new ChangeUserEmailCommand($user->userId()->id(), 'new.email@example.com', 'p4ssw0rd');
+        $command = new ChangeUserEmailCommand($this->user->userId()->id(), 'new.email@example.com', 'p4ssw0rd');
         $handler = new ChangeUserEmailHandler($this->userRepository, $this->guard);
         $handler->handle($command);
+
+        $user = $this->userRepository->ofId($this->user->userId());
 
         $this->assertEquals('new.email@example.com', $user->email());
     }
@@ -100,12 +100,13 @@ class UserHandlersTest extends TestCase
 
     public function testRemoveUserAvatarHandlerRemovesAvatar()
     {
-        $user = $this->user;
-        $user->updateAvatar(new Avatar('avatar48.jpg', 'avatar96.jpg'));
+        $this->user->updateAvatar(new Avatar('avatar48.jpg', 'avatar96.jpg'));
 
-        $command = new RemoveUserAvatarCommand($user->userId()->id());
+        $command = new RemoveUserAvatarCommand($this->user->userId()->id());
         $handler = new RemoveUserAvatarHandler($this->userRepository);
         $handler->handle($command);
+
+        $user = $this->userRepository->ofId($this->user->userId());
 
         $this->assertEquals('/avatars/avatar48.jpg', $user->avatar()->pathTo48pxAvatar());
         $this->assertEquals('/avatars/avatar96.jpg', $user->avatar()->pathTo96pxAvatar());
@@ -113,11 +114,11 @@ class UserHandlersTest extends TestCase
 
     public function testUpdateUserAvatarHandlerUpdatesAvatar()
     {
-        $user = $this->user;
-
-        $command = new UpdateUserAvatarCommand($user->userId()->id(), 'avatar48.jpg', 'avatar96.jpg');
+        $command = new UpdateUserAvatarCommand($this->user->userId()->id(), 'avatar48.jpg', 'avatar96.jpg');
         $handler = new UpdateUserAvatarHandler($this->userRepository);
         $handler->handle($command);
+
+        $user = $this->userRepository->ofId($this->user->userId());
 
         $this->assertEquals('avatar48.jpg', $user->avatar()->pathTo48pxAvatar());
         $this->assertEquals('avatar96.jpg', $user->avatar()->pathTo96pxAvatar());
@@ -125,11 +126,11 @@ class UserHandlersTest extends TestCase
 
     public function testUpdateUserNotificationSettingsUpdatesNotifications()
     {
-        $user = $this->user;
-
-        $command = new UpdateUserNotificationSettingsCommand($user->userId()->id(), false, false, false, false, false, false, false);
+        $command = new UpdateUserNotificationSettingsCommand($this->user->userId()->id(), false, false, false, false, false, false, false);
         $handler = new UpdateUserNotificationSettingsHandler($this->userRepository);
         $handler->handle($command);
+
+        $user = $this->userRepository->ofId($this->user->userId());
 
         $this->assertFalse($user->notifications()->whenDiscussionStarted());
         $this->assertFalse($user->notifications()->whenDiscussionCommented());

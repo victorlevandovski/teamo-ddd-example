@@ -27,19 +27,20 @@ class ProjectTest extends TestCase
 
     public function setUp()
     {
-        $this->project = new Project(new TeamMemberId('id-1'), new ProjectId('id-1'), 'My Project');
+        $this->project = new Project(new TeamMemberId('id-1'), new ProjectId('id-1'), 'My Project', false);
     }
 
-    public function testConstructedProjectIsValid()
+    public function testProjectCanBeStarted()
     {
         $ownerId = new TeamMemberId('owner');
         $projectId = new ProjectId('project');
 
-        $project = new Project($ownerId, $projectId, 'My Project');
+        $project = Project::start($ownerId, $projectId, 'My Project');
 
         $this->assertSame($ownerId, $project->ownerId());
         $this->assertSame($projectId, $project->projectId());
         $this->assertEquals('My Project', $project->name());
+        $this->assertFalse($project->isArchived());
     }
 
     public function testProjectCanStartDiscussion()

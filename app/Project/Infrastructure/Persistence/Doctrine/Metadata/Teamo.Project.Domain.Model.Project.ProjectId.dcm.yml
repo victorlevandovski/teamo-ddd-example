@@ -1,0 +1,6 @@
+Teamo\Project\Domain\Model\Project\ProjectId:
+  type: embeddable
+  id:
+    id:
+      type: string
+      length: 36

@@ -17,6 +17,11 @@ abstract class Id extends ValueObject
         return $this->id;
     }
 
+    public function equals(Id $id): bool
+    {
+        return $this->id() == $id->id();
+    }
+
     protected function setId(string $id)
     {
         $this->assertArgumentNotEmpty($id, 'Id string cannot be empty');
