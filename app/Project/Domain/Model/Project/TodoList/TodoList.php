@@ -5,27 +5,24 @@ namespace Teamo\Project\Domain\Model\Project\TodoList;
 
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\ProjectId;
-use Teamo\Project\Domain\Model\Collaborator\Assignee;
-use Teamo\Project\Domain\Model\Collaborator\Creator;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class TodoList extends Entity
 {
     private $projectId;
     private $todoListId;
-    private $creator;
+    private $creatorId;
     private $name;
     private $archived;
 
-    /**
-     * @var TodoCollection
-     */
+    /** @var TodoCollection */
     private $todos;
 
-    public function __construct(ProjectId $projectId, TodoListId $todoListId, Creator $creator, string $name)
+    public function __construct(ProjectId $projectId, TodoListId $todoListId, TeamMemberId $creatorId, string $name)
     {
         $this->setProjectId($projectId);
         $this->setTodoListId($todoListId);
-        $this->setCreator($creator);
+        $this->setCreatorId($creatorId);
         $this->setName($name);
         $this->setArchived(false);
         $this->setTodos(new TodoCollection());
@@ -41,9 +38,9 @@ class TodoList extends Entity
         return $this->todoListId;
     }
 
-    public function creator(): Creator
+    public function creatorId(): TeamMemberId
     {
-        return $this->creator;
+        return $this->creatorId;
     }
 
     public function name(): string
@@ -76,9 +73,9 @@ class TodoList extends Entity
         $this->archived = false;
     }
 
-    public function addTodo(TodoId $todoId, string $name, Assignee $assignee = null, $deadline = null): TodoId
+    public function addTodo(TodoId $todoId, string $name): TodoId
     {
-        $todo = new Todo($this->todoListId(), $todoId, $name, $assignee, $deadline);
+        $todo = new Todo($this->todoListId(), $todoId, $name);
         $this->todos->put($todo->todoId()->id(), $todo);
 
         return $todo->todoId();
@@ -108,9 +105,9 @@ class TodoList extends Entity
         $this->todoListId = $todoListId;
     }
 
-    private function setCreator(Creator $creator)
+    private function setCreatorId(TeamMemberId $creatorId)
     {
-        $this->creator = $creator;
+        $this->creatorId = $creatorId;
     }
 
     private function setName(string $name)

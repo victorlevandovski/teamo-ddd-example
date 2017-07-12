@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
@@ -11,9 +12,7 @@ use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Event\EventId;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
-use Teamo\Project\Domain\Model\Collaborator\Author;
-use Teamo\Project\Domain\Model\Collaborator\Creator;
-use Teamo\Project\Domain\Model\Owner\OwnerId;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Project extends Entity
 {
@@ -22,7 +21,7 @@ class Project extends Entity
     private $name;
     private $archived;
 
-    public function __construct(OwnerId $ownerId, ProjectId $projectId, string $name)
+    public function __construct(TeamMemberId $ownerId, ProjectId $projectId, string $name)
     {
         $this->setOwnerId($ownerId);
         $this->setProjectId($projectId);
@@ -30,7 +29,7 @@ class Project extends Entity
         $this->setArchived(false);
     }
 
-    public function ownerId(): OwnerId
+    public function ownerId(): TeamMemberId
     {
         return $this->ownerId;
     }
@@ -65,22 +64,22 @@ class Project extends Entity
         $this->archived = false;
     }
 
-    public function startDiscussion(DiscussionId $discussionId, Author $author, string $topic, string $content, Collection $attachments): Discussion
+    public function startDiscussion(DiscussionId $discussionId, TeamMemberId $authorId, string $topic, string $content, Collection $attachments): Discussion
     {
-        return new Discussion($this->projectId(), $discussionId, $author, $topic, $content, $attachments);
+        return new Discussion($this->projectId(), $discussionId, $authorId, $topic, $content, $attachments);
     }
 
-    public function createTodoList(TodoListId $todoListId, Creator $creator, string $name): TodoList
+    public function createTodoList(TodoListId $todoListId, TeamMemberId $creatorId, string $name): TodoList
     {
-        return new TodoList($this->projectId(), $todoListId, $creator, $name);
+        return new TodoList($this->projectId(), $todoListId, $creatorId, $name);
     }
 
-    public function scheduleEvent(EventId $eventId, Creator $creator, string $name, string $details, string $startsAt, Collection $attachments): Event
+    public function scheduleEvent(EventId $eventId, TeamMemberId $creatorId, string $name, string $details, Carbon $startsAt, Collection $attachments): Event
     {
-        return new Event($this->projectId(), $eventId, $creator, $name, $details, $startsAt, $attachments);
+        return new Event($this->projectId(), $eventId, $creatorId, $name, $details, $startsAt, $attachments);
     }
 
-    private function setOwnerId(OwnerId $ownerId)
+    private function setOwnerId(TeamMemberId $ownerId)
     {
         $this->ownerId = $ownerId;
     }

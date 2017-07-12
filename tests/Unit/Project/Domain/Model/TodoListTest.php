@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Teamo\Project\Domain\Model\Collaborator\Assignee;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\TodoList\Todo;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoId;
@@ -12,8 +12,7 @@ use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoComment;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
-use Teamo\Project\Domain\Model\Collaborator\Author;
-use Teamo\Project\Domain\Model\Collaborator\Creator;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 use Tests\TestCase;
 
 class TodoListTest extends TestCase
@@ -28,7 +27,7 @@ class TodoListTest extends TestCase
         $this->todoList = new TodoList(
             new ProjectId('id-1'),
             new TodoListId('id-1'),
-            new Creator('id-1', 'John Doe'),
+            new TeamMemberId('id-1'),
             'My Todo List'
         );
     }
@@ -37,13 +36,13 @@ class TodoListTest extends TestCase
     {
         $projectId = new ProjectId('p-1');
         $todoListId = new TodoListId('tl-1');
-        $creator = new Creator('author-1', 'John Doe');
+        $creatorId = new TeamMemberId('creator-1');
 
-        $todoList = new TodoList($projectId, $todoListId, $creator, 'Name');
+        $todoList = new TodoList($projectId, $todoListId, $creatorId, 'Name');
 
         $this->assertSame($projectId, $todoList->projectId());
         $this->assertSame($todoListId, $todoList->todoListId());
-        $this->assertSame($creator, $todoList->creator());
+        $this->assertSame($creatorId, $todoList->creatorId());
         $this->assertEquals('Name', $todoList->name());
     }
 
@@ -51,15 +50,12 @@ class TodoListTest extends TestCase
     {
         $todoListId = new TodoListId('tl-1');
         $todoId = new TodoId('t-1');
-        $assignee = new Assignee('author-1', 'John Doe');
 
-        $todo = new Todo($todoListId, $todoId, 'Name', $assignee, '2020-01-01 00:00:00');
+        $todo = new Todo($todoListId, $todoId, 'Name');
 
         $this->assertSame($todoListId, $todo->todoListId());
         $this->assertSame($todoId, $todo->todoId());
         $this->assertEquals('Name', $todo->name());
-        $this->assertSame($assignee, $todo->assignee());
-        $this->assertEquals('2020-01-01 00:00:00', $todo->deadline());
     }
 
     public function testTodoListCanBeRenamed()
@@ -83,16 +79,16 @@ class TodoListTest extends TestCase
 
     public function testTodoCanBeAdded()
     {
-        $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1', null, null);
-        $this->todoList->addTodo(new TodoId('t-2'), 'My Todo 2', new Assignee('assignee-1', 'John Doe'), null);
-        $this->todoList->addTodo(new TodoId('t-3'), 'My Todo 3', new Assignee('assignee-1', 'John Doe'), '2020-01-01 00:00:00');
+        $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1');
+        $this->todoList->addTodo(new TodoId('t-2'), 'My Todo 2');
+        $this->todoList->addTodo(new TodoId('t-3'), 'My Todo 3');
 
         $this->assertCount(3, $this->todoList->todos());
     }
 
     public function testTodoCanBeRemoved()
     {
-        $todoId = $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1', null, null);
+        $todoId = $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1');
         $this->assertCount(1, $this->todoList->todos());
 
         $this->todoList->removeTodo($todoId);
@@ -120,20 +116,50 @@ class TodoListTest extends TestCase
         $this->assertEquals($todoId0, $todos[2]->todoId());
     }
 
-    public function testTodoCanBeUpdated()
+    public function testTodoCanBeRenamed()
     {
-        $todoId = $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1', null, null);
+        $todoId = $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1');
         $todo = $this->todoList->todos()->ofId($todoId);
 
         $this->assertEquals('My Todo 1', $todo->name());
-        $this->assertNull($todo->assignee());
+        //$this->assertNull($todo->assigneeId());
+        //$this->assertNull($todo->deadline());
+
+        //$newAssigneeId = new TeamMemberId('a-1');
+        $todo->rename('New Todo 1');
+        $this->assertEquals('New Todo 1', $todo->name());
+        //$this->assertEquals($newAssigneeId, $todo->assigneeId());
+        //$this->assertEquals('2020-01-01 00:00:00', $todo->deadline());
+    }
+
+    public function testTodoCanBeAssignedToTeamMember()
+    {
+        $todoId = $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1');
+        $todo = $this->todoList->todos()->ofId($todoId);
+
+        $this->assertNull($todo->assigneeId());
+
+        $assigneeId = new TeamMemberId('tm-1');
+        $todo->assignTo($assigneeId);
+        $this->assertSame($assigneeId, $todo->assigneeId());
+
+        $todo->removeAssignee();
+        $this->assertNull($todo->assigneeId());
+    }
+
+    public function testDeadlineCanBeSetForTodo()
+    {
+        $todoId = $this->todoList->addTodo(new TodoId('t-1'), 'My Todo 1');
+        $todo = $this->todoList->todos()->ofId($todoId);
+
         $this->assertNull($todo->deadline());
 
-        $newAssignee = new Assignee('a-1', 'John Doe');
-        $todo->update('New Todo 1', $newAssignee, '2020-01-01 00:00:00');
-        $this->assertEquals('New Todo 1', $todo->name());
-        $this->assertEquals($newAssignee, $todo->assignee());
-        $this->assertEquals('2020-01-01 00:00:00', $todo->deadline());
+        $deadline = new Carbon();
+        $todo->deadlineOn($deadline);
+        $this->assertSame($deadline, $todo->deadline());
+
+        $todo->removeDeadline();
+        $this->assertNull($todo->deadline());
     }
 
     public function testTodoCanBeCompletedAndUncompleted()
@@ -144,7 +170,7 @@ class TodoListTest extends TestCase
         $this->todoList->todos()->ofId($todoId)->complete();
         $this->assertTrue($this->todoList->todos()->ofId($todoId)->isCompleted());
 
-        $this->todoList->todos()->ofId($todoId)->uncomplete();
+        $this->todoList->todos()->ofId($todoId)->uncheck();
         $this->assertFalse($this->todoList->todos()->ofId($todoId)->isCompleted());
     }
 
@@ -152,7 +178,7 @@ class TodoListTest extends TestCase
     {
         $todoId = $this->todoList->addTodo(new TodoId('t-1'), 'My Todo');
         $comment = $this->todoList->todos()->ofId($todoId)
-            ->comment(new CommentId('1'), new Author('id-1', 'John Doe'), 'Comment content', new Collection());
+            ->comment(new CommentId('1'), new TeamMemberId('id-1'), 'Comment content', new Collection());
 
         $this->assertInstanceOf(TodoComment::class, $comment);
     }

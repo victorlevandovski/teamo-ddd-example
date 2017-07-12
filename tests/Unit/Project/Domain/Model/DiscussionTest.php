@@ -11,7 +11,7 @@ use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
-use Teamo\Project\Domain\Model\Collaborator\Author;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 use Tests\TestCase;
 
 class DiscussionTest extends TestCase
@@ -26,7 +26,7 @@ class DiscussionTest extends TestCase
         $this->discussion = new Discussion(
             new ProjectId('id-1'),
             new DiscussionId('id-1'),
-            new Author('id-1', 'John Doe'),
+            new TeamMemberId('id-1'),
             'My Topic',
             'My Content',
             new Collection()
@@ -37,14 +37,14 @@ class DiscussionTest extends TestCase
     {
         $projectId = new ProjectId('project-1');
         $discussionId = new DiscussionId('discussion-1');
-        $author = new Author('author-1', 'John Doe');
+        $authorId = new TeamMemberId('author-1');
         $attachments = new Collection(new Attachment(new AttachmentId('attachment-1'), 'Attachment.txt'));
 
-        $discussion = new Discussion($projectId, $discussionId, $author, 'Topic', 'Content', $attachments);
+        $discussion = new Discussion($projectId, $discussionId, $authorId, 'Topic', 'Content', $attachments);
 
         $this->assertSame($projectId, $discussion->projectId());
         $this->assertSame($discussionId, $discussion->discussionId());
-        $this->assertSame($author, $discussion->author());
+        $this->assertSame($authorId, $discussion->authorId());
         $this->assertEquals('Topic', $discussion->topic());
         $this->assertEquals('Content', $discussion->content());
         $this->assertSame($attachments, $discussion->attachments());
@@ -52,9 +52,9 @@ class DiscussionTest extends TestCase
 
     public function testDiscussionCanBeCommented()
     {
-        $author = new Author('id-1', 'John Doe');
+        $authorId = new TeamMemberId('id-1', 'John Doe');
 
-        $comment = $this->discussion->comment(new CommentId('1'), $author, 'Comment content', new Collection());
+        $comment = $this->discussion->comment(new CommentId('1'), $authorId, 'Comment content', new Collection());
 
         $this->assertInstanceOf(DiscussionComment::class, $comment);
     }

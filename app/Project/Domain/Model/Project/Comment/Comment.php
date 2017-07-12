@@ -7,19 +7,20 @@ use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 abstract class Comment extends Entity
 {
     use Attachments;
 
     protected $commentId;
-    protected $author;
+    protected $authorId;
     protected $content;
 
-    public function __construct(CommentId $commentId, Author $author, string $content, Collection $attachments)
+    public function __construct(CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
     {
         $this->setCommentId($commentId);
-        $this->setAuthor($author);
+        $this->setAuthorId($authorId);
         $this->setContentAndAttachments($content, $attachments);
     }
 
@@ -28,9 +29,9 @@ abstract class Comment extends Entity
         return $this->commentId;
     }
 
-    public function author(): Author
+    public function author(): TeamMemberId
     {
-        return $this->author;
+        return $this->authorId;
     }
 
     public function content(): string
@@ -48,9 +49,9 @@ abstract class Comment extends Entity
         $this->commentId = $commentId;
     }
 
-    public function setAuthor(Author $author)
+    public function setAuthorId(TeamMemberId $authorId)
     {
-        $this->author = $author;
+        $this->authorId = $authorId;
     }
 
     protected function setContent(string $content)

@@ -3,28 +3,26 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\TodoList;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
-use Teamo\Project\Domain\Model\Collaborator\Assignee;
-use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Todo extends Entity
 {
     private $todoListId;
     private $todoId;
     private $name;
-    private $assignee;
+    private $assigneeId;
     private $deadline;
     private $completed;
 
-    public function __construct(TodoListId $todoListId, TodoId $todoId, string $name, Assignee $assignee = null, string $deadline = null)
+    public function __construct(TodoListId $todoListId, TodoId $todoId, string $name)
     {
         $this->setTodoListId($todoListId);
         $this->setTodoId($todoId);
         $this->setName($name);
-        $this->setAssignee($assignee);
-        $this->setDeadline($deadline);
         $this->setCompleted(false);
     }
 
@@ -44,18 +42,12 @@ class Todo extends Entity
         return $this->name;
     }
 
-    /**
-     * @return Assignee|null
-     */
-    public function assignee()
+    public function assigneeId(): ?TeamMemberId
     {
-        return $this->assignee;
+        return $this->assigneeId;
     }
 
-    /**
-     * @return string|null
-     */
-    public function deadline()
+    public function deadline(): ?Carbon
     {
         return $this->deadline;
     }
@@ -70,21 +62,39 @@ class Todo extends Entity
         $this->setCompleted(true);
     }
 
-    public function uncomplete()
+    public function uncheck()
     {
         $this->setCompleted(false);
     }
 
-    public function update(string $name, Assignee $assignee = null, $deadline = null)
+    public function rename(string $name)
     {
         $this->setName($name);
-        $this->setAssignee($assignee);
+    }
+
+    public function assignTo(TeamMemberId $assigneeId)
+    {
+        $this->setAssignee($assigneeId);
+    }
+
+    public function deadlineOn(Carbon $deadline)
+    {
         $this->setDeadline($deadline);
     }
 
-    public function comment(CommentId $commentId, Author $author, string $content, Collection $attachments)
+    public function removeAssignee()
     {
-        return new TodoComment($this->todoId(), $commentId, $author, $content, $attachments);
+        $this->setAssignee(null);
+    }
+
+    public function removeDeadline()
+    {
+        $this->setDeadline(null);
+    }
+
+    public function comment(CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
+    {
+        return new TodoComment($this->todoId(), $commentId, $authorId, $content, $attachments);
     }
 
     private function setTodoListId(TodoListId $todoListId)
@@ -102,12 +112,12 @@ class Todo extends Entity
         $this->name = $name;
     }
 
-    private function setAssignee(Assignee $assignee = null)
+    private function setAssignee(?TeamMemberId $assigneeId)
     {
-        $this->assignee = $assignee;
+        $this->assigneeId = $assigneeId;
     }
 
-    private function setDeadline(string $deadline = null)
+    private function setDeadline(?Carbon $deadline)
     {
         $this->deadline = $deadline;
     }

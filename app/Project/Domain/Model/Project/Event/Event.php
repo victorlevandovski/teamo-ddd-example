@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Event;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Teamo\Common\Domain\Entity;
-use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
-use Teamo\Project\Domain\Model\Collaborator\Creator;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Event extends Entity
 {
@@ -17,17 +17,17 @@ class Event extends Entity
 
     private $projectId;
     private $eventId;
-    private $creator;
+    private $creatorId;
     private $name;
     private $details;
     private $startsAt;
     private $archived;
 
-    public function __construct(ProjectId $projectId, EventId $eventId, Creator $creator, $name, $details, $startsAt, Collection $attachments)
+    public function __construct(ProjectId $projectId, EventId $eventId, TeamMemberId $creatorId, string $name, string $details, Carbon $startsAt, Collection $attachments)
     {
         $this->setProjectId($projectId);
         $this->setEventId($eventId);
-        $this->setCreator($creator);
+        $this->setCreatorId($creatorId);
         $this->setName($name);
         $this->setDetails($details);
         $this->setStartsAt($startsAt);
@@ -45,9 +45,9 @@ class Event extends Entity
         return $this->eventId;
     }
 
-    public function creator(): Creator
+    public function creatorId(): TeamMemberId
     {
-        return $this->creator;
+        return $this->creatorId;
     }
 
     public function name(): string
@@ -60,7 +60,7 @@ class Event extends Entity
         return $this->details;
     }
 
-    public function startsAt(): string
+    public function startsAt(): Carbon
     {
         return $this->startsAt;
     }
@@ -86,9 +86,9 @@ class Event extends Entity
         $this->archived = false;
     }
 
-    public function comment(CommentId $commentId, Author $author, string $content, Collection $attachments)
+    public function comment(CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
     {
-        return new EventComment($this->eventId(), $commentId, $author, $content, $attachments);
+        return new EventComment($this->eventId(), $commentId, $authorId, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -101,9 +101,9 @@ class Event extends Entity
         $this->eventId = $eventId;
     }
 
-    private function setCreator(Creator $creator)
+    private function setCreatorId(TeamMemberId $creatorId)
     {
-        $this->creator = $creator;
+        $this->creatorId = $creatorId;
     }
 
     private function setName(string $name)
@@ -116,7 +116,7 @@ class Event extends Entity
         $this->details = $details;
     }
 
-    private function setStartsAt(string $startsAt)
+    private function setStartsAt(Carbon $startsAt)
     {
         $this->startsAt = $startsAt;
     }

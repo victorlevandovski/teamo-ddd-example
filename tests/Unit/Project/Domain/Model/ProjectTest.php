@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
@@ -13,10 +14,8 @@ use Teamo\Project\Domain\Model\Project\Event\EventId;
 use Teamo\Project\Domain\Model\Project\Project;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
-use Teamo\Project\Domain\Model\Collaborator\Author;
-use Teamo\Project\Domain\Model\Collaborator\Creator;
-use Teamo\Project\Domain\Model\Owner\OwnerId;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
@@ -28,12 +27,12 @@ class ProjectTest extends TestCase
 
     public function setUp()
     {
-        $this->project = new Project(new OwnerId('id-1'), new ProjectId('id-1'), 'My Project');
+        $this->project = new Project(new TeamMemberId('id-1'), new ProjectId('id-1'), 'My Project');
     }
 
     public function testConstructedProjectIsValid()
     {
-        $ownerId = new OwnerId('owner');
+        $ownerId = new TeamMemberId('owner');
         $projectId = new ProjectId('project');
 
         $project = new Project($ownerId, $projectId, 'My Project');
@@ -45,28 +44,28 @@ class ProjectTest extends TestCase
 
     public function testProjectCanStartDiscussion()
     {
-        $author = new Author('id-1', 'John Doe');
+        $authorId = new TeamMemberId('id-1');
         $attachments = new Collection(new Attachment(new AttachmentId('1'), 'attachment.txt'));
 
-        $discussion = $this->project->startDiscussion(new DiscussionId('1'), $author, 'New Discussion', 'Discussion content', $attachments);
+        $discussion = $this->project->startDiscussion(new DiscussionId('1'), $authorId, 'New Discussion', 'Discussion content', $attachments);
 
         $this->assertInstanceOf(Discussion::class, $discussion);
     }
 
     public function testProjectCanCreateTodoList()
     {
-        $creator = new Creator('id-1', 'John Doe');
-        $todoList = $this->project->createTodoList(new TodoListId('1'), $creator, 'New Todo List');
+        $creatorId = new TeamMemberId('id-1');
+        $todoList = $this->project->createTodoList(new TodoListId('1'), $creatorId, 'New Todo List');
 
         $this->assertInstanceOf(TodoList::class, $todoList);
     }
 
     public function testProjectCanScheduleEvent()
     {
-        $creator = new Creator('id-1', 'John Doe');
+        $creatorId = new TeamMemberId('id-1');
         $attachments = new Collection(new Attachment(new AttachmentId('1'), 'attachment.txt'));
 
-        $event = $this->project->scheduleEvent(new EventId('1'), $creator, 'My Event', 'Event details', '2020-01-01 00:00:00', $attachments);
+        $event = $this->project->scheduleEvent(new EventId('1'), $creatorId, 'My Event', 'Event details', new Carbon(), $attachments);
 
         $this->assertInstanceOf(Event::class, $event);
     }

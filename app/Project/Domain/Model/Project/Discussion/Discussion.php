@@ -8,7 +8,7 @@ use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
-use Teamo\Project\Domain\Model\Collaborator\Author;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Discussion extends Entity
 {
@@ -16,16 +16,16 @@ class Discussion extends Entity
 
     private $projectId;
     private $discussionId;
-    private $author;
+    private $authorId;
     private $topic;
     private $content;
     private $archived;
 
-    public function __construct(ProjectId $projectId, DiscussionId $discussionId, Author $author, string $topic, string $content, Collection $attachments)
+    public function __construct(ProjectId $projectId, DiscussionId $discussionId, TeamMemberId $authorId, string $topic, string $content, Collection $attachments)
     {
         $this->setProjectId($projectId);
         $this->setDiscussionId($discussionId);
-        $this->setAuthor($author);
+        $this->setAuthorId($authorId);
         $this->setTopic($topic);
         $this->setContent($content);
         $this->setArchived(false);
@@ -42,9 +42,9 @@ class Discussion extends Entity
         return $this->discussionId;
     }
 
-    public function author(): Author
+    public function authorId(): TeamMemberId
     {
-        return $this->author;
+        return $this->authorId;
     }
 
     public function topic(): string
@@ -78,9 +78,9 @@ class Discussion extends Entity
         $this->archived = false;
     }
 
-    public function comment(CommentId $commentId, Author $author, string $content, Collection $attachments)
+    public function comment(CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
     {
-        return new DiscussionComment($this->discussionId(), $commentId, $author, $content, $attachments);
+        return new DiscussionComment($this->discussionId(), $commentId, $authorId, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -93,9 +93,9 @@ class Discussion extends Entity
         $this->discussionId = $discussionId;
     }
 
-    private function setAuthor(Author $author)
+    private function setAuthorId(TeamMemberId $authorId)
     {
-        $this->author = $author;
+        $this->authorId = $authorId;
     }
 
     private function setTopic(string $topic)

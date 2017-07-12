@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Teamo\Common\Domain;
 
-abstract class Id
+abstract class Id extends ValueObject
 {
     protected $id;
 
@@ -19,11 +19,8 @@ abstract class Id
 
     protected function setId(string $id)
     {
-        if (!$id) {
-            throw new \InvalidArgumentException('Id string cannot be empty');
-        } else if (strlen($id) > 36) {
-            throw new \InvalidArgumentException('Id string is too long');
-        }
+        $this->assertArgumentNotEmpty($id, 'Id string cannot be empty');
+        $this->assertArgumentMaxLength($id, 36, 'Id string is too long');
 
         $this->id = $id;
     }

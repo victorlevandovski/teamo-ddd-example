@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
@@ -12,7 +12,7 @@ use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Event\EventComment;
 use Teamo\Project\Domain\Model\Project\Event\EventId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
-use Teamo\Project\Domain\Model\Collaborator\Creator;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 use Tests\TestCase;
 
 class EventTest extends TestCase
@@ -27,10 +27,10 @@ class EventTest extends TestCase
         $this->event = new Event(
             new ProjectId('id-1'),
             new EventId('id-1'),
-            new Creator('id-1', 'John Doe'),
+            new TeamMemberId('id-1'),
             'My Event',
             'Event Details',
-            '2020-01-01 00:00:00',
+            new Carbon(),
             new Collection()
         );
     }
@@ -39,25 +39,26 @@ class EventTest extends TestCase
     {
         $projectId = new ProjectId('p-1');
         $eventId = new EventId('e-1');
-        $creator = new Creator('c-1', 'John Doe');
+        $creatorId = new TeamMemberId('c-1');
         $attachments = new Collection(new Attachment(new AttachmentId('1'), 'Attachment.txt'));
+        $startsAt = new Carbon();
 
-        $event = new Event($projectId, $eventId, $creator, 'Name', 'Details', '2020-01-01 00:00:00', $attachments);
+        $event = new Event($projectId, $eventId, $creatorId, 'Name', 'Details', $startsAt, $attachments);
 
         $this->assertSame($projectId, $event->projectId());
         $this->assertSame($eventId, $event->eventId());
-        $this->assertSame($creator, $event->creator());
+        $this->assertSame($creatorId, $event->creatorId());
         $this->assertEquals('Name', $event->name());
         $this->assertEquals('Details', $event->details());
-        $this->assertEquals('2020-01-01 00:00:00', $event->startsAt());
+        $this->assertSame($startsAt, $event->startsAt());
         $this->assertSame($attachments, $event->attachments());
     }
 
     public function testEventCanBeCommented()
     {
-        $author = new Author('id-1', 'John Doe');
+        $authorId = new TeamMemberId('id-1');
 
-        $comment = $this->event->comment(new CommentId('1'), $author, 'Comment content', new Collection());
+        $comment = $this->event->comment(new CommentId('1'), $authorId, 'Comment content', new Collection());
 
         $this->assertInstanceOf(EventComment::class, $comment);
     }

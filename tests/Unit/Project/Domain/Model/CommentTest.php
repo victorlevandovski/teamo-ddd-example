@@ -7,9 +7,9 @@ use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
-use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 use Tests\TestCase;
 
 class CommentTest extends TestCase
@@ -21,7 +21,7 @@ class CommentTest extends TestCase
 
     public function setUp()
     {
-        $this->comment = new DiscussionComment(new DiscussionId('1'), new CommentId('id-1'), new Author('id-1', 'John Doe'), 'Comment content', new Collection());
+        $this->comment = new DiscussionComment(new DiscussionId('1'), new CommentId('id-1'), new TeamMemberId('id-1'), 'Comment content', new Collection());
     }
 
     public function testCommentCanAddAndRemoveAttachment()
@@ -41,13 +41,13 @@ class CommentTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new Author('id-1', 'John Doe'), '', new Collection());
+        new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new TeamMemberId('id-1'), '', new Collection());
     }
 
     public function testCommentCanHaveEmptyContentIfAttachmentPresent()
     {
         $attachments = new Collection(new Attachment(new AttachmentId('1'), 'Image.png'));
 
-        new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new Author('id-1', 'John Doe'), '', $attachments);
+        new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new TeamMemberId('id-1'), '', $attachments);
     }
 }
