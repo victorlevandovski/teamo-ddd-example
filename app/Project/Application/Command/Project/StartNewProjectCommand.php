@@ -5,20 +5,20 @@ namespace Teamo\Project\Application\Command\Project;
 
 class StartNewProjectCommand
 {
-    private $ownerId;
+    private $owner;
     private $projectId;
     private $name;
 
-    public function __construct(string $ownerId, string $projectId, string $name)
+    public function __construct(string $owner, string $projectId, string $name)
     {
-        $this->ownerId = $ownerId;
+        $this->owner = $owner;
         $this->projectId = $projectId;
         $this->name = $name;
     }
 
-    public function ownerId(): string
+    public function owner(): string
     {
-        return $this->ownerId;
+        return $this->owner;
     }
 
     public function projectId(): string

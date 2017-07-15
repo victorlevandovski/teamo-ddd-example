@@ -11,6 +11,7 @@ class User extends Entity
     private $name;
     private $email;
     private $password;
+    private $rememberToken;
     private $preferences;
     private $notifications;
     private $avatar;
@@ -97,6 +98,11 @@ class User extends Entity
     public function notifications(): Notifications
     {
         return $this->notifications;
+    }
+
+    public function rememberToken(): string
+    {
+        return $this->rememberToken;
     }
 
     private function __construct(

@@ -2,17 +2,28 @@ Teamo\Project\Domain\Model\Project\Project:
   type: entity
   repositoryClass: Teamo\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectRepository
   table: projects
-
+  id:
+    projectId:
+      type: ProjectId
+      column: id
   fields:
     name:
       type: string
     archived:
       type: boolean
       column: is_archived
-
-  embedded:
-    projectId:
-      class: ProjectId
-      columnPrefix: false
-    ownerId:
-      class: Teamo\Project\Domain\Model\Team\TeamMemberId
+    owner:
+      type: TeamMemberId
+      column: owner_team_member_id
+  manyToMany:
+    teamMembers:
+      targetEntity: Teamo\Project\Domain\Model\Team\TeamMember
+      fetch: EAGER
+      joinTable:
+        name: projects_team_members
+        joinColumns:
+          project_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          team_member_id:
+            referencedColumnName: id

@@ -29,4 +29,9 @@ abstract class Id extends ValueObject
 
         $this->id = $id;
     }
+
+    public function __toString()
+    {
+        return $this->id;
+    }
 }

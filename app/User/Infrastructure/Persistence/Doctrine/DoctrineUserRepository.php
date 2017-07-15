@@ -22,7 +22,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
 
     public function ofId(UserId $userId): User
     {
-        $user = $this->find($userId->id());
+        $user = $this->find($userId);
 
         if (null === $user) {
             throw new \InvalidArgumentException('Invalid user id');

@@ -10,8 +10,10 @@ class ArchiveProjectHandler extends ProjectHandler
 {
     public function handle(ArchiveProjectCommand $command)
     {
-        $project = $this->projectRepository->ofId(new TeamMemberId($command->ownerId()), new ProjectId($command->projectId()));
+        $teamMemberId = new TeamMemberId($command->owner());
 
-        $project->archive();
+        $project = $this->projectRepository->ofId(new ProjectId($command->projectId()), $teamMemberId);
+
+        $project->archive($teamMemberId);
     }
 }

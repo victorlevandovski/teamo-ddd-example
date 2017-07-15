@@ -1,6 +1,0 @@
-Teamo\Project\Domain\Model\Team\TeamMemberId:
-  type: embeddable
-  id:
-    id:
-      type: string
-      length: 36

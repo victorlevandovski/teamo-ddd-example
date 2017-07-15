@@ -22,21 +22,33 @@ class InMemoryProjectRepository extends InMemoryRepository implements ProjectRep
         $this->items->forget($project->projectId()->id());
     }
 
-    public function ofId(TeamMemberId $teamMemberId, ProjectId $projectId): Project
+    public function ofId(ProjectId $projectId, TeamMemberId $teamMemberId): Project
     {
+        /** @var Project $project */
         $project = $this->findOrFail($projectId->id(), 'Invalid project id');
 
-        if (!$project->ownerId()->equals($teamMemberId)) {
-            throw new \InvalidArgumentException('This project does not belong to the team of provided team member');
+        $teamMemberFound = false;
+        foreach ($project->teamMembers() as $teamMember) {
+            if ($teamMember->teamMemberId()->equals($teamMemberId)) {
+                $teamMemberFound = true;
+            }
+        }
+        if (!$teamMemberFound) {
+            throw new \InvalidArgumentException('Requesting team member is not a member of requested project');
         }
 
         return $project;
     }
 
-    public function allOwnedBy(TeamMemberId $ownerId): Collection
+    public function allOfTeamMember(TeamMemberId $teamMemberId): Collection
     {
-        return $this->items->filter(function (Project $item) use ($ownerId) {
-            return $item->ownerId()->equals($ownerId);
+        return $this->items->filter(function (Project $item) use ($teamMemberId) {
+            foreach ($item->teamMembers() as $teamMember) {
+                if ($teamMember->teamMemberId()->equals($teamMemberId)) {
+                    return true;
+                }
+            }
+            return false;
         });
     }
 }

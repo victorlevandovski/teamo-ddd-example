@@ -1,0 +1,11 @@
+Teamo\Project\Domain\Model\Team\TeamMember:
+  type: entity
+  repositoryClass: Teamo\Project\Infrastructure\Persistence\Doctrine\DoctrineTeamMemberRepository
+  table: team_members
+  id:
+    teamMemberId:
+      type: TeamMemberId
+      column: id
+  fields:
+    name:
+      type: string

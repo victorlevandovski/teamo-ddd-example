@@ -15,6 +15,7 @@ use Teamo\Project\Domain\Model\Project\Project;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
+use Teamo\Project\Domain\Model\Team\TeamMember;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
 use Tests\TestCase;
 
@@ -32,15 +33,28 @@ class ProjectTest extends TestCase
 
     public function testProjectCanBeStarted()
     {
-        $ownerId = new TeamMemberId('owner');
+        $teamMemberId = new TeamMemberId('owner-1');
+        $teamMember = new TeamMember($teamMemberId, 'John Doe');
         $projectId = new ProjectId('project');
 
-        $project = Project::start($ownerId, $projectId, 'My Project');
+        $project = Project::start($teamMember, $projectId, 'My Project');
 
-        $this->assertSame($ownerId, $project->ownerId());
+        $this->assertSame($teamMemberId, $project->owner());
         $this->assertSame($projectId, $project->projectId());
         $this->assertEquals('My Project', $project->name());
         $this->assertFalse($project->isArchived());
+    }
+
+    public function testProjectCanAddTeamMember()
+    {
+        $teamMember = new TeamMember(new TeamMemberId('tm-1'), 'John Doe');
+        $this->project->addTeamMember($teamMember, $this->project->owner());
+
+        $this->assertSame($teamMember, $this->project->teamMembers()[0]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $anotherTeamMember = new TeamMember(new TeamMemberId('tm-1'), 'Another Team Member');
+        $this->project->addTeamMember($anotherTeamMember, new TeamMemberId('wrong-owner-id'));
     }
 
     public function testProjectCanStartDiscussion()
@@ -75,18 +89,32 @@ class ProjectTest extends TestCase
     {
         $this->assertEquals('My Project', $this->project->name());
 
-        $this->project->rename('Project');
+        $this->project->rename('Project', $this->project->owner());
         $this->assertEquals('Project', $this->project->name());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->project->rename('Project', new TeamMemberId('wrong-owner-id'));
     }
 
-    public function testProjectCanBeArchivedAndRestored()
+    public function testProjectCanBeArchived()
     {
         $this->assertFalse($this->project->isArchived());
 
-        $this->project->archive();
+        $this->project->archive($this->project->owner());
         $this->assertTrue($this->project->isArchived());
 
-        $this->project->restore();
+        $this->expectException(\InvalidArgumentException::class);
+        $this->project->archive(new TeamMemberId('wrong-owner-id'));
+    }
+
+    public function testProjectCanBeRestored()
+    {
         $this->assertFalse($this->project->isArchived());
+
+        $this->project->restore($this->project->owner());
+        $this->assertFalse($this->project->isArchived());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->project->restore(new TeamMemberId('wrong-owner-id'));
     }
 }

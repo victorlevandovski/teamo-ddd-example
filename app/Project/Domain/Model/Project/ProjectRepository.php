@@ -12,11 +12,11 @@ interface ProjectRepository
 
     public function remove(Project $project);
 
-    public function ofId(TeamMemberId $teamMemberId, ProjectId $projectId): Project;
+    public function ofId(ProjectId $projectId, TeamMemberId $teamMemberId): Project;
 
     /**
-     * @param TeamMemberId $ownerId
+     * @param TeamMemberId $teamMemberId
      * @return Collection|Project[]
      */
-    public function allOwnedBy(TeamMemberId $ownerId): Collection;
+    public function allOfTeamMember(TeamMemberId $teamMemberId): Collection;
 }

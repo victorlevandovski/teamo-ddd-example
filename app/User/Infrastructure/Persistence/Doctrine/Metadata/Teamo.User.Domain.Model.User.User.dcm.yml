@@ -2,7 +2,10 @@ Teamo\User\Domain\Model\User\User:
   type: entity
   repositoryClass: Teamo\User\Infrastructure\Persistence\Doctrine\DoctrineUserRepository
   table: users
-
+  id:
+    userId:
+      type: UserId
+      column: id
   fields:
     name:
       type: string
@@ -10,11 +13,10 @@ Teamo\User\Domain\Model\User\User:
       type: string
     password:
       type: string
-
+    rememberToken:
+      type: string
+      nullable: true
   embedded:
-    userId:
-      class: UserId
-      columnPrefix: false
     preferences:
       class: Preferences
     notifications:

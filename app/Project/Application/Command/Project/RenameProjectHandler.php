@@ -10,8 +10,10 @@ class RenameProjectHandler extends ProjectHandler
 {
     public function handle(RenameProjectCommand $command)
     {
-        $project = $this->projectRepository->ofId(new TeamMemberId($command->ownerId()), new ProjectId($command->projectId()));
+        $teamMemberId = new TeamMemberId($command->owner());
 
-        $project->rename($command->name());
+        $project = $this->projectRepository->ofId(new ProjectId($command->projectId()), $teamMemberId);
+
+        $project->rename($command->name(), $teamMemberId);
     }
 }

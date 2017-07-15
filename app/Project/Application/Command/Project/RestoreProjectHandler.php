@@ -10,8 +10,10 @@ class RestoreProjectHandler extends ProjectHandler
 {
     public function handle(RestoreProjectCommand $command)
     {
-        $project = $this->projectRepository->ofId(new TeamMemberId($command->ownerId()), new ProjectId($command->projectId()));
+        $teamMemberId = new TeamMemberId($command->owner());
 
-        $project->restore();
+        $project = $this->projectRepository->ofId(new ProjectId($command->projectId()), $teamMemberId);
+
+        $project->restore($teamMemberId);
     }
 }

@@ -12,23 +12,28 @@ use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Event\EventId;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoList;
 use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
+use Teamo\Project\Domain\Model\Team\TeamMember;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Project extends Entity
 {
-    private $ownerId;
+    private $owner;
     private $projectId;
     private $name;
     private $archived;
+    private $teamMembers;
 
-    public static function start(TeamMemberId $ownerId, ProjectId $projectId, string $name): self
+    public static function start(TeamMember $owningTeamMember, ProjectId $projectId, string $name): self
     {
-        return new self($ownerId, $projectId, $name, false);
+        $project = new self($owningTeamMember->teamMemberId(), $projectId, $name, false);
+        $project->setTeamMembers([$owningTeamMember]);
+
+        return $project;
     }
 
-    public function ownerId(): TeamMemberId
+    public function owner(): TeamMemberId
     {
-        return $this->ownerId;
+        return $this->owner;
     }
 
     public function projectId(): ProjectId
@@ -41,24 +46,53 @@ class Project extends Entity
         return $this->name;
     }
 
+    /** @return TeamMember[] */
+    public function teamMembers(): array
+    {
+        return $this->teamMembers;
+    }
+
     public function isArchived(): bool
     {
         return $this->archived;
     }
 
-    public function rename(string $name)
+    public function rename(string $name, TeamMemberId $owner)
     {
+        $this->assertIsOwner($owner);
         $this->setName($name);
     }
 
-    public function archive()
+    public function archive(TeamMemberId $owner)
     {
-        $this->archived = true;
+        $this->assertIsOwner($owner);
+        $this->setArchived(true);
     }
 
-    public function restore()
+    public function restore(TeamMemberId $owner)
     {
-        $this->archived = false;
+        $this->assertIsOwner($owner);
+        $this->setArchived(false);
+    }
+
+    public function addTeamMember(TeamMember $teamMember, TeamMemberId $owner)
+    {
+        $this->assertIsOwner($owner);
+
+        if (false !== array_search($teamMember, $this->teamMembers())) {
+            throw new \InvalidArgumentException('Provided team member is already a project member');
+        }
+
+        $this->teamMembers[] = $teamMember;
+    }
+
+    public function removeTeamMember(TeamMember $teamMember)
+    {
+        foreach ($this->teamMembers() as $key => $member) {
+            if ($member->teamMemberId()->equals($teamMember->teamMemberId())) {
+                unset($this->teamMembers[$key]);
+            }
+        }
     }
 
     public function startDiscussion(DiscussionId $discussionId, TeamMemberId $authorId, string $topic, string $content, Collection $attachments): Discussion
@@ -76,17 +110,18 @@ class Project extends Entity
         return new Event($this->projectId(), $eventId, $creatorId, $name, $details, $startsAt, $attachments);
     }
 
-    public function __construct(TeamMemberId $ownerId, ProjectId $projectId, string $name, bool $archived)
+    public function __construct(TeamMemberId $owner, ProjectId $projectId, string $name, bool $archived)
     {
-        $this->setOwnerId($ownerId);
+        $this->setOwner($owner);
         $this->setProjectId($projectId);
         $this->setName($name);
         $this->setArchived($archived);
+        $this->setTeamMembers([]);
     }
 
-    private function setOwnerId(TeamMemberId $ownerId)
+    private function setOwner(TeamMemberId $teamMemberId)
     {
-        $this->ownerId = $ownerId;
+        $this->owner = $teamMemberId;
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -104,5 +139,17 @@ class Project extends Entity
     private function setArchived(bool $archived)
     {
         $this->archived = $archived;
+    }
+
+    private function setTeamMembers($teamMembers)
+    {
+        $this->teamMembers = $teamMembers;
+    }
+
+    private function assertIsOwner(TeamMemberId $teamMemberId)
+    {
+        if (!$this->owner()->equals($teamMemberId)) {
+            throw new \InvalidArgumentException('Provided owner does not own this project');
+        }
     }
 }

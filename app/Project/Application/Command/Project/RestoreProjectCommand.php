@@ -5,18 +5,18 @@ namespace Teamo\Project\Application\Command\Project;
 
 class RestoreProjectCommand
 {
-    private $ownerId;
+    private $owner;
     private $projectId;
 
-    public function __construct(string $ownerId, string $projectId)
+    public function __construct(string $owner, string $projectId)
     {
-        $this->ownerId = $ownerId;
+        $this->owner = $owner;
         $this->projectId = $projectId;
     }
 
-    public function ownerId(): string
+    public function owner(): string
     {
-        return $this->ownerId;
+        return $this->owner;
     }
 
     public function projectId(): string
