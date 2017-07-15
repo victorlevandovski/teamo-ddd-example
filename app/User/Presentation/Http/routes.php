@@ -4,11 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'my', 'namespace' => 'User\Presentation\Http\Controller'], function() {
 
-    // For testing purposes only
-    Route::get('', function () {
-        return '<a href="/my/profile">Profile</a> | <a href="/logout">Logout</a>';
-    });
-
     // Profile
     Route::get('profile', ['as' => 'user.profile.profile', 'uses' => 'ProfileController@profile']);
     Route::patch('profile', ['as' => 'user.profile.update', 'uses' => 'ProfileController@update']);

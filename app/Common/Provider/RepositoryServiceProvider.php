@@ -6,6 +6,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Teamo\Project\Domain\Model\Project\Project;
+use Teamo\Project\Domain\Model\Project\ProjectRepository;
+use Teamo\Project\Domain\Model\Team\TeamMember;
+use Teamo\Project\Domain\Model\Team\TeamMemberRepository;
 use Teamo\User\Domain\Model\User\User;
 use Teamo\User\Domain\Model\User\UserRepository;
 
@@ -15,6 +19,8 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         return [
             UserRepository::class => User::class,
+            ProjectRepository::class => Project::class,
+            TeamMemberRepository::class => TeamMember::class,
         ];
     }
 

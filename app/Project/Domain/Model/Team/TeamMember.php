@@ -26,6 +26,11 @@ class TeamMember extends Entity
         return $this->name;
     }
 
+    public function rename($name)
+    {
+        $this->setName($name);
+    }
+
     private function setTeamMemberId(TeamMemberId $teamMemberId)
     {
         $this->teamMemberId = $teamMemberId;

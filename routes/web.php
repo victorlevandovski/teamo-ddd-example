@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 
 require base_path('app/User/Presentation/Http/routes.php');
+require base_path('app/Project/Presentation/Http/routes.php');

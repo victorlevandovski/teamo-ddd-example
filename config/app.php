@@ -178,6 +178,7 @@ return [
         Teamo\Common\Provider\RouteServiceProvider::class,
         Teamo\Common\Provider\CommandBusServiceProvider::class,
         Teamo\Common\Provider\RepositoryServiceProvider::class,
+        Teamo\Common\Provider\DomainEventPublisherServiceProvider::class,
         Teamo\Common\Provider\MacroServiceProvider::class,
 
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,

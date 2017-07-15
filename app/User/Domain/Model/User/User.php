@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Teamo\User\Domain\Model\User;
 
 use Teamo\Common\Domain\Entity;
+use Teamo\Common\Facade\DomainEventPublisher;
 
 class User extends Entity
 {
@@ -18,7 +19,7 @@ class User extends Entity
 
     public static function register(UserId $userId, string $email, string $password, string $name, string $timezone): self
     {
-        return new self(
+        $user = new self(
             $userId,
             $email,
             $password,
@@ -28,11 +29,17 @@ class User extends Entity
             Notifications::default(),
             Avatar::default()
         );
+
+        DomainEventPublisher::publish(new UserRegistered($userId, $name));
+
+        return $user;
     }
 
     public function rename(string $name)
     {
         $this->setName($name);
+
+        DomainEventPublisher::publish(new UserRenamed($this->userId(), $name));
     }
 
     public function changeEmail(string $email)
