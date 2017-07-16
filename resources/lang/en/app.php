@@ -43,6 +43,7 @@ return [
     'no_archived_projects' => 'No archived projects',
     'no_active_projects' => 'No active projects',
     'last_activity' => 'Last activity',
+    'created' => 'Created',
     'confirm_restore_project' => 'Restore this project?',
     'add_to_team_action' => 'Add to team',
 

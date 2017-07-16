@@ -5,7 +5,6 @@ namespace Teamo\User\Presentation\Http\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 use Teamo\Common\Application\CommandBus;
 use Teamo\Common\Http\Controller;
 use Teamo\User\Application\Command\User\ChangeUserEmailCommand;
@@ -26,14 +25,14 @@ class ProfileController extends Controller
     public function profile(UserRepository $userRepository)
     {
         return view('user.profile.profile', [
-            'user' => $userRepository->ofId(new UserId(Auth::id()))
+            'user' => $userRepository->ofId(new UserId($this->authenticatedId()))
         ]);
     }
 
     public function update(UpdateUserProfileRequest $request, CommandBus $commandBus)
     {
         $command = new UpdateUserProfileCommand(
-            (string) Auth::id(),
+            $this->authenticatedId(),
             $request->get('name'),
             $request->get('timezone'),
             $request->get('date_format'),
@@ -56,7 +55,7 @@ class ProfileController extends Controller
     public function updateEmail(ChangeUserEmailRequest $request, CommandBus $commandBus)
     {
         try {
-            $command = new ChangeUserEmailCommand((string) Auth::id(), $request->get('email'), $request->get('password'));
+            $command = new ChangeUserEmailCommand($this->authenticatedId(), $request->get('email'), $request->get('password'));
             $commandBus->handle($command);
         } catch (InvalidPasswordException $e) {
             return redirect()
@@ -76,7 +75,7 @@ class ProfileController extends Controller
     public function updatePassword(ChangeUserPasswordRequest $request, CommandBus $commandBus)
     {
         try {
-            $command = new ChangeUserPasswordCommand((string) Auth::id(), $request->get('new_password'), $request->get('password'));
+            $command = new ChangeUserPasswordCommand($this->authenticatedId(), $request->get('new_password'), $request->get('password'));
             $commandBus->handle($command);
         } catch (InvalidPasswordException $e) {
             return redirect()
@@ -91,14 +90,14 @@ class ProfileController extends Controller
     public function editNotifications(UserRepository $userRepository)
     {
         return view('user.profile.notifications', [
-            'user' => $userRepository->ofId(new UserId(Auth::id()))
+            'user' => $userRepository->ofId(new UserId($this->authenticatedId()))
         ]);
     }
 
     public function updateNotifications(Request $request, CommandBus $commandBus)
     {
         $command = new UpdateUserNotificationSettingsCommand(
-            (string) Auth::id(),
+            $this->authenticatedId(),
             (bool) $request->get('notify_new_discussion'),
             (bool) $request->get('notify_new_discussion_comment'),
             (bool) $request->get('notify_new_todo'),
@@ -115,17 +114,17 @@ class ProfileController extends Controller
     public function editAvatar(UserRepository $userRepository)
     {
         return view('user.profile.avatar', [
-            'user' => $userRepository->ofId(new UserId(Auth::id()))
+            'user' => $userRepository->ofId(new UserId($this->authenticatedId()))
         ]);
     }
 
     public function updateAvatar(Request $request, CommandBus $commandBus)
     {
         if ($request->has('datauri')) {
-            $paths = save_avatar($request->get('datauri'), public_path('avatars'), Auth::id());
+            $paths = save_avatar($request->get('datauri'), public_path('avatars'), $this->authenticatedId());
 
             if ($paths) {
-                $command = new UpdateUserAvatarCommand((string) Auth::id(), $paths[48], $paths[96]);
+                $command = new UpdateUserAvatarCommand($this->authenticatedId(), $paths[48], $paths[96]);
                 $commandBus->handle($command);
 
                 return redirect(route('user.profile.profile'))->with('success', trans('app.flash_avatar_saved'));
@@ -137,10 +136,10 @@ class ProfileController extends Controller
 
     public function deleteAvatar(CommandBus $commandBus)
     {
-        $command = new RemoveUserAvatarCommand((string) Auth::id());
+        $command = new RemoveUserAvatarCommand($this->authenticatedId());
         $commandBus->handle($command);
 
-        remove_avatar(Auth::id());
+        remove_avatar($this->authenticatedId());
 
         return redirect(route('user.profile.profile'))->with('success', trans('app.flash_avatar_removed'));
     }

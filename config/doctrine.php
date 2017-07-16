@@ -112,9 +112,10 @@ return [
     */
     'custom_types'               => [
         'json' => LaravelDoctrine\ORM\Types\Json::class,
-        'UserId' => \Teamo\User\Infrastructure\Persistence\Doctrine\Type\DoctrineUserId::class,
-        'ProjectId' => \Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineProjectId::class,
-        'TeamMemberId' => \Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineTeamMemberId::class,
+        'UserId' => Teamo\User\Infrastructure\Persistence\Doctrine\Type\DoctrineUserId::class,
+        'ProjectId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineProjectId::class,
+        'TeamMemberId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineTeamMemberId::class,
+        'DateTimeImmutable' => Teamo\Common\Infrastructure\Persistence\DoctrineDateTimeImmutable::class,
     ],
     /*
     |--------------------------------------------------------------------------

@@ -33,9 +33,9 @@ return [
     'terms' => 'Terms of Service',
     'support' => 'Support',
 
-    'todo_description' => '<li>Организуйте списки задач, добавляйте и&nbsp;выполняйте задачи</li><li>Назначайте задачам исполнителей и&nbsp;дедлайны</li><li>Просматривайте задачи из&nbsp;всех списков на&nbsp;одной странице</li>',
-    'discussion_description' => '<li>Обсуждайте проект, задачи, события, устраивайте опросы</li><li>Прикрепляйте к&nbsp;дискуссиям документы, картинки и&nbsp;другие файлы</li><li>Подписывайтесь на&nbsp;новые комментарии в&nbsp;выбранных дискуссиях</li>',
-    'event_description' => '<li>Рассказывайте команде о&nbsp;предстоящих событиях</li><li>Держите в&nbsp;поле зрения важные даты, например, продление домена</li><li>Получайте быстрый доступ к&nbsp;задачам с&nbsp;дедлайнами</li>',
+    'todo_description' => '',
+    'discussion_description' => '',
+    'event_description' => '',
 
     'support_form_email' => 'Email for reply (optional):',
     'support_form_question' => 'Question, suggestion, etc.:',

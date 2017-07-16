@@ -18,5 +18,5 @@ interface ProjectRepository
      * @param TeamMemberId $teamMemberId
      * @return Collection|Project[]
      */
-    public function allOfTeamMember(TeamMemberId $teamMemberId): Collection;
+    public function all(TeamMemberId $teamMemberId): Collection;
 }

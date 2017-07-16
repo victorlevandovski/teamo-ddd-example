@@ -40,7 +40,7 @@ class InMemoryProjectRepository extends InMemoryRepository implements ProjectRep
         return $project;
     }
 
-    public function allOfTeamMember(TeamMemberId $teamMemberId): Collection
+    public function all(TeamMemberId $teamMemberId): Collection
     {
         return $this->items->filter(function (Project $item) use ($teamMemberId) {
             foreach ($item->teamMembers() as $teamMember) {

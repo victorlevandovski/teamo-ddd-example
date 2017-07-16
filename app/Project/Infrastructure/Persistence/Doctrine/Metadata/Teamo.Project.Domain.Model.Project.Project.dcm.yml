@@ -15,6 +15,12 @@ Teamo\Project\Domain\Model\Project\Project:
     owner:
       type: TeamMemberId
       column: owner_team_member_id
+    createdOn:
+      type: DateTimeImmutable
+      nullable: false
+    updatedOn:
+      type: DateTimeImmutable
+      nullable: false
   manyToMany:
     teamMembers:
       targetEntity: Teamo\Project\Domain\Model\Team\TeamMember

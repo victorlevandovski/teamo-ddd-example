@@ -82,7 +82,7 @@ class DoctrineProjectRepositoryTest extends TestCase
         $this->projectRepository->add($project3);
         $this->em->flush();
 
-        $ownedProjects = $this->projectRepository->allOfTeamMember($teamMemberId1);
+        $ownedProjects = $this->projectRepository->all($teamMemberId1);
         $this->assertCount(2, $ownedProjects);
 
         $this->expectException(\InvalidArgumentException::class);

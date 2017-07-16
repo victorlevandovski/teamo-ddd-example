@@ -25,7 +25,7 @@
             "Teamo\\": "app/"
         },
         "files": [
-            "app/Common/Helpers/helpers.php"
+            "app/Common/Helper/helpers.php"
         ]
     },
     "autoload-dev": {

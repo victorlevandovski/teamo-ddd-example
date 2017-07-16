@@ -43,6 +43,7 @@ return [
     'no_archived_projects' => 'Архив пуст',
     'no_active_projects' => 'Нет активных проектов',
     'last_activity' => 'Последняя активность',
+    'created' => 'Создан',
     'confirm_restore_project' => 'Вы действительно хотите восстановить этот проект?',
     'add_to_team_action' => 'Добавить пользователей в команду проекта',
 

@@ -5,6 +5,36 @@
 //    return ['en', 'ru'];
 //}
 
+function date_ui(DateTimeImmutable $date)
+{
+    $time = $date->getTimestamp();
+    $difference = time() - $time;
+
+    if ($difference < 60) {
+        return trans('date.moment_ago');
+    } elseif ($difference < 120) {
+        return trans('date.minute_ago');
+    } elseif ($difference < 3600) {
+        $t = floor($difference / 60);
+        return  $t.' '.pluralize_ui($t, 'date.minute').' '.trans('date.ago');
+    } elseif ($difference < 7200) {
+        return trans('date.hour_ago');
+    } elseif ($difference < 86400) {
+        $t = floor($difference / 3600);
+        return  $t.' '.pluralize_ui($t, 'date.hour').' '.trans('date.ago');
+    } elseif ($difference < 172800) {
+        return trans('date.day_ago');
+    } elseif ($difference < 2592000) {
+        $t = floor($difference / 86400);
+        return  $t.' '.pluralize_ui($t, 'date.day').' '.trans('date.ago');
+    } elseif ($difference < 5184000) {
+        return trans('date.month_ago');
+    } else {
+        $t = floor($difference / 2592000);
+        return  $t.' '.pluralize_ui($t, 'date.month').' '.trans('date.ago');
+    }
+}
+
 function pluralize_ui($count, $transKey)
 {
     $count = intval($count);
@@ -403,4 +433,9 @@ function strip_content($content)
     }
 
     return $content;
+}
+
+function is_authenticated(\Teamo\Common\Domain\Id $id): bool
+{
+    return $id->id() == (string) \Illuminate\Support\Facades\Auth::id();
 }

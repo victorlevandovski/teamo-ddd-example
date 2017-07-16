@@ -16,14 +16,20 @@
     {!! Form::flash() !!}
 
     <section style="margin: 0 auto; width: 650px;">
+        <?php $projects = $projects->filter(function ($project) { return !$project->isArchived(); }); ?>
         @if (!$projects->isEmpty())
             @foreach ($projects as $project)
-                <div class="flying projects-list-item mb20" onclick="document.location='{{ route('project.show', $project->id) }}'">
+                <div class="flying projects-list-item mb20" onclick="document.location='{{ route('project.project.show', $project->projectId()->id()) }}'">
                     <div class="fs20" style="margin-top: -3px; font-weight: 500;">
-                        {!! Html::linkRoute('project.project.show', $project->name, $project) !!}
+                        {!! Html::linkRoute('project.project.show', $project->name(), $project->projectId()->id()) !!}
                     </div>
                     <div class="projects-list-progress">
-                        {{ trans('app.last_activity') }} {{ $project->updated_at_ui }}
+                        @if ($project->updatedOn() != $project->createdOn())
+                            {{ trans('app.last_activity') }}
+                        @else
+                            {{ trans('app.created') }}
+                        @endif
+                        {{ date_ui($project->updatedOn()) }}
                     </div>
                 </div>
             @endforeach

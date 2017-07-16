@@ -23,6 +23,12 @@ class CommandBusServiceProvider extends ServiceProvider
             // TeamMember
             \Teamo\Project\Application\Command\Team\RegisterTeamMemberCommand::class => \Teamo\Project\Application\Command\Team\RegisterTeamMemberHandler::class,
             \Teamo\Project\Application\Command\Team\RenameTeamMemberCommand::class => \Teamo\Project\Application\Command\Team\RenameTeamMemberHandler::class,
+
+            // Project
+            \Teamo\Project\Application\Command\Project\StartNewProjectCommand::class => \Teamo\Project\Application\Command\Project\StartNewProjectHandler::class,
+            \Teamo\Project\Application\Command\Project\RenameProjectCommand::class => \Teamo\Project\Application\Command\Project\RenameProjectHandler::class,
+            \Teamo\Project\Application\Command\Project\ArchiveProjectCommand::class => \Teamo\Project\Application\Command\Project\ArchiveProjectHandler::class,
+            \Teamo\Project\Application\Command\Project\RestoreProjectCommand::class => \Teamo\Project\Application\Command\Project\RestoreProjectHandler::class,
         ];
     }
 

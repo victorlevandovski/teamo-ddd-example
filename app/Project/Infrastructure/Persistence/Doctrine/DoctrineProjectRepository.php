@@ -48,12 +48,11 @@ class DoctrineProjectRepository extends DoctrineRepository implements ProjectRep
         return $project;
     }
 
-    public function allOfTeamMember(TeamMemberId $teamMemberId): Collection
+    public function all(TeamMemberId $teamMemberId): Collection
     {
         $projects = $this->createQueryBuilder('p')
             ->join('p.teamMembers', 'tm')
             ->where('tm.teamMemberId = :teamMemberId')
-            ->setParameter(0, $teamMemberId->id())
             ->getQuery()
             ->execute(['teamMemberId' => $teamMemberId]);
 

@@ -5,7 +5,9 @@ namespace Teamo\Project\Domain\Model\Project;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
+use Teamo\Common\Domain\UpdatedOn;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
 use Teamo\Project\Domain\Model\Project\Event\Event;
@@ -17,6 +19,8 @@ use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Project extends Entity
 {
+    use CreatedOn, UpdatedOn;
+
     private $owner;
     private $projectId;
     private $name;
@@ -97,16 +101,22 @@ class Project extends Entity
 
     public function startDiscussion(DiscussionId $discussionId, TeamMemberId $authorId, string $topic, string $content, Collection $attachments): Discussion
     {
+        $this->resetUpdatedOn();
+
         return new Discussion($this->projectId(), $discussionId, $authorId, $topic, $content, $attachments);
     }
 
     public function createTodoList(TodoListId $todoListId, TeamMemberId $creatorId, string $name): TodoList
     {
+        $this->resetUpdatedOn();
+
         return new TodoList($this->projectId(), $todoListId, $creatorId, $name);
     }
 
     public function scheduleEvent(EventId $eventId, TeamMemberId $creatorId, string $name, string $details, Carbon $startsAt, Collection $attachments): Event
     {
+        $this->resetUpdatedOn();
+
         return new Event($this->projectId(), $eventId, $creatorId, $name, $details, $startsAt, $attachments);
     }
 
@@ -117,6 +127,8 @@ class Project extends Entity
         $this->setName($name);
         $this->setArchived($archived);
         $this->setTeamMembers([]);
+        $this->resetCreatedOn();
+        $this->resetUpdatedOn();
     }
 
     private function setOwner(TeamMemberId $teamMemberId)
