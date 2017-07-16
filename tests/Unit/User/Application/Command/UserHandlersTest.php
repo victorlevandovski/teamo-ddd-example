@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Unit\User\Application\Command;
 
 use Illuminate\Contracts\Auth\Guard;
+use Teamo\Common\Facade\DomainEventPublisher;
 use Teamo\User\Application\Command\User\ChangeUserEmailCommand;
 use Teamo\User\Application\Command\User\ChangeUserEmailHandler;
 use Teamo\User\Application\Command\User\ChangeUserPasswordCommand;
@@ -41,6 +42,7 @@ class UserHandlersTest extends TestCase
 
         $this->userRepository = new InMemoryUserRepository();
 
+        DomainEventPublisher::shouldReceive('publish');
         $this->guard = \Mockery::mock(Guard::class);
         $this->guard->shouldReceive('validate')->andReturn(true);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Unit\User\Infrastructure\Persistence\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Teamo\Common\Facade\DomainEventPublisher;
 use Teamo\User\Domain\Model\User\User;
 use Teamo\User\Domain\Model\User\UserId;
 use Teamo\User\Domain\Model\User\UserRepository;
@@ -20,6 +21,8 @@ class DoctrineUserRepositoryTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+
+        DomainEventPublisher::shouldReceive('publish');
 
         $this->em = app(EntityManagerInterface::class);
         $this->repository = $this->em->getRepository(User::class);

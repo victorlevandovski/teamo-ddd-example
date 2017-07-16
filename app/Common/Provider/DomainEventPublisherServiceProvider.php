@@ -4,8 +4,8 @@ namespace Teamo\Common\Provider;
 
 use Illuminate\Support\ServiceProvider;
 use Teamo\Common\Domain\DomainEventPublisher;
-use Teamo\Project\Application\Subscriber\UserRegisteredSubscriber;
-use Teamo\Project\Application\Subscriber\UserRenamedSubscriber;
+use Teamo\Project\Infrastructure\Messaging\UserRegisteredListener;
+use Teamo\Project\Infrastructure\Messaging\UserRenamedListener;
 
 class DomainEventPublisherServiceProvider extends ServiceProvider
 {
@@ -19,9 +19,9 @@ class DomainEventPublisherServiceProvider extends ServiceProvider
         /** @var DomainEventPublisher $domainEventPublisher */
         $domainEventPublisher = $this->app->make('domain_event_publisher');
 
-        // For now we directly connect two bounded contexts, later communication will be handled with RabbitMQ
-        $domainEventPublisher->subscribe($this->app->make(UserRegisteredSubscriber::class));
-        $domainEventPublisher->subscribe($this->app->make(UserRenamedSubscriber::class));
+        // For now we directly connect two bounded contexts, later communication will be handled by RabbitMQ
+        $domainEventPublisher->subscribe($this->app->make(UserRegisteredListener::class));
+        $domainEventPublisher->subscribe($this->app->make(UserRenamedListener::class));
     }
 
     /**
