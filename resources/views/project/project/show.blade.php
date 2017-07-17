@@ -11,7 +11,7 @@
     <div class="navigation">
         <div class="pull-right">
             <div class="project-menu">
-                {!! Html::linkRoute('project.project.team', trans('app.team'), [$project->projectId()->id()]) !!}
+                {!! Html::linkRoute('project.team.index', trans('app.team'), [$project->projectId()->id()]) !!}
                 @if (is_authenticated($project->owner()))
                     {!! Html::linkRoute('project.project.edit', trans('app.project_settings'), [$project->projectId()->id()]) !!}
                 @endif

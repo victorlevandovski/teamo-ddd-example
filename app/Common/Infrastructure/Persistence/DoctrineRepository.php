@@ -34,7 +34,9 @@ abstract class DoctrineRepository extends EntityRepository
     {
         $casting = function() use ($properties) {
             foreach ($properties as $property) {
-                $this->$property = $this->$property->toArray();
+                if (!is_array($this->$property)) {
+                    $this->$property = $this->$property->toArray();
+                }
             }
         };
 

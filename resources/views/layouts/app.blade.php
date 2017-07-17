@@ -56,9 +56,8 @@
     <div class="container-header">
         <h1>
             @section('header')
-            @if (isset($selectedProject))
-                {{ Html::linkRoute('project.show', $selectedProject->name, $selectedProject, ['style' => 'color:inherit;font-weight: 500;']) }}
-                @if ($selectedProject->is_archived) [ARCHIVED] @endif
+            @if (isset($selectedProjectName))
+                {{ Html::linkRoute('project.project.show', $selectedProjectName, $selectedProjectId, ['style' => 'color:inherit;font-weight: 500;']) }}
             @endif
             @show
         </h1>

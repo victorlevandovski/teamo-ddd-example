@@ -7,11 +7,13 @@ use Ramsey\Uuid\Uuid;
 use Teamo\Common\Application\CommandBus;
 use Teamo\Common\Http\Controller;
 use Teamo\Project\Application\Command\Project\ArchiveProjectCommand;
+use Teamo\Project\Application\Command\Project\RenameProjectCommand;
 use Teamo\Project\Application\Command\Project\RestoreProjectCommand;
 use Teamo\Project\Application\Command\Project\StartNewProjectCommand;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Project\ProjectRepository;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
+use Teamo\Project\Presentation\Http\Request\RenameProjectRequest;
 use Teamo\Project\Presentation\Http\Request\StartProjectRequest;
 
 class ProjectController extends Controller
@@ -57,6 +59,14 @@ class ProjectController extends Controller
         return view('project.project.edit', [
             'project' => $projectRepository->ofId(new ProjectId($projectId), new TeamMemberId($this->authenticatedId())),
         ]);
+    }
+
+    public function update(string $projectId, RenameProjectRequest $request, CommandBus $commandBus)
+    {
+        $command = new RenameProjectCommand($this->authenticatedId(), $projectId, $request->get('name'));
+        $commandBus->handle($command);
+
+        return redirect(route('project.project.show', $projectId));
     }
 
     public function archiveProject(string $projectId, CommandBus $commandBus)

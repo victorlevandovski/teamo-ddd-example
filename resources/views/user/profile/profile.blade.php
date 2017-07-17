@@ -18,12 +18,12 @@
         <div class="row">
 
             <div class="col-md-5">
-                {!! Form::open(['route' => ['user.profile.update', $user->userId()->id()], 'method' => 'patch']) !!}
+                {!! Form::model(['name' => $user->name()], ['route' => ['user.profile.update', $user->userId()->id()], 'method' => 'patch']) !!}
 
                 <div class="form-group">
                     {!! Form::label('name', trans('profile.name')) !!}
                     <div>
-                        {!! Form::text('name', $user->name(), ['class' => 'form-control']) !!}
+                        {!! Form::text('name', null, ['class' => 'form-control']) !!}
                     </div>
                     {!! Form::error('name') !!}
                 </div>

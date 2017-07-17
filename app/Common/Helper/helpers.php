@@ -174,6 +174,17 @@ function avatar($path)
     return $path;
 }
 
+function avatar_of_id(string $id, int $size)
+{
+    $avatarsPath = '/avatars/' . $size . '/' . thumb_dir($id) . '/' . $id . '.jpg';
+
+    if (file_exists(public_path($avatarsPath))) {
+        return $avatarsPath . '?' . filemtime(public_path($avatarsPath));
+    }
+
+    return '/avatars/avatar' . $size . '.jpg';
+}
+
 
 function utc2local($timestamp, $format, $timezone)
 {
