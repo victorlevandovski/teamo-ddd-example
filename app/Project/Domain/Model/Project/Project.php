@@ -99,11 +99,11 @@ class Project extends Entity
         }
     }
 
-    public function startDiscussion(DiscussionId $discussionId, TeamMemberId $authorId, string $topic, string $content, Collection $attachments): Discussion
+    public function startDiscussion(DiscussionId $discussionId, TeamMemberId $author, string $topic, string $content, Collection $attachments): Discussion
     {
         $this->resetUpdatedOn();
 
-        return new Discussion($this->projectId(), $discussionId, $authorId, $topic, $content, $attachments);
+        return new Discussion($this->projectId(), $discussionId, $author, $topic, $content, $attachments);
     }
 
     public function createTodoList(TodoListId $todoListId, TeamMemberId $creatorId, string $name): TodoList

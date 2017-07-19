@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Teamo\Project\Domain\Model\Project\Discussion;
 
 use Illuminate\Support\Collection;
+use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
@@ -12,24 +13,26 @@ use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Discussion extends Entity
 {
+    use CreatedOn;
     use Attachments;
 
     private $projectId;
     private $discussionId;
-    private $authorId;
+    private $author;
     private $topic;
     private $content;
     private $archived;
 
-    public function __construct(ProjectId $projectId, DiscussionId $discussionId, TeamMemberId $authorId, string $topic, string $content, Collection $attachments)
+    public function __construct(ProjectId $projectId, DiscussionId $discussionId, TeamMemberId $author, string $topic, string $content, Collection $attachments)
     {
         $this->setProjectId($projectId);
         $this->setDiscussionId($discussionId);
-        $this->setAuthorId($authorId);
+        $this->setAuthor($author);
         $this->setTopic($topic);
         $this->setContent($content);
         $this->setArchived(false);
         $this->setAttachments($attachments);
+        $this->resetCreatedOn();
     }
 
     public function projectId(): ProjectId
@@ -42,9 +45,9 @@ class Discussion extends Entity
         return $this->discussionId;
     }
 
-    public function authorId(): TeamMemberId
+    public function author(): TeamMemberId
     {
-        return $this->authorId;
+        return $this->author;
     }
 
     public function topic(): string
@@ -78,9 +81,9 @@ class Discussion extends Entity
         $this->archived = false;
     }
 
-    public function comment(CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
+    public function comment(CommentId $commentId, TeamMemberId $author, string $content, Collection $attachments)
     {
-        return new DiscussionComment($this->discussionId(), $commentId, $authorId, $content, $attachments);
+        return new DiscussionComment($this->discussionId(), $commentId, $author, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -93,9 +96,9 @@ class Discussion extends Entity
         $this->discussionId = $discussionId;
     }
 
-    private function setAuthorId(TeamMemberId $authorId)
+    private function setAuthor(TeamMemberId $author)
     {
-        $this->authorId = $authorId;
+        $this->author = $author;
     }
 
     private function setTopic(string $topic)

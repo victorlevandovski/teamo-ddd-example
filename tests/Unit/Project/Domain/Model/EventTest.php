@@ -40,7 +40,7 @@ class EventTest extends TestCase
         $projectId = new ProjectId('p-1');
         $eventId = new EventId('e-1');
         $creatorId = new TeamMemberId('c-1');
-        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'Attachment.txt'));
+        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'Attachment.txt')]);
         $startsAt = new Carbon();
 
         $event = new Event($projectId, $eventId, $creatorId, 'Name', 'Details', $startsAt, $attachments);
@@ -51,14 +51,14 @@ class EventTest extends TestCase
         $this->assertEquals('Name', $event->name());
         $this->assertEquals('Details', $event->details());
         $this->assertSame($startsAt, $event->startsAt());
-        $this->assertSame($attachments, $event->attachments());
+        $this->assertFalse($event->attachments()->isEmpty());
     }
 
     public function testEventCanBeCommented()
     {
-        $authorId = new TeamMemberId('id-1');
+        $author = new TeamMemberId('id-1');
 
-        $comment = $this->event->comment(new CommentId('1'), $authorId, 'Comment content', new Collection());
+        $comment = $this->event->comment(new CommentId('1'), $author, 'Comment content', new Collection());
 
         $this->assertInstanceOf(EventComment::class, $comment);
     }

@@ -59,10 +59,10 @@ class ProjectTest extends TestCase
 
     public function testProjectCanStartDiscussion()
     {
-        $authorId = new TeamMemberId('id-1');
-        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'attachment.txt'));
+        $author = new TeamMemberId('id-1');
+        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'attachment.txt')]);
 
-        $discussion = $this->project->startDiscussion(new DiscussionId('1'), $authorId, 'New Discussion', 'Discussion content', $attachments);
+        $discussion = $this->project->startDiscussion(new DiscussionId('1'), $author, 'New Discussion', 'Discussion content', $attachments);
 
         $this->assertInstanceOf(Discussion::class, $discussion);
     }
@@ -78,7 +78,7 @@ class ProjectTest extends TestCase
     public function testProjectCanScheduleEvent()
     {
         $creatorId = new TeamMemberId('id-1');
-        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'attachment.txt'));
+        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'attachment.txt')]);
 
         $event = $this->project->scheduleEvent(new EventId('1'), $creatorId, 'My Event', 'Event details', new Carbon(), $attachments);
 

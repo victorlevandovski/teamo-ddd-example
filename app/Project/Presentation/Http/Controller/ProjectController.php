@@ -36,6 +36,7 @@ class ProjectController extends Controller
     {
         return view('project.project.show', [
             'project' => $projectRepository->ofId(new ProjectId($projectId), new TeamMemberId($this->authenticatedId())),
+            'discussions' => collect([]),
         ]);
     }
 

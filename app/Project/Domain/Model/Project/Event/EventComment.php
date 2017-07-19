@@ -12,9 +12,9 @@ class EventComment extends Comment
 {
     private $eventId;
 
-    public function __construct(EventId $eventId, CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
+    public function __construct(EventId $eventId, CommentId $commentId, TeamMemberId $author, string $content, Collection $attachments)
     {
-        parent::__construct($commentId, $authorId, $content, $attachments);
+        parent::__construct($commentId, $author, $content, $attachments);
 
         $this->setEventId($eventId);
     }

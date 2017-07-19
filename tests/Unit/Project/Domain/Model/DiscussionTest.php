@@ -37,24 +37,24 @@ class DiscussionTest extends TestCase
     {
         $projectId = new ProjectId('project-1');
         $discussionId = new DiscussionId('discussion-1');
-        $authorId = new TeamMemberId('author-1');
-        $attachments = new Collection(new Attachment(new AttachmentId('attachment-1'), 'Attachment.txt'));
+        $author = new TeamMemberId('author-1');
+        $attachments = new Collection([new Attachment(new AttachmentId('attachment-1'), 'Attachment.txt')]);
 
-        $discussion = new Discussion($projectId, $discussionId, $authorId, 'Topic', 'Content', $attachments);
+        $discussion = new Discussion($projectId, $discussionId, $author, 'Topic', 'Content', $attachments);
 
         $this->assertSame($projectId, $discussion->projectId());
         $this->assertSame($discussionId, $discussion->discussionId());
-        $this->assertSame($authorId, $discussion->authorId());
+        $this->assertSame($author, $discussion->author());
         $this->assertEquals('Topic', $discussion->topic());
         $this->assertEquals('Content', $discussion->content());
-        $this->assertSame($attachments, $discussion->attachments());
+        $this->assertFalse($discussion->attachments()->isEmpty());
     }
 
     public function testDiscussionCanBeCommented()
     {
-        $authorId = new TeamMemberId('id-1', 'John Doe');
+        $author = new TeamMemberId('id-1', 'John Doe');
 
-        $comment = $this->discussion->comment(new CommentId('1'), $authorId, 'Comment content', new Collection());
+        $comment = $this->discussion->comment(new CommentId('1'), $author, 'Comment content', new Collection());
 
         $this->assertInstanceOf(DiscussionComment::class, $comment);
     }

@@ -12,9 +12,9 @@ class TodoComment extends Comment
 {
     private $todoId;
 
-    public function __construct(TodoId $todoId, CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
+    public function __construct(TodoId $todoId, CommentId $commentId, TeamMemberId $author, string $content, Collection $attachments)
     {
-        parent::__construct($commentId, $authorId, $content, $attachments);
+        parent::__construct($commentId, $author, $content, $attachments);
 
         $this->setTodoId($todoId);
     }

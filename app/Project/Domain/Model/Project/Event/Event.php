@@ -86,9 +86,9 @@ class Event extends Entity
         $this->archived = false;
     }
 
-    public function comment(CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
+    public function comment(CommentId $commentId, TeamMemberId $author, string $content, Collection $attachments)
     {
-        return new EventComment($this->eventId(), $commentId, $authorId, $content, $attachments);
+        return new EventComment($this->eventId(), $commentId, $author, $content, $attachments);
     }
 
     private function setProjectId(ProjectId $projectId)

@@ -14,13 +14,13 @@ abstract class Comment extends Entity
     use Attachments;
 
     protected $commentId;
-    protected $authorId;
+    protected $author;
     protected $content;
 
-    public function __construct(CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
+    public function __construct(CommentId $commentId, TeamMemberId $author, string $content, Collection $attachments)
     {
         $this->setCommentId($commentId);
-        $this->setAuthorId($authorId);
+        $this->setAuthor($author);
         $this->setContentAndAttachments($content, $attachments);
     }
 
@@ -31,7 +31,7 @@ abstract class Comment extends Entity
 
     public function author(): TeamMemberId
     {
-        return $this->authorId;
+        return $this->author;
     }
 
     public function content(): string
@@ -39,8 +39,12 @@ abstract class Comment extends Entity
         return $this->content;
     }
 
-    public function update(string $content)
+    public function update(string $content, TeamMemberId $author)
     {
+        if (!$this->author()->equals($author)) {
+            throw new \InvalidArgumentException('Provided team member is not an author of this comment');
+        }
+
         $this->setContent($content);
     }
 
@@ -49,9 +53,9 @@ abstract class Comment extends Entity
         $this->commentId = $commentId;
     }
 
-    public function setAuthorId(TeamMemberId $authorId)
+    public function setAuthor(TeamMemberId $author)
     {
-        $this->authorId = $authorId;
+        $this->author = $author;
     }
 
     protected function setContent(string $content)

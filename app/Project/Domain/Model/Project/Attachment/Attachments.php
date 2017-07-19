@@ -12,9 +12,16 @@ trait Attachments
      */
     protected $attachments;
 
+    /**
+     * @param Collection|Attachment[] $attachments
+     */
     protected function setAttachments(Collection $attachments)
     {
-        $this->attachments = $attachments;
+        $this->attachments = new Collection();
+
+        foreach ($attachments as $attachment) {
+            $this->attachments->put($attachment->attachmentId()->id(), $attachment);
+        }
     }
 
     /**

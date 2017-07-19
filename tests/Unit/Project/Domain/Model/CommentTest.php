@@ -46,8 +46,17 @@ class CommentTest extends TestCase
 
     public function testCommentCanHaveEmptyContentIfAttachmentPresent()
     {
-        $attachments = new Collection(new Attachment(new AttachmentId('1'), 'Image.png'));
+        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'Image.png')]);
 
         new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new TeamMemberId('id-1'), '', $attachments);
+    }
+
+    public function testCommentCanBeUpdated()
+    {
+        $this->comment->update('New content', new TeamMemberId('id-1'));
+        $this->assertEquals('New content', $this->comment->content());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->comment->update('Another content', new TeamMemberId('invalid-id-1'));
     }
 }

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => 'attachment',
 
     /*
     |--------------------------------------------------------------------------
@@ -43,9 +43,9 @@ return [
 
     'disks' => [
 
-        'local' => [
+        'attachment' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('attachments'),
         ],
 
         'public' => [

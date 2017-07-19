@@ -12,9 +12,9 @@ class DiscussionComment extends Comment
 {
     private $discussionId;
 
-    public function __construct(DiscussionId $discussionId, CommentId $commentId, TeamMemberId $authorId, string $content, Collection $attachments)
+    public function __construct(DiscussionId $discussionId, CommentId $commentId, TeamMemberId $author, string $content, Collection $attachments)
     {
-        parent::__construct($commentId, $authorId, $content, $attachments);
+        parent::__construct($commentId, $author, $content, $attachments);
 
         $this->setDiscussionId($discussionId);
     }

@@ -123,6 +123,11 @@ function save_thumb($file, $directory, $id, $width, $height, $saveAs = null)
     }
 }
 
+function thumb_url($id)
+{
+    return thumb_dir($id) . '/' . $id . '.jpg';
+}
+
 function thumb_dir($id)
 {
     return substr($id, 0, 2) . '/' . substr($id, 2, 2);
