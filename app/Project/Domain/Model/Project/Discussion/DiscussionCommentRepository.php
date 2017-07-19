@@ -16,7 +16,7 @@ interface DiscussionCommentRepository
 
     /**
      * @param DiscussionId $discussionId
-     * @return Collection|DiscussionComment
+     * @return Collection|DiscussionComment[]
      */
     public function all(DiscussionId $discussionId): Collection;
 }

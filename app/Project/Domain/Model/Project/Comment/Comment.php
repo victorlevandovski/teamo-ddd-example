@@ -4,13 +4,16 @@ declare(strict_types=1);
 namespace Teamo\Project\Domain\Model\Project\Comment;
 
 use Illuminate\Support\Collection;
+use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
+use Teamo\Common\Domain\UpdatedOn;
 use Teamo\Project\Domain\Model\Collaborator\Author;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 abstract class Comment extends Entity
 {
+    use CreatedOn, UpdatedOn;
     use Attachments;
 
     protected $commentId;
@@ -22,6 +25,8 @@ abstract class Comment extends Entity
         $this->setCommentId($commentId);
         $this->setAuthor($author);
         $this->setContentAndAttachments($content, $attachments);
+        $this->resetCreatedOn();
+        $this->resetUpdatedOn();
     }
 
     public function commentId(): CommentId
@@ -46,6 +51,7 @@ abstract class Comment extends Entity
         }
 
         $this->setContent($content);
+        $this->resetUpdatedOn();
     }
 
     protected function setCommentId(CommentId $commentId)

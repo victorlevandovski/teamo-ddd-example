@@ -1,0 +1,26 @@
+Teamo\Project\Domain\Model\Project\Discussion\Discussion:
+  type: entity
+  repositoryClass: Teamo\Project\Infrastructure\Persistence\Doctrine\DoctrineDiscussionRepository
+  table: discussions
+  id:
+    discussionId:
+      type: DiscussionId
+      column: id
+  fields:
+    projectId:
+      type: ProjectId
+    author:
+      type: TeamMemberId
+      column: author_team_member_id
+    topic:
+      type: string
+    content:
+      type: text
+    attachments:
+      type: AttachmentCollection
+    archived:
+      type: boolean
+      column: is_archived
+    createdOn:
+      type: DateTimeImmutable
+      nullable: false

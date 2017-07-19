@@ -1,0 +1,24 @@
+Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment:
+  type: entity
+  repositoryClass: Teamo\Project\Infrastructure\Persistence\Doctrine\DoctrineDiscussionCommentRepository
+  table: discussion_comments
+  id:
+    commentId:
+      type: CommentId
+      column: id
+  fields:
+    discussionId:
+      type: DiscussionId
+    author:
+      type: TeamMemberId
+      column: author_team_member_id
+    content:
+      type: text
+    attachments:
+      type: AttachmentCollection
+    createdOn:
+      type: DateTimeImmutable
+      nullable: false
+    updatedOn:
+      type: DateTimeImmutable
+      nullable: false
