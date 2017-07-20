@@ -38,21 +38,23 @@
                 @if (!$discussions->isEmpty())
                     <ul class="mini-list">
                         @foreach ($discussions as $discussion)
-                            <li class="discussions-mini-list {{ (!$discussion->is_read || $discussion->unread_comments_count) ? 'unread' : '' }}">
-                                <img src="{{ $discussion->user->avatar_24 }}" class="avatar avatar24">
-                                {!! Html::link($discussion->url, $discussion->topic, ['class' => 'title-link']) !!}
+                            {{--<li class="discussions-mini-list {{ (!$discussion->is_read || $discussion->unread_comments_count) ? 'unread' : '' }}">--}}
+                            <li class="discussions-mini-list">
+                                <img src="{{ avatar_of_id($discussion->author()->id(), 48) }}" class="avatar avatar24">
+                                {{--{!! Html::link($discussion->url, $discussion->topic(), ['class' => 'title-link']) !!}--}}
+                                {!! Html::linkRoute('project.discussion.show', $discussion->topic(), [$selectedProjectId, $discussion->discussionId()->id()], ['class' => 'title-link']) !!}
                                 <div class="content">
-                                    {{ $discussion->content_preview }}
+                                    {{ content_preview($discussion->content(), 6) }}
                                 </div>
-                                @if ($discussion->unread_comments_count)
-                                    <span class="unread-info">
-                                        {!! Html::link($discussion->url.'?unread=true', $discussion->unread_comments_count_ui, ['class' => 'title-link']) !!}
-                                    </span>
-                                @endif
+                                {{--@if ($discussion->unread_comments_count)--}}
+                                    {{--<span class="unread-info">--}}
+                                        {{--{!! Html::link($discussion->url.'?unread=true', $discussion->unread_comments_count_ui, ['class' => 'title-link']) !!}--}}
+                                    {{--</span>--}}
+                                {{--@endif--}}
                             </li>
                         @endforeach
                         <li class="discussions-mini-list last-item">
-                            {!! Html::linkRoute('discussion.index', trans('app.all_discussions'), [$project], ['class' => 'system']) !!}
+                            {!! Html::linkRoute('project.discussion.index', trans('app.all_discussions'), [$selectedProjectId], ['class' => 'system']) !!}
                         </li>
                     </ul>
                 @else

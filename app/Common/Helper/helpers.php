@@ -451,6 +451,11 @@ function strip_content($content)
     return $content;
 }
 
+function content_preview(string $content, int $words): string
+{
+    return trim(\Illuminate\Support\Str::words(strip_tags(preg_replace('/<\/[a-z]+>/', ' ', $content)), $words, ''), ".,!:;-(");
+}
+
 function is_authenticated(\Teamo\Common\Domain\Id $id): bool
 {
     return $id->id() == (string) \Illuminate\Support\Facades\Auth::id();

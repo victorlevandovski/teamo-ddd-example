@@ -43,8 +43,8 @@ class MacroServiceProvider extends ServiceProvider
 
         \Html::macro('cancel', function($defaultUrl)
         {
-            $previous = URL::previous();
-            $current = URL::current();
+            $previous = \URL::previous();
+            $current = \URL::current();
 
             $previous = $previous == $current ? $defaultUrl : $previous;
 

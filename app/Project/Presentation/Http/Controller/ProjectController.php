@@ -10,6 +10,7 @@ use Teamo\Project\Application\Command\Project\ArchiveProjectCommand;
 use Teamo\Project\Application\Command\Project\RenameProjectCommand;
 use Teamo\Project\Application\Command\Project\RestoreProjectCommand;
 use Teamo\Project\Application\Command\Project\StartNewProjectCommand;
+use Teamo\Project\Domain\Model\Project\Discussion\DiscussionRepository;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Project\ProjectRepository;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
@@ -32,11 +33,11 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function show(string $projectId, ProjectRepository $projectRepository)
+    public function show(string $projectId, ProjectRepository $projectRepository, DiscussionRepository $discussionRepository)
     {
         return view('project.project.show', [
             'project' => $projectRepository->ofId(new ProjectId($projectId), new TeamMemberId($this->authenticatedId())),
-            'discussions' => collect([]),
+            'discussions' => $discussionRepository->allActive(new ProjectId($projectId)),
         ]);
     }
 

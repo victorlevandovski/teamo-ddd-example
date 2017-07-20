@@ -29,6 +29,18 @@ class CommandBusServiceProvider extends ServiceProvider
             \Teamo\Project\Application\Command\Project\RenameProjectCommand::class => \Teamo\Project\Application\Command\Project\RenameProjectHandler::class,
             \Teamo\Project\Application\Command\Project\ArchiveProjectCommand::class => \Teamo\Project\Application\Command\Project\ArchiveProjectHandler::class,
             \Teamo\Project\Application\Command\Project\RestoreProjectCommand::class => \Teamo\Project\Application\Command\Project\RestoreProjectHandler::class,
+
+            // Discussion
+            \Teamo\Project\Application\Command\Discussion\StartDiscussionCommand::class => \Teamo\Project\Application\Command\Discussion\StartDiscussionHandler::class,
+            \Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommand::class => \Teamo\Project\Application\Command\Discussion\UpdateDiscussionHandler::class,
+            \Teamo\Project\Application\Command\Discussion\RemoveDiscussionCommand::class => \Teamo\Project\Application\Command\Discussion\RemoveDiscussionHandler::class,
+            \Teamo\Project\Application\Command\Discussion\ArchiveDiscussionCommand::class => \Teamo\Project\Application\Command\Discussion\ArchiveDiscussionHandler::class,
+            \Teamo\Project\Application\Command\Discussion\RestoreDiscussionCommand::class => \Teamo\Project\Application\Command\Discussion\RestoreDiscussionHandler::class,
+            \Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionCommand::class => \Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionHandler::class,
+            \Teamo\Project\Application\Command\Discussion\PostDiscussionCommentCommand::class => \Teamo\Project\Application\Command\Discussion\PostDiscussionCommentHandler::class,
+            \Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommentCommand::class => \Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommentHandler::class,
+            \Teamo\Project\Application\Command\Discussion\RemoveDiscussionCommentCommand::class => \Teamo\Project\Application\Command\Discussion\RemoveDiscussionCommentHandler::class,
+            \Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionCommentCommand::class => \Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionCommentHandler::class,
         ];
     }
 

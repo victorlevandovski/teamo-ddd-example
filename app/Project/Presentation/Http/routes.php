@@ -37,6 +37,7 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'my', 'namespace' => 
     Route::patch('project/{project}/discussion/{discussion}/comment/{comment}', ['as' => 'project.discussion.update_comment', 'uses' => 'DiscussionController@updateComment']);
     Route::get('project/{project}/discussion/{discussion}/delete', ['as' => 'project.discussion.delete', 'uses' => 'DiscussionController@destroy']);
     Route::get('project/{project}/discussion/{discussion}', ['as' => 'project.discussion.show', 'uses' => 'DiscussionController@show']);
+    Route::delete('project/{project}/discussion/{discussion}/comment/{comment}', ['as' => 'project.discussion.ajax_delete_comment', 'uses' => 'DiscussionController@ajaxDestroyComment']);
 
     // Attachment
     Route::delete('ajax_delete_attachment/{attachment}', ['as' => 'project.attachment.ajax_delete_attachment', 'uses' => 'AttachmentController@ajaxDeleteAttachment']);
