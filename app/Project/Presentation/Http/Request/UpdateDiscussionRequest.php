@@ -7,6 +7,8 @@ use Teamo\Common\Http\Request;
 
 class UpdateDiscussionRequest extends Request
 {
+    use Attachments;
+
     public function authorize()
     {
         return true;

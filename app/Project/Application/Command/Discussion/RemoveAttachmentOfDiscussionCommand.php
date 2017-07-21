@@ -10,7 +10,7 @@ class RemoveAttachmentOfDiscussionCommand
     private $attachmentId;
     private $teamMemberId;
 
-    public function __construct(string $projectId, string $discussionId, string $commentId, string $attachmentId, string $teamMemberId)
+    public function __construct(string $projectId, string $discussionId, string $attachmentId, string $teamMemberId)
     {
         $this->projectId = $projectId;
         $this->discussionId = $discussionId;

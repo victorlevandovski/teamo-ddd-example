@@ -5,7 +5,7 @@ namespace Teamo\Project\Presentation\Http\Request;
 
 use Teamo\Common\Http\Request;
 
-class StartDiscussionRequest extends Request
+class PostCommentRequest extends Request
 {
     use Attachments;
 
@@ -17,8 +17,14 @@ class StartDiscussionRequest extends Request
     public function rules()
     {
         return [
-            'topic' => 'required|max:255',
-            'content' => 'required',
+            'content' => 'required_if:files_list,[]',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'content.required_if' => trans('validation.required'),
         ];
     }
 }

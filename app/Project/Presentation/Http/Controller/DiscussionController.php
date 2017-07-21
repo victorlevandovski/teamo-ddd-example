@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Presentation\Http\Controller;
 
-use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 use Teamo\Common\Application\CommandBus;
 use Teamo\Common\Http\Controller;
 use Teamo\Project\Application\Command\Discussion\ArchiveDiscussionCommand;
 use Teamo\Project\Application\Command\Discussion\PostDiscussionCommentCommand;
+use Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionCommand;
+use Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionCommentCommand;
 use Teamo\Project\Application\Command\Discussion\RemoveDiscussionCommand;
 use Teamo\Project\Application\Command\Discussion\RemoveDiscussionCommentCommand;
 use Teamo\Project\Application\Command\Discussion\RestoreDiscussionCommand;
@@ -22,6 +23,7 @@ use Teamo\Project\Domain\Model\Project\Discussion\DiscussionRepository;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Project\ProjectRepository;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
+use Teamo\Project\Presentation\Http\Request\PostCommentRequest;
 use Teamo\Project\Presentation\Http\Request\StartDiscussionRequest;
 use Teamo\Project\Presentation\Http\Request\UpdateCommentRequest;
 use Teamo\Project\Presentation\Http\Request\UpdateDiscussionRequest;
@@ -73,9 +75,7 @@ class DiscussionController extends Controller
     {
         $discussionId = Uuid::uuid4()->toString();
 
-        $files = [];
-
-        $command = new StartDiscussionCommand($projectId, $discussionId, $this->authenticatedId(), $request->get('topic'), $request->get('content'), $files);
+        $command = new StartDiscussionCommand($projectId, $discussionId, $this->authenticatedId(), $request->get('topic'), $request->get('content'), $request->attachments());
         $commandBus->handle($command);
 
         return redirect(route('project.discussion.show', [$projectId, $discussionId]));
@@ -90,9 +90,7 @@ class DiscussionController extends Controller
 
     public function update(string $projectId, string $discussionId, UpdateDiscussionRequest $request, CommandBus $commandBus)
     {
-        $files = [];
-
-        $command = new UpdateDiscussionCommand($projectId, $discussionId, $this->authenticatedId(), $request->get('topic'), $request->get('content'), $files);
+        $command = new UpdateDiscussionCommand($projectId, $discussionId, $this->authenticatedId(), $request->get('topic'), $request->get('content'), $request->attachments());
         $commandBus->handle($command);
 
         return redirect(route('project.discussion.show', [$projectId, $discussionId]))
@@ -126,15 +124,26 @@ class DiscussionController extends Controller
         return redirect(route('project.discussion.' . $route, $projectId))->with('success', trans('app.flash_discussion_deleted'));
     }
 
+    public function ajaxDestroyAttachment(string $projectId, string $discussionId, string $attachmentId, CommandBus $commandBus)
+    {
+        try {
+            $command = new RemoveAttachmentOfDiscussionCommand($projectId, $discussionId, $attachmentId, $this->authenticatedId());
+            $commandBus->handle($command);
+            return response()->json(['status' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
 
     /* Comments */
 
 
-    public function storeComment(string $projectId, string $discussionId, Request $request, CommandBus $commandBus)
+    public function storeComment(string $projectId, string $discussionId, PostCommentRequest $request, CommandBus $commandBus)
     {
         $commentId = Uuid::uuid4()->toString();
 
-        $command = new PostDiscussionCommentCommand($projectId, $discussionId, $commentId, $this->authenticatedId(), $request->get('content'), []);
+        $command = new PostDiscussionCommentCommand($projectId, $discussionId, $commentId, $this->authenticatedId(), (string) $request->get('content'), $request->attachments());
         $commandBus->handle($command);
 
         return redirect(route('project.discussion.show', [$projectId, $discussionId]) . '#comment-' . $commentId);
@@ -160,6 +169,17 @@ class DiscussionController extends Controller
     {
         try {
             $command = new RemoveDiscussionCommentCommand($projectId, $discussionId, $commentId, $this->authenticatedId());
+            $commandBus->handle($command);
+            return response()->json(['status' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    public function ajaxDestroyCommentAttachment(string $projectId, string $discussionId, string $commentId, string $attachmentId, CommandBus $commandBus)
+    {
+        try {
+            $command = new RemoveAttachmentOfDiscussionCommentCommand($projectId, $discussionId, $commentId, $attachmentId, $this->authenticatedId());
             $commandBus->handle($command);
             return response()->json(['status' => true]);
         } catch (\Exception $e) {

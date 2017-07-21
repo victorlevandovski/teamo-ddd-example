@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => 'attachment',
+    'default' => 'local',
 
     /*
     |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@ return [
 
     'disks' => [
 
-        'attachment' => [
+        'local' => [
             'driver' => 'local',
             'root' => storage_path('attachments'),
         ],

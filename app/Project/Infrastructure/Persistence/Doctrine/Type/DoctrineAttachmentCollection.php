@@ -5,6 +5,7 @@ namespace Teamo\Project\Infrastructure\Persistence\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Illuminate\Support\Collection;
 
 class DoctrineAttachmentCollection extends Type
 {
@@ -15,12 +16,12 @@ class DoctrineAttachmentCollection extends Type
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return serialize($value);
+        return $value->isEmpty() ? '' : serialize($value);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return unserialize($value);
+        return $value ? unserialize($value) : new Collection();
     }
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)

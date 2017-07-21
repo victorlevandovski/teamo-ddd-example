@@ -33,7 +33,7 @@ class LocalAttachmentManager implements AttachmentManager
 
             $fileSystemPath = thumb_dir($id) . '/' . $id . '.att';
 
-            if (Storage::put($fileSystemPath, file_get_contents($tmpFile), FILE_BINARY)) {
+            if (Storage::disk('local')->put($fileSystemPath, file_get_contents($tmpFile))) {
                 $attachment = new Attachment(new AttachmentId($id), $originalName);
 
                 if ($attachment->type()->isImage()) {

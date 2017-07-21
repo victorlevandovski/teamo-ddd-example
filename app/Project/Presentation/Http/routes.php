@@ -38,12 +38,14 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'my', 'namespace' => 
     Route::get('project/{project}/discussion/{discussion}/delete', ['as' => 'project.discussion.delete', 'uses' => 'DiscussionController@destroy']);
     Route::get('project/{project}/discussion/{discussion}', ['as' => 'project.discussion.show', 'uses' => 'DiscussionController@show']);
     Route::delete('project/{project}/discussion/{discussion}/comment/{comment}', ['as' => 'project.discussion.ajax_delete_comment', 'uses' => 'DiscussionController@ajaxDestroyComment']);
+    Route::delete('project/{project}/discussion/{discussion}/attachment/{attachment}', ['as' => 'project.discussion.ajax_delete_attachment', 'uses' => 'DiscussionController@ajaxDestroyAttachment']);
+    Route::delete('project/{project}/discussion/{discussion}/comment/{comment}/attachment/{attachment}', ['as' => 'project.discussion.ajax_delete_comment_attachment', 'uses' => 'DiscussionController@ajaxDestroyCommentAttachment']);
 
     // Attachment
-    Route::delete('ajax_delete_attachment/{attachment}', ['as' => 'project.attachment.ajax_delete_attachment', 'uses' => 'AttachmentController@ajaxDeleteAttachment']);
+
     Route::post('ajax_file_upload', 'AttachmentController@ajaxUploadFile');
     Route::patch('ajax_file_upload', 'AttachmentController@ajaxUploadFile');
-    Route::get('download/{attachment}/{name}', ['as' => 'project.download', 'uses' => 'AttachmentController@download']);
+    Route::get('download/{attachment}/{name}', ['as' => 'project.attachment.download', 'uses' => 'AttachmentController@download']);
     Route::get('attachment/{attachment}/{name}', ['as' => 'project.attachment', 'uses' => 'AttachmentController@attachment']);
 
 });

@@ -148,7 +148,7 @@ class DiscussionHandlersTest extends TestCase
 
     public function testRemoveAttachmentOfDiscussionHandlerRemovesAttachment()
     {
-        $command = new RemoveAttachmentOfDiscussionCommand('p-1', 'd-1', 'c-1', 'a-d-1', 't-1');
+        $command = new RemoveAttachmentOfDiscussionCommand('p-1', 'd-1', 'a-d-1', 't-1');
         $handler = new RemoveAttachmentOfDiscussionHandler($this->discussionRepository);
         $handler->handle($command);
 

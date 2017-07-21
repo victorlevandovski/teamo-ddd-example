@@ -34,14 +34,20 @@ trait Attachments
 
     public function attach(Attachment $attachment)
     {
-        $this->attachments->put($attachment->attachmentId()->id(), $attachment);
+        $attachments = new Collection($this->attachments->toArray());
+        $attachments->put($attachment->attachmentId()->id(), $attachment);
+
+        $this->setAttachments($attachments);
     }
 
     public function removeAttachment(AttachmentId $attachmentId)
     {
         $this->assertAttachmentExists($attachmentId);
 
-        $this->attachments->forget($attachmentId->id());
+        $attachments = new Collection($this->attachments->toArray());
+        $attachments->forget($attachmentId->id());
+
+        $this->setAttachments($attachments);
     }
 
     protected function assertAttachmentExists(AttachmentId $attachmentId)

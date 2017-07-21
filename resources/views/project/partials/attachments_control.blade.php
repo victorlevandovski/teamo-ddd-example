@@ -16,11 +16,11 @@
 
     <div id="files" class="clearfix mt5" style="">
         @if (old('files_list'))
-            @foreach (explode('|||', trim(old('files_list') , '|')) as $file)
-                <?php list($f, $n) = explode(':::', $file); ?>
-                <div class="uploaded-file" id="{{ $f }}" data-file="{{ $f }}" data-name="{{ $n }}">
-                    {{ $n }}
-                    <a href="javascript:void(0);" onclick="$('#{{ $f }}').hide();">
+            <?php $files = json_decode(old('files_list'), true); ?>
+            @foreach ($files as $file)
+                <div class="uploaded-file" id="{{ $file['file'] }}" data-file="{{ $file['file'] }}" data-name="{{ $file['name'] }}">
+                    {{ $file['name'] }}
+                    <a href="javascript:void(0);" onclick="$('#{{ $file['file'] }}').hide();">
                         <i class="glyphicon glyphicon-remove c999"></i>
                     </a>
                 </div>

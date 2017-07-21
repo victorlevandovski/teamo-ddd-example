@@ -52,7 +52,7 @@ foreach ($project->teamMembers() as $teamMember) {
 
         </div>
 
-        @include('project.partials.attachments', ['attachments' => $discussion->attachments()])
+        @include('project.partials.attachments', ['attachments' => $discussion->attachments(), 'controller' => 'discussion', 'entityId' => $discussion->discussionId()->id()])
 
         @include('project.partials.comments', ['controller' => 'discussion', 'entityId' => $discussion->discussionId()->id()])
 

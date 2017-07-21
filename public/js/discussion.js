@@ -27,12 +27,12 @@ $(function () {
     }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 
     $('#discussion-form,#discussion-comment-form').on('submit', function () {
-        var files = '';
+        var files = [];
 
         $($('div[class="uploaded-file"]:visible').get()).each(function() {
-            files += $(this).data('file') + ':::' + $(this).data('name') + '|||';
+            files.push({file: $(this).data('file'), name: $(this).data('name')});
         });
 
-        $('#files-list').val(files);
+        $('#files-list').val(JSON.stringify(files));
     });
 });
