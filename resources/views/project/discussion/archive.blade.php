@@ -1,9 +1,4 @@
-<?php
-$teamMembers = [];
-foreach ($project->teamMembers() as $teamMember) {
-    $teamMembers[$teamMember->teamMemberId()->id()] = $teamMember;
-}
-?>
+<?php /** @var \Teamo\Project\Application\Query\Discussion\DiscussionsPayload $discussionsPayload */ ?>
 @extends('layouts.app')
 
 @section('title', trans('app.discussions_archive'))
@@ -22,7 +17,7 @@ foreach ($project->teamMembers() as $teamMember) {
                     {{ trans('app.discussions_archive') }}
                 </h2>
             </li>
-            @foreach ($discussions as $discussion)
+            @foreach ($discussionsPayload->discussions() as $discussion)
                 <li class="discussions-list">
                     <img src="{{ avatar_of_id($discussion->author()->id(), 96) }}" class="avatar avatar48">
                     <div class="fs18">
@@ -32,7 +27,7 @@ foreach ($project->teamMembers() as $teamMember) {
                         {{ content_preview($discussion->content(), 10) }}
                     </div>
                     <div class="fs12 c333">
-                        {{ $teamMembers[$discussion->author()->id()]->name() }} <span class="dot">•</span> {{ date_ui($discussion->createdOn()) }}
+                        {{ $discussionsPayload->teamMember($discussion->author())->name() }} <span class="dot">•</span> {{ date_ui($discussion->createdOn()) }}
                         <span class="dot">•</span>
                         {!! Html::linkRoute('project.discussion.restore_discussion', trans('app.restore'), [$selectedProjectId, $discussion->discussionId()->id()], ['class' => 'system']) !!}
                         <span class="dot">•</span>
@@ -41,7 +36,7 @@ foreach ($project->teamMembers() as $teamMember) {
                     </div>
                 </li>
             @endforeach
-            @if ($discussions->isEmpty())
+            @if ($discussionsPayload->discussions()->isEmpty())
                 <li class="no-items">{{ trans('app.no_discussions') }}</li>
             @endif
         </ul>

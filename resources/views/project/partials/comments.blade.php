@@ -2,7 +2,7 @@
 
     <div class="separator mt20 mb25"></div>
 
-    @if (!$comments->isEmpty())
+    @if (!$payload->comments()->isEmpty())
 
         {{--@if (isset($discussion) && $discussion)--}}
             {{--<div class="following-icon">--}}
@@ -17,14 +17,14 @@
         <h2 class="mb30 fs18">{{ trans('app.comments') }}</h2>
 
         <ul class="ulb comments">
-            @foreach ($comments as $comment)
+            @foreach ($payload->comments() as $comment)
                 <li id="comment-{{ $comment->commentId()->id() }}" class="{{ $comment->attachments()->isEmpty() ? 'mb25' : '' }}">
                     <a name="comment-{{ $comment->commentId()->id() }}"></a>
 
                     <img src="{{ avatar_of_id($comment->author()->id(), 96) }}" class="content-avatar avatar48">
 
                     <div>
-                        <div class="mb5"><b>{{ $teamMembers[$discussion->author()->id()]->name() }}</b></div>
+                        <div class="mb5"><b>{{ $payload->teamMember($comment->author())->name() }}</b></div>
                         <div class="comment-content">
                             {!! nl2br($comment->content()) !!}
                         </div>

@@ -16,13 +16,14 @@ use Teamo\Project\Application\Command\Discussion\RestoreDiscussionCommand;
 use Teamo\Project\Application\Command\Discussion\StartDiscussionCommand;
 use Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommand;
 use Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommentCommand;
+use Teamo\Project\Application\Query\Discussion\AllDiscussionsQuery;
+use Teamo\Project\Application\Query\Discussion\DiscussionQuery;
+use Teamo\Project\Application\Query\Discussion\DiscussionQueryHandler;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionCommentRepository;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionRepository;
 use Teamo\Project\Domain\Model\Project\ProjectId;
-use Teamo\Project\Domain\Model\Project\ProjectRepository;
-use Teamo\Project\Domain\Model\Team\TeamMemberId;
 use Teamo\Project\Presentation\Http\Request\PostCommentRequest;
 use Teamo\Project\Presentation\Http\Request\StartDiscussionRequest;
 use Teamo\Project\Presentation\Http\Request\UpdateCommentRequest;
@@ -30,39 +31,30 @@ use Teamo\Project\Presentation\Http\Request\UpdateDiscussionRequest;
 
 class DiscussionController extends Controller
 {
-    public function index(
-        string $projectId,
-        DiscussionRepository $discussionRepository,
-        ProjectRepository $projectRepository
-    ){
+    public function index(string $projectId, DiscussionQueryHandler $queryHandler)
+    {
+        $query = new AllDiscussionsQuery($projectId, $this->authenticatedId(), false);
+
         return view('project.discussion.index', [
-            'project' => $projectRepository->ofId(new ProjectId($projectId), new TeamMemberId($this->authenticatedId())),
-            'discussions' => $discussionRepository->allActive(new ProjectId($projectId)),
+            'discussionsPayload' => $queryHandler->allDiscussions($query),
         ]);
     }
 
-    public function archive(
-        string $projectId,
-        DiscussionRepository $discussionRepository,
-        ProjectRepository $projectRepository
-    ){
+    public function archive(string $projectId, DiscussionQueryHandler $queryHandler)
+    {
+        $query = new AllDiscussionsQuery($projectId, $this->authenticatedId(), true);
+
         return view('project.discussion.archive', [
-            'project' => $projectRepository->ofId(new ProjectId($projectId), new TeamMemberId($this->authenticatedId())),
-            'discussions' => $discussionRepository->allArchived(new ProjectId($projectId)),
+            'discussionsPayload' => $queryHandler->allDiscussions($query),
         ]);
     }
 
-    public function show(
-        string $projectId,
-        string $discussionId,
-        DiscussionRepository $discussionRepository,
-        DiscussionCommentRepository $commentRepository,
-        ProjectRepository $projectRepository
-    ) {
+    public function show(string $projectId, string $discussionId, DiscussionQueryHandler $queryHandler)
+    {
+        $query = new DiscussionQuery($projectId, $discussionId, $this->authenticatedId());
+
         return view('project.discussion.show', [
-            'project' => $projectRepository->ofId(new ProjectId($projectId), new TeamMemberId($this->authenticatedId())),
-            'discussion' => $discussionRepository->ofId(new DiscussionId($discussionId), new ProjectId($projectId)),
-            'comments' => $commentRepository->all(new DiscussionId($discussionId)),
+            'discussionPayload' => $queryHandler->discussion($query),
         ]);
     }
 
