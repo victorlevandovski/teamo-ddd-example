@@ -25,7 +25,6 @@ use Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommentCommand;
 use Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommentHandler;
 use Teamo\Project\Application\Command\Discussion\UpdateDiscussionHandler;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
-use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentManager;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
@@ -71,7 +70,7 @@ class DiscussionHandlersTest extends TestCase
         $this->attachmentManager = \Mockery::mock(AttachmentManager::class);
         $this->attachmentManager
             ->shouldReceive('attachmentsFromUploadedFiles')
-            ->andReturn(new Collection([new Attachment(new AttachmentId('a-1'), 'image.jpg')]));
+            ->andReturn(new Collection([new Attachment('a-1', 'image.jpg')]));
 
         $teamMemberRepository = new InMemoryTeamMemberRepository();
         $owner = new TeamMemberId('t-1');
@@ -86,7 +85,7 @@ class DiscussionHandlersTest extends TestCase
             $owner,
             'My topic',
             'My content',
-            new Collection([new Attachment(new AttachmentId('a-d-1'), 'attachment.txt')])
+            new Collection([new Attachment('a-d-1', 'attachment.txt')])
         );
         $this->discussionRepository->add($this->discussion);
     }

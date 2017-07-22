@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
-use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
 use Teamo\Project\Domain\Model\Project\Event\Event;
@@ -60,7 +58,7 @@ class ProjectTest extends TestCase
     public function testProjectCanStartDiscussion()
     {
         $author = new TeamMemberId('id-1');
-        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'attachment.txt')]);
+        $attachments = new Collection([new Attachment('1', 'attachment.txt')]);
 
         $discussion = $this->project->startDiscussion(new DiscussionId('1'), $author, 'New Discussion', 'Discussion content', $attachments);
 
@@ -78,9 +76,9 @@ class ProjectTest extends TestCase
     public function testProjectCanScheduleEvent()
     {
         $creatorId = new TeamMemberId('id-1');
-        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'attachment.txt')]);
+        $attachments = new Collection([new Attachment('1', 'attachment.txt')]);
 
-        $event = $this->project->scheduleEvent(new EventId('1'), $creatorId, 'My Event', 'Event details', new Carbon(), $attachments);
+        $event = $this->project->scheduleEvent(new EventId('1'), $creatorId, 'My Event', 'Event details', new \DateTimeImmutable(), $attachments);
 
         $this->assertInstanceOf(Event::class, $event);
     }

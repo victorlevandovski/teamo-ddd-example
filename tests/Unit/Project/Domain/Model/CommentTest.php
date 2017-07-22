@@ -5,7 +5,6 @@ namespace Tests\Unit\Project\Domain\Model\Project;
 
 use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
-use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionId;
@@ -26,14 +25,14 @@ class CommentTest extends TestCase
 
     public function testCommentCanAddAndRemoveAttachment()
     {
-        $attachment = new Attachment(new AttachmentId('1'), 'Image.jpg');
+        $attachment = new Attachment('1', 'Image.jpg');
         $this->comment->attach($attachment);
 
         /** @var Attachment[] $attachments */
         $attachments = array_values($this->comment->attachments()->toArray());
         $this->assertInstanceOf(Attachment::class, $attachments[0]);
 
-        $this->comment->removeAttachment($attachments[0]->attachmentId());
+        $this->comment->removeAttachment($attachments[0]->id());
         $this->assertEmpty($this->comment->attachments());
     }
 
@@ -46,7 +45,7 @@ class CommentTest extends TestCase
 
     public function testCommentCanHaveEmptyContentIfAttachmentPresent()
     {
-        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'Image.png')]);
+        $attachments = new Collection([new Attachment('1', 'Image.png')]);
 
         new DiscussionComment(new DiscussionId('1'), new CommentId('1'), new TeamMemberId('id-1'), '', $attachments);
     }

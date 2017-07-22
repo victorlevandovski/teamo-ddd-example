@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Project\Domain\Model\Project;
 
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
-use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Event\EventComment;
@@ -30,7 +28,7 @@ class EventTest extends TestCase
             new TeamMemberId('id-1'),
             'My Event',
             'Event Details',
-            new Carbon(),
+            new \DateTimeImmutable(),
             new Collection()
         );
     }
@@ -40,17 +38,17 @@ class EventTest extends TestCase
         $projectId = new ProjectId('p-1');
         $eventId = new EventId('e-1');
         $creatorId = new TeamMemberId('c-1');
-        $attachments = new Collection([new Attachment(new AttachmentId('1'), 'Attachment.txt')]);
-        $startsAt = new Carbon();
+        $attachments = new Collection([new Attachment('1', 'Attachment.txt')]);
+        $occursOn = new \DateTimeImmutable();
 
-        $event = new Event($projectId, $eventId, $creatorId, 'Name', 'Details', $startsAt, $attachments);
+        $event = new Event($projectId, $eventId, $creatorId, 'Name', 'Details', $occursOn, $attachments);
 
         $this->assertSame($projectId, $event->projectId());
         $this->assertSame($eventId, $event->eventId());
-        $this->assertSame($creatorId, $event->creatorId());
+        $this->assertSame($creatorId, $event->creator());
         $this->assertEquals('Name', $event->name());
         $this->assertEquals('Details', $event->details());
-        $this->assertSame($startsAt, $event->startsAt());
+        $this->assertSame($occursOn, $event->occursOn());
         $this->assertFalse($event->attachments()->isEmpty());
     }
 

@@ -7,20 +7,20 @@ use Teamo\Common\Domain\Entity;
 
 class Attachment extends Entity
 {
-    private $attachmentId;
+    private $id;
     private $name;
     private $type;
 
-    public function __construct(AttachmentId $attachmentId, string $name)
+    public function __construct(string $id, string $name)
     {
-        $this->setAttachmentId($attachmentId);
+        $this->setId($id);
         $this->setName($name);
         $this->setType(AttachmentType::fromName($name));
     }
 
-    private function setAttachmentId(AttachmentId $attachmentId)
+    private function setId(string $id)
     {
-        $this->attachmentId = $attachmentId;
+        $this->id = $id;
     }
 
     private function setName(string $name)
@@ -33,9 +33,9 @@ class Attachment extends Entity
         $this->type = $type;
     }
 
-    public function attachmentId(): AttachmentId
+    public function id(): string
     {
-        return $this->attachmentId;
+        return $this->id;
     }
 
     public function name(): string

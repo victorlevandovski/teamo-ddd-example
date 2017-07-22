@@ -20,7 +20,7 @@ trait Attachments
         $this->attachments = new Collection();
 
         foreach ($attachments as $attachment) {
-            $this->attachments->put($attachment->attachmentId()->id(), $attachment);
+            $this->attachments->put($attachment->id(), $attachment);
         }
     }
 
@@ -35,25 +35,25 @@ trait Attachments
     public function attach(Attachment $attachment)
     {
         $attachments = new Collection($this->attachments->toArray());
-        $attachments->put($attachment->attachmentId()->id(), $attachment);
+        $attachments->put($attachment->id(), $attachment);
 
         $this->setAttachments($attachments);
     }
 
-    public function removeAttachment(AttachmentId $attachmentId)
+    public function removeAttachment(string $id)
     {
-        $this->assertAttachmentExists($attachmentId);
+        $this->assertAttachmentExists($id);
 
         $attachments = new Collection($this->attachments->toArray());
-        $attachments->forget($attachmentId->id());
+        $attachments->forget($id);
 
         $this->setAttachments($attachments);
     }
 
-    protected function assertAttachmentExists(AttachmentId $attachmentId)
+    protected function assertAttachmentExists(string $id)
     {
-        if (!$this->attachments->has($attachmentId->id())) {
-            throw new \InvalidArgumentException('Invalid Attachment Id');
+        if (!$this->attachments->has($id)) {
+            throw new \InvalidArgumentException('Invalid attachment id');
         }
     }
 }

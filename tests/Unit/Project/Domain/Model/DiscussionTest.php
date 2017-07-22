@@ -5,7 +5,6 @@ namespace Tests\Unit\Project\Domain\Model\Project;
 
 use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
-use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
@@ -38,7 +37,7 @@ class DiscussionTest extends TestCase
         $projectId = new ProjectId('project-1');
         $discussionId = new DiscussionId('discussion-1');
         $author = new TeamMemberId('author-1');
-        $attachments = new Collection([new Attachment(new AttachmentId('attachment-1'), 'Attachment.txt')]);
+        $attachments = new Collection([new Attachment('attachment-1', 'Attachment.txt')]);
 
         $discussion = new Discussion($projectId, $discussionId, $author, 'Topic', 'Content', $attachments);
 

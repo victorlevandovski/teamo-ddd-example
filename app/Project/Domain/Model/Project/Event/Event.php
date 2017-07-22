@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\Event;
 
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
@@ -13,26 +13,28 @@ use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Event extends Entity
 {
+    use CreatedOn;
     use Attachments;
 
     private $projectId;
     private $eventId;
-    private $creatorId;
+    private $creator;
     private $name;
     private $details;
-    private $startsAt;
+    private $occursOn;
     private $archived;
 
-    public function __construct(ProjectId $projectId, EventId $eventId, TeamMemberId $creatorId, string $name, string $details, Carbon $startsAt, Collection $attachments)
+    public function __construct(ProjectId $projectId, EventId $eventId, TeamMemberId $creator, string $name, string $details, \DateTimeImmutable $occursOn, Collection $attachments)
     {
         $this->setProjectId($projectId);
         $this->setEventId($eventId);
-        $this->setCreatorId($creatorId);
+        $this->setCreator($creator);
         $this->setName($name);
         $this->setDetails($details);
-        $this->setStartsAt($startsAt);
+        $this->setOccursOn($occursOn);
         $this->setArchived(false);
         $this->setAttachments($attachments);
+        $this->resetCreatedOn();
     }
 
     public function projectId(): ProjectId
@@ -45,9 +47,9 @@ class Event extends Entity
         return $this->eventId;
     }
 
-    public function creatorId(): TeamMemberId
+    public function creator(): TeamMemberId
     {
-        return $this->creatorId;
+        return $this->creator;
     }
 
     public function name(): string
@@ -60,9 +62,9 @@ class Event extends Entity
         return $this->details;
     }
 
-    public function startsAt(): Carbon
+    public function occursOn(): \DateTimeImmutable
     {
-        return $this->startsAt;
+        return $this->occursOn;
     }
 
     public function isArchived(): bool
@@ -101,9 +103,9 @@ class Event extends Entity
         $this->eventId = $eventId;
     }
 
-    private function setCreatorId(TeamMemberId $creatorId)
+    private function setCreator(TeamMemberId $creator)
     {
-        $this->creatorId = $creatorId;
+        $this->creator = $creator;
     }
 
     private function setName(string $name)
@@ -116,9 +118,9 @@ class Event extends Entity
         $this->details = $details;
     }
 
-    private function setStartsAt(Carbon $startsAt)
+    private function setOccursOn(\DateTimeImmutable $occursOn)
     {
-        $this->startsAt = $startsAt;
+        $this->occursOn = $occursOn;
     }
 
     private function setArchived(bool $archived)

@@ -6,7 +6,6 @@ namespace Tests\Unit\Project\Infrastructure\Persistence\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Support\Collection;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
-use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionCommentRepository;
@@ -35,7 +34,7 @@ class DoctrineDiscussionCommentRepositoryTest extends TestCase
         $commentId = new CommentId(uniqid('unit_test_'));
         $discussionId = new DiscussionId(uniqid('unit_test_'));
         $teamMemberId = new TeamMemberId(uniqid('unit_test_'));
-        $attachments = new Collection([new Attachment(new AttachmentId('a-1'), 'attachment.txt')]);
+        $attachments = new Collection([new Attachment('a-1', 'attachment.txt')]);
 
         $comment = new DiscussionComment($discussionId, $commentId, $teamMemberId, 'Content', $attachments);
         $this->commentRepository->add($comment);

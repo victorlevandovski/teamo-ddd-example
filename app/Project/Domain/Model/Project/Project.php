@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project;
 
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
@@ -113,11 +112,11 @@ class Project extends Entity
         return new TodoList($this->projectId(), $todoListId, $creatorId, $name);
     }
 
-    public function scheduleEvent(EventId $eventId, TeamMemberId $creatorId, string $name, string $details, Carbon $startsAt, Collection $attachments): Event
+    public function scheduleEvent(EventId $eventId, TeamMemberId $creatorId, string $name, string $details, \DateTimeImmutable $occursOn, Collection $attachments): Event
     {
         $this->resetUpdatedOn();
 
-        return new Event($this->projectId(), $eventId, $creatorId, $name, $details, $startsAt, $attachments);
+        return new Event($this->projectId(), $eventId, $creatorId, $name, $details, $occursOn, $attachments);
     }
 
     public function __construct(TeamMemberId $owner, ProjectId $projectId, string $name, bool $archived)

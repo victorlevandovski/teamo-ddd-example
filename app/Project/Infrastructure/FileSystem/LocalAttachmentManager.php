@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
-use Teamo\Project\Domain\Model\Project\Attachment\AttachmentId;
 use Teamo\Project\Domain\Model\Project\Attachment\AttachmentManager;
 use Teamo\Project\Domain\Model\Project\Attachment\UploadedFile;
 
@@ -34,7 +33,7 @@ class LocalAttachmentManager implements AttachmentManager
             $fileSystemPath = thumb_dir($id) . '/' . $id . '.att';
 
             if (Storage::disk('local')->put($fileSystemPath, file_get_contents($tmpFile))) {
-                $attachment = new Attachment(new AttachmentId($id), $originalName);
+                $attachment = new Attachment($id, $originalName);
 
                 if ($attachment->type()->isImage()) {
                     $saveAs = pathinfo(thumb_url($id), PATHINFO_BASENAME);
