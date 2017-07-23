@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Teamo\Project\Domain\Model\Project\Attachment;
 
 use Illuminate\Support\Collection;
+use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 trait Attachments
 {
@@ -40,9 +41,10 @@ trait Attachments
         $this->setAttachments($attachments);
     }
 
-    public function removeAttachment(string $id)
+    public function removeAttachment(string $id, TeamMemberId $author)
     {
         $this->assertAttachmentExists($id);
+        $this->assertIsAuthor($author);
 
         $attachments = new Collection($this->attachments->toArray());
         $attachments->forget($id);
@@ -56,4 +58,6 @@ trait Attachments
             throw new \InvalidArgumentException('Invalid attachment id');
         }
     }
+
+    abstract protected function assertIsAuthor(TeamMemberId $author);
 }

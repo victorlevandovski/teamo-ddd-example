@@ -14,7 +14,9 @@ use Teamo\Project\Domain\Model\Team\TeamMemberId;
 class Discussion extends Entity
 {
     use CreatedOn;
-    use Attachments;
+    use Attachments {
+        removeAttachment as removeDiscussionAttachment;
+    }
 
     private $projectId;
     private $discussionId;
@@ -86,6 +88,11 @@ class Discussion extends Entity
         return new DiscussionComment($this->discussionId(), $commentId, $author, $content, $attachments);
     }
 
+    public function removeAttachment(string $id, TeamMemberId $author)
+    {
+        $this->removeDiscussionAttachment($id, $this->author());
+    }
+
     private function setProjectId(ProjectId $projectId)
     {
         $this->projectId = $projectId;
@@ -114,5 +121,12 @@ class Discussion extends Entity
     private function setArchived(bool $archived)
     {
         $this->archived = $archived;
+    }
+
+    protected function assertIsAuthor(TeamMemberId $author)
+    {
+        if (!$this->author()->equals($author)) {
+            throw new \InvalidArgumentException('Provided team member is not an author of this comment');
+        }
     }
 }

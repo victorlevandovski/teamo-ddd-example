@@ -6,7 +6,6 @@ namespace Teamo\Project\Domain\Model\Project\Event;
 use Illuminate\Support\Collection;
 use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
-use Teamo\Project\Domain\Model\Project\Attachment\Attachments;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
@@ -14,7 +13,6 @@ use Teamo\Project\Domain\Model\Team\TeamMemberId;
 class Event extends Entity
 {
     use CreatedOn;
-    use Attachments;
 
     private $projectId;
     private $eventId;
@@ -24,7 +22,7 @@ class Event extends Entity
     private $occursOn;
     private $archived;
 
-    public function __construct(ProjectId $projectId, EventId $eventId, TeamMemberId $creator, string $name, string $details, \DateTimeImmutable $occursOn, Collection $attachments)
+    public function __construct(ProjectId $projectId, EventId $eventId, TeamMemberId $creator, string $name, string $details, \DateTimeImmutable $occursOn)
     {
         $this->setProjectId($projectId);
         $this->setEventId($eventId);
@@ -33,7 +31,6 @@ class Event extends Entity
         $this->setDetails($details);
         $this->setOccursOn($occursOn);
         $this->setArchived(false);
-        $this->setAttachments($attachments);
         $this->resetCreatedOn();
     }
 
@@ -72,10 +69,11 @@ class Event extends Entity
         return $this->archived;
     }
 
-    public function update(string $name, string $details)
+    public function update(string $name, string $details, \DateTimeImmutable $occursOn)
     {
         $this->setName($name);
         $this->setDetails($details);
+        $this->setOccursOn($occursOn);
     }
 
     public function archive()

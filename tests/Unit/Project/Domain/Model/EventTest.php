@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Project\Domain\Model\Project;
 
 use Illuminate\Support\Collection;
-use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Project\Event\Event;
 use Teamo\Project\Domain\Model\Project\Event\EventComment;
@@ -28,8 +27,7 @@ class EventTest extends TestCase
             new TeamMemberId('id-1'),
             'My Event',
             'Event Details',
-            new \DateTimeImmutable(),
-            new Collection()
+            new \DateTimeImmutable()
         );
     }
 
@@ -38,10 +36,9 @@ class EventTest extends TestCase
         $projectId = new ProjectId('p-1');
         $eventId = new EventId('e-1');
         $creatorId = new TeamMemberId('c-1');
-        $attachments = new Collection([new Attachment('1', 'Attachment.txt')]);
         $occursOn = new \DateTimeImmutable();
 
-        $event = new Event($projectId, $eventId, $creatorId, 'Name', 'Details', $occursOn, $attachments);
+        $event = new Event($projectId, $eventId, $creatorId, 'Name', 'Details', $occursOn);
 
         $this->assertSame($projectId, $event->projectId());
         $this->assertSame($eventId, $event->eventId());
@@ -49,7 +46,6 @@ class EventTest extends TestCase
         $this->assertEquals('Name', $event->name());
         $this->assertEquals('Details', $event->details());
         $this->assertSame($occursOn, $event->occursOn());
-        $this->assertFalse($event->attachments()->isEmpty());
     }
 
     public function testEventCanBeCommented()
@@ -66,9 +62,11 @@ class EventTest extends TestCase
         $this->assertEquals('My Event', $this->event->name());
         $this->assertEquals('Event Details', $this->event->details());
 
-        $this->event->update('New Event', 'New Details');
+        $occursOn = new \DateTimeImmutable();
+        $this->event->update('New Event', 'New Details', $occursOn);
         $this->assertEquals('New Event', $this->event->name());
         $this->assertEquals('New Details', $this->event->details());
+        $this->assertEquals($occursOn, $this->event->occursOn());
     }
 
     public function testEventCanBeArchivedAndRestored()

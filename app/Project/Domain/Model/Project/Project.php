@@ -112,11 +112,11 @@ class Project extends Entity
         return new TodoList($this->projectId(), $todoListId, $creatorId, $name);
     }
 
-    public function scheduleEvent(EventId $eventId, TeamMemberId $creatorId, string $name, string $details, \DateTimeImmutable $occursOn, Collection $attachments): Event
+    public function scheduleEvent(EventId $eventId, TeamMemberId $creator, string $name, string $details, \DateTimeImmutable $occursOn): Event
     {
         $this->resetUpdatedOn();
 
-        return new Event($this->projectId(), $eventId, $creatorId, $name, $details, $occursOn, $attachments);
+        return new Event($this->projectId(), $eventId, $creator, $name, $details, $occursOn);
     }
 
     public function __construct(TeamMemberId $owner, ProjectId $projectId, string $name, bool $archived)

@@ -46,12 +46,15 @@ abstract class Comment extends Entity
 
     public function update(string $content, TeamMemberId $author)
     {
-        if (!$this->author()->equals($author)) {
-            throw new \InvalidArgumentException('Provided team member is not an author of this comment');
-        }
+        $this->assertIsAuthor($author);
 
         $this->setContent($content);
         $this->resetUpdatedOn();
+    }
+
+    public function assertCanUpdate(TeamMemberId $teamMemberId)
+    {
+        $this->assertIsAuthor($teamMemberId);
     }
 
     protected function setCommentId(CommentId $commentId)
@@ -59,7 +62,7 @@ abstract class Comment extends Entity
         $this->commentId = $commentId;
     }
 
-    public function setAuthor(TeamMemberId $author)
+    protected function setAuthor(TeamMemberId $author)
     {
         $this->author = $author;
     }
@@ -77,5 +80,12 @@ abstract class Comment extends Entity
 
         $this->setContent($content);
         $this->setAttachments($attachments);
+    }
+
+    protected function assertIsAuthor(TeamMemberId $author)
+    {
+        if (!$this->author()->equals($author)) {
+            throw new \InvalidArgumentException('Provided team member is not an author of this comment');
+        }
     }
 }

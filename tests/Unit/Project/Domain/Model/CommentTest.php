@@ -32,7 +32,7 @@ class CommentTest extends TestCase
         $attachments = array_values($this->comment->attachments()->toArray());
         $this->assertInstanceOf(Attachment::class, $attachments[0]);
 
-        $this->comment->removeAttachment($attachments[0]->id());
+        $this->comment->removeAttachment($attachments[0]->id(), new TeamMemberId('id-1'));
         $this->assertEmpty($this->comment->attachments());
     }
 

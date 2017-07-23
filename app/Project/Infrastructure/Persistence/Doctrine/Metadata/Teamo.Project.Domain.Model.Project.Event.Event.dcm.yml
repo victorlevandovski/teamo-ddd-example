@@ -1,0 +1,27 @@
+Teamo\Project\Domain\Model\Project\Event\Event:
+  type: entity
+  repositoryClass: Teamo\Project\Infrastructure\Persistence\Doctrine\DoctrineEventRepository
+  table: events
+  id:
+    eventId:
+      type: EventId
+      column: id
+  fields:
+    projectId:
+      type: ProjectId
+    creator:
+      type: TeamMemberId
+      column: creator_team_member_id
+    name:
+      type: string
+    details:
+      type: text
+    archived:
+      type: boolean
+      column: is_archived
+    occursOn:
+      type: DateTimeImmutable
+      nullable: false
+    createdOn:
+      type: DateTimeImmutable
+      nullable: false

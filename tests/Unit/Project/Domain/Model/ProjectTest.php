@@ -75,10 +75,9 @@ class ProjectTest extends TestCase
 
     public function testProjectCanScheduleEvent()
     {
-        $creatorId = new TeamMemberId('id-1');
-        $attachments = new Collection([new Attachment('1', 'attachment.txt')]);
+        $creator = new TeamMemberId('id-1');
 
-        $event = $this->project->scheduleEvent(new EventId('1'), $creatorId, 'My Event', 'Event details', new \DateTimeImmutable(), $attachments);
+        $event = $this->project->scheduleEvent(new EventId('1'), $creator, 'My Event', 'Event details', new \DateTimeImmutable());
 
         $this->assertInstanceOf(Event::class, $event);
     }
