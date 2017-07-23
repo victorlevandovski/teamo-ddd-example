@@ -35,6 +35,32 @@ function date_ui(DateTimeImmutable $date)
     }
 }
 
+function event_date_time_ui(DateTimeImmutable $date, int $timeFormat, string $timezone)
+{
+    $time = $date->getTimestamp();
+    $tm = time_format_from_int($timeFormat);
+
+    if (utc2local(time(), 'Y-m-d', $timezone) == utc2local($time, 'Y-m-d', $timezone)) {
+        return trans('date.today') . ' ' . trans('date.at') . ' ' . utc2local($time, $tm, $timezone);
+    }
+
+    if (utc2local(time() + 86400, 'Y-m-d', $timezone) == utc2local($time, 'Y-m-d', $timezone)) {
+        return trans('date.tomorrow') . ' ' . trans('date.at') . ' ' . utc2local($time, $tm, $timezone);
+    }
+
+    return month_day_ui($time, $timezone) . ' ' . trans('date.at') . ' ' . utc2local($time, $tm, $timezone);
+}
+
+function time_format_from_int(int $timeFormat)
+{
+    return $timeFormat == 12 ? 'g:i a' : 'H:i';
+}
+
+function month_ui(DateTimeImmutable $date, $timezone)
+{
+    return trans('date.' . strtolower(utc2local($date->getTimestamp(), 'M', $timezone)));
+}
+
 function pluralize_ui($count, $transKey)
 {
     $count = intval($count);
@@ -195,7 +221,7 @@ function utc2local($timestamp, $format, $timezone)
 {
     static $difference = -1;
 
-    $timestamp = $timestamp instanceof \Carbon\Carbon ? $timestamp->timestamp : $timestamp;
+    $timestamp = $timestamp instanceof \DateTimeImmutable ? $timestamp->getTimestamp() : $timestamp;
 
     if ($difference == -1) {
         $now = time();
@@ -212,7 +238,7 @@ function local2utc($timestamp, $format, $timezone)
 {
     static $difference = -1;
 
-    $timestamp = $timestamp instanceof \Carbon\Carbon ? $timestamp->timestamp : $timestamp;
+    $timestamp = $timestamp instanceof \DateTimeImmutable ? $timestamp->getTimestamp() : $timestamp;
 
     if ($difference == -1) {
         $now = time();

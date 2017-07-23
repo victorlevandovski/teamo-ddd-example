@@ -10,6 +10,10 @@ use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionCommentRepository;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionRepository;
+use Teamo\Project\Domain\Model\Project\Event\Event;
+use Teamo\Project\Domain\Model\Project\Event\EventComment;
+use Teamo\Project\Domain\Model\Project\Event\EventCommentRepository;
+use Teamo\Project\Domain\Model\Project\Event\EventRepository;
 use Teamo\Project\Domain\Model\Project\Project;
 use Teamo\Project\Domain\Model\Project\ProjectRepository;
 use Teamo\Project\Domain\Model\Team\TeamMember;
@@ -27,6 +31,8 @@ class RepositoryServiceProvider extends ServiceProvider
             TeamMemberRepository::class => TeamMember::class,
             DiscussionRepository::class => Discussion::class,
             DiscussionCommentRepository::class => DiscussionComment::class,
+            EventRepository::class => Event::class,
+            EventCommentRepository::class => EventComment::class,
         ];
     }
 

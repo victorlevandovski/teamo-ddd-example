@@ -38,6 +38,8 @@ class AppComposer
         $view->with('userName', $user->name());
         $view->with('userFirstDayOfWeek', $user->preferences()->firstDayOfWeek());
         $view->with('userDateFormat', $user->preferences()->dateFormat());
+        $view->with('userTimeFormat', $user->preferences()->timeFormat());
+        $view->with('userTimezone', $user->preferences()->timezone());
 
         if ($route = Route::getCurrentRoute()) {
             if ($route->project) {

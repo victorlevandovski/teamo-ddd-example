@@ -41,6 +41,17 @@ class CommandBusServiceProvider extends ServiceProvider
             \Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommentCommand::class => \Teamo\Project\Application\Command\Discussion\UpdateDiscussionCommentHandler::class,
             \Teamo\Project\Application\Command\Discussion\RemoveDiscussionCommentCommand::class => \Teamo\Project\Application\Command\Discussion\RemoveDiscussionCommentHandler::class,
             \Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionCommentCommand::class => \Teamo\Project\Application\Command\Discussion\RemoveAttachmentOfDiscussionCommentHandler::class,
+
+            // Event
+            \Teamo\Project\Application\Command\Event\ScheduleEventCommand::class => \Teamo\Project\Application\Command\Event\ScheduleEventHandler::class,
+            \Teamo\Project\Application\Command\Event\UpdateEventCommand::class => \Teamo\Project\Application\Command\Event\UpdateEventHandler::class,
+            \Teamo\Project\Application\Command\Event\RemoveEventCommand::class => \Teamo\Project\Application\Command\Event\RemoveEventHandler::class,
+            \Teamo\Project\Application\Command\Event\ArchiveEventCommand::class => \Teamo\Project\Application\Command\Event\ArchiveEventHandler::class,
+            \Teamo\Project\Application\Command\Event\RestoreEventCommand::class => \Teamo\Project\Application\Command\Event\RestoreEventHandler::class,
+            \Teamo\Project\Application\Command\Event\PostEventCommentCommand::class => \Teamo\Project\Application\Command\Event\PostEventCommentHandler::class,
+            \Teamo\Project\Application\Command\Event\UpdateEventCommentCommand::class => \Teamo\Project\Application\Command\Event\UpdateEventCommentHandler::class,
+            \Teamo\Project\Application\Command\Event\RemoveEventCommentCommand::class => \Teamo\Project\Application\Command\Event\RemoveEventCommentHandler::class,
+            \Teamo\Project\Application\Command\Event\RemoveAttachmentOfEventCommentCommand::class => \Teamo\Project\Application\Command\Event\RemoveAttachmentOfEventCommentHandler::class,
         ];
     }
 

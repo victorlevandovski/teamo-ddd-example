@@ -41,8 +41,24 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'my', 'namespace' => 
     Route::delete('project/{project}/discussion/{discussion}/attachment/{attachment}', ['as' => 'project.discussion.ajax_delete_attachment', 'uses' => 'DiscussionController@ajaxDestroyAttachment']);
     Route::delete('project/{project}/discussion/{discussion}/comment/{comment}/attachment/{attachment}', ['as' => 'project.discussion.ajax_delete_comment_attachment', 'uses' => 'DiscussionController@ajaxDestroyCommentAttachment']);
 
-    // Attachment
+    // Event
+    Route::get('project/{project}/events', ['as' => 'project.event.index', 'uses' => 'EventController@index']);
+    Route::get('project/{project}/events/archive', ['as' => 'project.event.archive', 'uses' => 'EventController@archive']);
+    Route::get('project/{project}/event/{event}/archive', ['as' => 'project.event.archive_event', 'uses' => 'EventController@archiveEvent']);
+    Route::get('project/{project}/event/{event}/restore', ['as' => 'project.event.restore_event', 'uses' => 'EventController@restoreEvent']);
+    Route::get('project/{project}/event/create', ['as' => 'project.event.create', 'uses' => 'EventController@create']);
+    Route::get('project/{project}/event/{event}/edit', ['as' => 'project.event.edit', 'uses' => 'EventController@edit']);
+    Route::get('project/{project}/event/{event}/comment/{comment}/edit', ['as' => 'project.event.edit_comment', 'uses' => 'EventController@editComment']);
+    Route::post('project/{project}/event', ['as' => 'project.event.store', 'uses' => 'EventController@store']);
+    Route::patch('project/{project}/event/{event}', ['as' => 'project.event.update', 'uses' => 'EventController@update']);
+    Route::post('project/{project}/event/{event}/comment', ['as' => 'project.event.store_comment', 'uses' => 'EventController@storeComment']);
+    Route::patch('project/{project}/event/{event}/comment/{comment}', ['as' => 'project.event.update_comment', 'uses' => 'EventController@updateComment']);
+    Route::get('project/{project}/event/{event}/delete', ['as' => 'project.event.delete', 'uses' => 'EventController@destroy']);
+    Route::get('project/{project}/event/{event}', ['as' => 'project.event.show', 'uses' => 'EventController@show']);
+    Route::delete('project/{project}/event/{event}/comment/{comment}', ['as' => 'project.event.ajax_delete_comment', 'uses' => 'EventController@ajaxDestroyComment']);
+    Route::delete('project/{project}/event/{event}/comment/{comment}/attachment/{attachment}', ['as' => 'project.event.ajax_delete_comment_attachment', 'uses' => 'EventController@ajaxDestroyCommentAttachment']);
 
+    // Attachment
     Route::post('ajax_file_upload', 'AttachmentController@ajaxUploadFile');
     Route::patch('ajax_file_upload', 'AttachmentController@ajaxUploadFile');
     Route::get('download/{attachment}/{name}', ['as' => 'project.attachment.download', 'uses' => 'AttachmentController@download']);
