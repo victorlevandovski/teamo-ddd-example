@@ -1,0 +1,18 @@
+Teamo\Common\Domain\StoredEvent:
+  type: entity
+  repositoryClass: Teamo\Common\Infrastructure\Persistence\DoctrineEventStore
+  table: event_store
+  id:
+    eventId:
+      type: integer
+      column: id
+      generator:
+        strategy: AUTO
+  fields:
+    typeName:
+      type: string
+    eventBody:
+      type: text
+    occurredOn:
+      type: DateTimeImmutable
+      nullable: false

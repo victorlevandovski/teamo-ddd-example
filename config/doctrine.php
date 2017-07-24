@@ -31,6 +31,7 @@ return [
             'paths'         => [
                 base_path('app/User/Infrastructure/Persistence/Doctrine/Metadata'),
                 base_path('app/Project/Infrastructure/Persistence/Doctrine/Metadata'),
+                base_path('app/Common/Infrastructure/Persistence/Metadata'),
             ],
             'repository'    => Doctrine\ORM\EntityRepository::class,
             'proxies'       => [

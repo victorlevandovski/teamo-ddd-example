@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Teamo\Common\Domain\EventStore;
+use Teamo\Common\Domain\StoredEvent;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionCommentRepository;
@@ -26,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
     private function repositories()
     {
         return [
+            EventStore::class => StoredEvent::class,
             UserRepository::class => User::class,
             ProjectRepository::class => Project::class,
             TeamMemberRepository::class => TeamMember::class,
