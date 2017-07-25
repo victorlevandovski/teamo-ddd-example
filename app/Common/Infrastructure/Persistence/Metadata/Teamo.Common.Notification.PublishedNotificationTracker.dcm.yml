@@ -1,0 +1,15 @@
+Teamo\Common\Notification\PublishedNotificationTracker:
+  type: entity
+  repositoryClass: Teamo\Common\Infrastructure\Persistence\DoctrinePublishedNotificationTrackerStore
+  table: published_notification_trackers
+  id:
+    publishedNotificationTrackerId:
+      type: integer
+      column: id
+      generator:
+        strategy: AUTO
+  fields:
+    mostRecentPublishedNotificationId:
+      type: integer
+    typeName:
+      type: string

@@ -7,14 +7,13 @@ use Doctrine\ORM\EntityRepository;
 use Teamo\Common\Domain\DomainEvent;
 use Teamo\Common\Domain\EventStore;
 use Teamo\Common\Domain\StoredEvent;
+use Teamo\Common\Facade\Serializer;
 
 class DoctrineEventStore extends EntityRepository implements EventStore
 {
-    private $serializer;
-
     public function append(DomainEvent $domainEvent)
     {
-        $storedEvent = new StoredEvent(get_class($domainEvent), $this->serializer()->serialize($domainEvent, 'json'), $domainEvent->occurredOn());
+        $storedEvent = new StoredEvent(get_class($domainEvent), Serializer::serialize($domainEvent, 'json'), $domainEvent->occurredOn());
 
         $this->getEntityManager()->persist($storedEvent);
     }
@@ -31,14 +30,5 @@ class DoctrineEventStore extends EntityRepository implements EventStore
         $query->orderBy('e.eventId');
 
         return $query->getQuery()->getResult();
-    }
-
-    private function serializer()
-    {
-        if (!$this->serializer) {
-            $this->serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-        }
-
-        return $this->serializer;
     }
 }

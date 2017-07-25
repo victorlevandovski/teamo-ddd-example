@@ -8,6 +8,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Teamo\Common\Domain\EventStore;
 use Teamo\Common\Domain\StoredEvent;
+use Teamo\Common\Notification\PublishedNotificationTracker;
+use Teamo\Common\Notification\PublishedNotificationTrackerStore;
 use Teamo\Project\Domain\Model\Project\Discussion\Discussion;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionComment;
 use Teamo\Project\Domain\Model\Project\Discussion\DiscussionCommentRepository;
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         return [
             EventStore::class => StoredEvent::class,
+            PublishedNotificationTrackerStore::class => PublishedNotificationTracker::class,
             UserRepository::class => User::class,
             ProjectRepository::class => Project::class,
             TeamMemberRepository::class => TeamMember::class,

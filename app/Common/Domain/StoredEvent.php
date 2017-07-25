@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Teamo\Common\Domain;
 
-use JMS\Serializer\SerializerInterface;
+use Teamo\Common\Facade\Serializer;
 
 class StoredEvent
 {
@@ -39,8 +39,8 @@ class StoredEvent
         return $this->occurredOn;
     }
 
-    public function toDomainEvent(SerializerInterface $serializer): DomainEvent
+    public function toDomainEvent(): DomainEvent
     {
-        return $serializer->deserialize($this->eventBody, $this->typeName, 'json');
+        return Serializer::deserialize($this->eventBody, $this->typeName, 'json');
     }
 }
