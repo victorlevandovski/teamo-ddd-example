@@ -5,5 +5,5 @@ namespace Teamo\Common\Notification;
 
 interface PublishedNotificationTrackerStore
 {
-    public function publishedNotificationTracker(string $typeName): PublishedNotificationTracker;
+    public function publishedNotificationTracker(string $exchangeName): PublishedNotificationTracker;
 }

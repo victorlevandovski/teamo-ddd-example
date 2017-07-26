@@ -14,7 +14,7 @@ class Version20170725192451 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE published_notification_trackers (id INT AUTO_INCREMENT NOT NULL, most_recent_published_notification_id INT NOT NULL, type_name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE published_notification_trackers (id INT AUTO_INCREMENT NOT NULL, most_recent_published_notification_id INT NOT NULL, exchange_name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
     }
 
     /**

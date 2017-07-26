@@ -9,12 +9,12 @@ use Teamo\Common\Notification\PublishedNotificationTrackerStore;
 
 class DoctrinePublishedNotificationTrackerStore extends EntityRepository implements PublishedNotificationTrackerStore
 {
-    public function publishedNotificationTracker(string $typeName): PublishedNotificationTracker
+    public function publishedNotificationTracker(string $exchangeName): PublishedNotificationTracker
     {
-        $publishedNotificationTracker = $this->findOneByTypeName($typeName);
+        $publishedNotificationTracker = $this->findOneByExchangeName($exchangeName);
 
         if (null === $publishedNotificationTracker) {
-            $publishedNotificationTracker = new PublishedNotificationTracker($typeName);
+            $publishedNotificationTracker = new PublishedNotificationTracker($exchangeName);
             $this->getEntityManager()->persist($publishedNotificationTracker);
         }
 

@@ -6,23 +6,25 @@ namespace Teamo\Common\Notification;
 use Illuminate\Support\Facades\Log;
 use Teamo\Common\Domain\EventStore;
 use Teamo\Common\Domain\StoredEvent;
+use Teamo\Common\Port\Adapter\Messaging\MessageParameters;
+use Teamo\Common\Port\Adapter\Messaging\MessageProducer;
 
 class NotificationPublisher
 {
     private $eventStore;
     private $publishedNotificationTrackerStore;
-    private $messageQueue;
+    private $messageProducer;
     private $exchangeName;
 
     public function __construct(
         EventStore $eventStore,
         PublishedNotificationTrackerStore $publishedNotificationTrackerStore,
-        MessageQueue $messageQueue,
+        MessageProducer $messageProducer,
         string $exchangeName
     ) {
         $this->eventStore = $eventStore;
         $this->publishedNotificationTrackerStore = $publishedNotificationTrackerStore;
-        $this->messageQueue = $messageQueue;
+        $this->messageProducer = $messageProducer;
         $this->exchangeName = $exchangeName;
     }
 
@@ -30,17 +32,14 @@ class NotificationPublisher
     {
         $publishedNotifications = 0;
 
-        $publishedNotificationTracker = $this->publishedNotificationTrackerStore
-            ->publishedNotificationTracker($this->exchangeName);
-
-        $notifications = $this->eventStore
-            ->allStoredEventsSince($publishedNotificationTracker->mostRecentPublishedNotificationId());
+        $publishedNotificationTracker = $this->publishedNotificationTracker();
+        $notifications = $this->unpublishedNotifications($publishedNotificationTracker);
 
         if (!$notifications) {
             return $publishedNotifications;
         }
 
-        $this->messageQueue->open($this->exchangeName);
+        $this->messageProducer->open($this->exchangeName);
 
         try {
             foreach ($notifications as $notification) {
@@ -51,18 +50,30 @@ class NotificationPublisher
             Log::error($e->getMessage());
         }
 
-        $this->messageQueue->close();
+        $this->messageProducer->close();
 
         return $publishedNotifications;
     }
 
     private function publish(StoredEvent $notification)
     {
-        $this->messageQueue->send(
-            $notification->eventId(),
-            $notification->typeName(),
+        $this->messageProducer->send(
             $notification->eventBody(),
-            $notification->occurredOn()
+            new MessageParameters(
+                (string) $notification->eventId(),
+                $notification->typeName(),
+                $notification->occurredOn()->getTimestamp()
+            )
         );
+    }
+
+    private function publishedNotificationTracker(): PublishedNotificationTracker
+    {
+        return $this->publishedNotificationTrackerStore->publishedNotificationTracker($this->exchangeName);
+    }
+
+    private function unpublishedNotifications(PublishedNotificationTracker $publishedNotificationTracker)
+    {
+        return $this->eventStore->allStoredEventsSince($publishedNotificationTracker->mostRecentPublishedNotificationId());
     }
 }

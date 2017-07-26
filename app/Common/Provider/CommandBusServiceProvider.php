@@ -20,6 +20,9 @@ class CommandBusServiceProvider extends ServiceProvider
             \Teamo\User\Application\Command\User\UpdateUserAvatarCommand::class => \Teamo\User\Application\Command\User\UpdateUserAvatarHandler::class,
             \Teamo\User\Application\Command\User\RemoveUserAvatarCommand::class => \Teamo\User\Application\Command\User\RemoveUserAvatarHandler::class,
 
+            // User notifications publisher
+            \Teamo\User\Application\Command\Notification\PublishNotificationsCommand::class => \Teamo\User\Application\Command\Notification\PublishNotificationsHandler::class,
+
             // TeamMember
             \Teamo\Project\Application\Command\Team\RegisterTeamMemberCommand::class => \Teamo\Project\Application\Command\Team\RegisterTeamMemberHandler::class,
             \Teamo\Project\Application\Command\Team\RenameTeamMemberCommand::class => \Teamo\Project\Application\Command\Team\RenameTeamMemberHandler::class,

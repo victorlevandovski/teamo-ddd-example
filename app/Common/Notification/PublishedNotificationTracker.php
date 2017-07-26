@@ -7,12 +7,12 @@ class PublishedNotificationTracker
 {
     private $publishedNotificationTrackerId;
     private $mostRecentPublishedNotificationId;
-    private $typeName;
+    private $exchangeName;
 
-    public function __construct(string $typeName)
+    public function __construct(string $exchangeName)
     {
         $this->mostRecentPublishedNotificationId = 0;
-        $this->typeName = $typeName;
+        $this->exchangeName = $exchangeName;
     }
 
     public function updateMostRecentPublishedNotificationId(int $id)
@@ -30,8 +30,8 @@ class PublishedNotificationTracker
         return $this->mostRecentPublishedNotificationId;
     }
 
-    public function typeName(): string
+    public function exchangeName(): string
     {
-        return $this->typeName;
+        return $this->exchangeName;
     }
 }

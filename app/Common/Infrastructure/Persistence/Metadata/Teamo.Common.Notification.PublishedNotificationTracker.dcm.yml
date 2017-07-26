@@ -11,5 +11,5 @@ Teamo\Common\Notification\PublishedNotificationTracker:
   fields:
     mostRecentPublishedNotificationId:
       type: integer
-    typeName:
+    exchangeName:
       type: string
