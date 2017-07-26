@@ -180,6 +180,7 @@ return [
         Teamo\Common\Provider\RepositoryServiceProvider::class,
         Teamo\Common\Provider\DomainEventPublisherServiceProvider::class,
         Teamo\Common\Provider\MacroServiceProvider::class,
+        \Teamo\Common\Provider\AMQPServiceProvider::class,
 
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,
         LaravelDoctrine\Migrations\MigrationsServiceProvider::class,

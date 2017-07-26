@@ -3,23 +3,20 @@ declare(strict_types=1);
 
 namespace Teamo\Common\Port\Adapter\Messaging\RabbitMQ;
 
+use PhpAmqpLib\Message\AMQPMessage;
 use Teamo\Common\Port\Adapter\Messaging\MessageParameters;
 use Teamo\Common\Port\Adapter\Messaging\MessageProducer;
 
-class RabbitMQMessageProducer implements MessageProducer
+class RabbitMQMessageProducer extends RabbitMQMessaging implements MessageProducer
 {
-    public function open(string $exchangeName)
-    {
-        // TODO: Implement open() method.
-    }
-
     public function send(string $message, MessageParameters $messageParameters)
     {
-        // TODO: Implement send() method.
-    }
+        $properties = [
+            'message_id' => $messageParameters->messageId(),
+            'type' => $messageParameters->type(),
+            'timestamp' => $messageParameters->timestamp()
+        ];
 
-    public function close()
-    {
-        // TODO: Implement close() method.
+        $this->channel()->basic_publish(new AMQPMessage($message, $properties), $this->exchangeName);
     }
 }
