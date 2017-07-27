@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Teamo\Project\Infrastructure\Messaging;
+namespace Teamo\Project\Infrastructure\Messaging\Local;
 
 use Teamo\Common\Application\CommandBus;
 use Teamo\Common\Domain\DomainEventSubscriber;
 use Teamo\Project\Application\Command\Team\RegisterTeamMemberCommand;
-use Teamo\User\Domain\Model\User\UserRegistered;
 
-class UserRegisteredListener implements DomainEventSubscriber
+class UserRegisteredSubscriber implements DomainEventSubscriber
 {
     private $commandBus;
 
@@ -19,10 +18,10 @@ class UserRegisteredListener implements DomainEventSubscriber
 
     public function isSubscribedTo(string $eventType): bool
     {
-        return $eventType == UserRegistered::class;
+        return $eventType == 'Teamo\User\Domain\Model\User\UserRegistered';
     }
 
-    /** @param UserRegistered $event */
+    /** @param \Teamo\User\Domain\Model\User\UserRegistered $event */
     public function handle($event)
     {
         $command = new RegisterTeamMemberCommand($event->userId()->id(), $event->name());
