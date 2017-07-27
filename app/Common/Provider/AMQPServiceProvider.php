@@ -5,8 +5,8 @@ namespace Teamo\Common\Provider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use Teamo\Common\Port\Adapter\Messaging\MessageProducer;
-use Teamo\Common\Port\Adapter\Messaging\RabbitMQ\RabbitMQMessageProducer;
+use Teamo\Common\Infrastructure\Messaging\MessageProducer;
+use Teamo\Common\Infrastructure\Messaging\RabbitMQ\RabbitMQMessageProducer;
 
 class AMQPServiceProvider extends ServiceProvider
 {

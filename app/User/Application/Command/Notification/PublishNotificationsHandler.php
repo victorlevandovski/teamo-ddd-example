@@ -6,7 +6,7 @@ namespace Teamo\User\Application\Command\Notification;
 use Teamo\Common\Domain\EventStore;
 use Teamo\Common\Notification\NotificationPublisher;
 use Teamo\Common\Notification\PublishedNotificationTrackerStore;
-use Teamo\Common\Port\Adapter\Messaging\MessageProducer;
+use Teamo\Common\Infrastructure\Messaging\MessageProducer;
 
 class PublishNotificationsHandler
 {

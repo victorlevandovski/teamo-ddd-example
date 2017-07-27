@@ -6,8 +6,8 @@ namespace Teamo\Common\Notification;
 use Illuminate\Support\Facades\Log;
 use Teamo\Common\Domain\EventStore;
 use Teamo\Common\Domain\StoredEvent;
-use Teamo\Common\Port\Adapter\Messaging\MessageParameters;
-use Teamo\Common\Port\Adapter\Messaging\MessageProducer;
+use Teamo\Common\Infrastructure\Messaging\MessageParameters;
+use Teamo\Common\Infrastructure\Messaging\MessageProducer;
 
 class NotificationPublisher
 {
