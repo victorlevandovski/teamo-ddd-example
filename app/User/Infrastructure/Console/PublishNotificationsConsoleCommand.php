@@ -11,7 +11,7 @@ class PublishNotificationsConsoleCommand extends Command
 {
     protected $signature = 'notifications:publish {exchange_name}';
 
-    protected $description = 'Push unpublished notifications into Queue';
+    protected $description = 'Push unpublished notifications into message queue';
 
     protected $commandBus;
 

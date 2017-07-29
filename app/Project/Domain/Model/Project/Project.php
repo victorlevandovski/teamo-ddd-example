@@ -105,11 +105,11 @@ class Project extends Entity
         return new Discussion($this->projectId(), $discussionId, $author, $topic, $content, $attachments);
     }
 
-    public function createTodoList(TodoListId $todoListId, TeamMemberId $creatorId, string $name): TodoList
+    public function createTodoList(TodoListId $todoListId, TeamMemberId $creator, string $name): TodoList
     {
         $this->resetUpdatedOn();
 
-        return new TodoList($this->projectId(), $todoListId, $creatorId, $name);
+        return new TodoList($this->projectId(), $todoListId, $creator, $name);
     }
 
     public function scheduleEvent(EventId $eventId, TeamMemberId $creator, string $name, string $details, \DateTimeImmutable $occursOn): Event

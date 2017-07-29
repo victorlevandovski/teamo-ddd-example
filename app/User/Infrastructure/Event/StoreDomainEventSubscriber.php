@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Teamo\User\Application\Subscriber;
+namespace Teamo\User\Infrastructure\Event;
 
 use Teamo\Common\Domain\DomainEventSubscriber;
 use Teamo\Common\Domain\EventStore;

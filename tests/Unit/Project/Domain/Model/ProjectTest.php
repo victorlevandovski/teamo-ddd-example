@@ -67,8 +67,8 @@ class ProjectTest extends TestCase
 
     public function testProjectCanCreateTodoList()
     {
-        $creatorId = new TeamMemberId('id-1');
-        $todoList = $this->project->createTodoList(new TodoListId('1'), $creatorId, 'New Todo List');
+        $creator = new TeamMemberId('id-1');
+        $todoList = $this->project->createTodoList(new TodoListId('1'), $creator, 'New Todo List');
 
         $this->assertInstanceOf(TodoList::class, $todoList);
     }

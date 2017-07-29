@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Teamo\Common\Domain\DomainEventPublisher;
 use Teamo\Project\Infrastructure\Messaging\Local\UserRegisteredSubscriber;
 use Teamo\Project\Infrastructure\Messaging\Local\UserRenamedSubscriber;
-use Teamo\User\Application\Subscriber\StoreDomainEventSubscriber;
+use Teamo\User\Infrastructure\Event\StoreDomainEventSubscriber;
 
 class DomainEventPublisherServiceProvider extends ServiceProvider
 {

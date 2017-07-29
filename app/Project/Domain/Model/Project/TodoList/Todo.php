@@ -3,38 +3,47 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\TodoList;
 
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
 use Teamo\Project\Domain\Model\Project\Comment\CommentId;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
 class Todo extends Entity
 {
+    use CreatedOn;
+
     private $todoListId;
     private $todoId;
+    private $creator;
     private $name;
-    private $assigneeId;
+    private $assignee;
     private $deadline;
     private $completed;
 
-    public function __construct(TodoListId $todoListId, TodoId $todoId, string $name)
+    public function __construct(TodoListId $todoListId, TodoId $todoId, TeamMemberId $creator, string $name)
     {
         $this->setTodoListId($todoListId);
         $this->setTodoId($todoId);
+        $this->setCreator($creator);
         $this->setName($name);
         $this->setCompleted(false);
+        $this->resetCreatedOn();
     }
 
     public function todoListId(): TodoListId
     {
         return $this->todoListId;
     }
-
-
+    
     public function todoId(): TodoId
     {
         return $this->todoId;
+    }
+
+    public function creator(): TeamMemberId
+    {
+        return $this->creator;
     }
 
     public function name(): string
@@ -42,12 +51,12 @@ class Todo extends Entity
         return $this->name;
     }
 
-    public function assigneeId(): ?TeamMemberId
+    public function assignee(): ?TeamMemberId
     {
-        return $this->assigneeId;
+        return $this->assignee;
     }
 
-    public function deadline(): ?Carbon
+    public function deadline(): ?\DateTimeImmutable
     {
         return $this->deadline;
     }
@@ -72,12 +81,12 @@ class Todo extends Entity
         $this->setName($name);
     }
 
-    public function assignTo(TeamMemberId $assigneeId)
+    public function assignTo(TeamMemberId $assignee)
     {
-        $this->setAssignee($assigneeId);
+        $this->setAssignee($assignee);
     }
 
-    public function deadlineOn(Carbon $deadline)
+    public function deadlineOn(\DateTimeImmutable $deadline)
     {
         $this->setDeadline($deadline);
     }
@@ -107,17 +116,22 @@ class Todo extends Entity
         $this->todoId = $todoId;
     }
 
+    private function setCreator(TeamMemberId $creator)
+    {
+        $this->creator = $creator;
+    }
+
     private function setName(string $name)
     {
         $this->name = $name;
     }
 
-    private function setAssignee(?TeamMemberId $assigneeId)
+    private function setAssignee(?TeamMemberId $assignee)
     {
-        $this->assigneeId = $assigneeId;
+        $this->assignee = $assignee;
     }
 
-    private function setDeadline(?Carbon $deadline)
+    private function setDeadline(?\DateTimeImmutable $deadline)
     {
         $this->deadline = $deadline;
     }
