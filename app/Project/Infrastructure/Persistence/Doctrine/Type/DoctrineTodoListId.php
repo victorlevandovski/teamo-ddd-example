@@ -5,22 +5,22 @@ namespace Teamo\Project\Infrastructure\Persistence\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\GuidType;
-use Teamo\Project\Domain\Model\Team\TeamMemberId;
+use Teamo\Project\Domain\Model\Project\TodoList\TodoListId;
 
-class DoctrineTeamMemberId extends GuidType
+class DoctrineTodoListId extends GuidType
 {
     public function getName()
     {
-        return 'TeamMemberId';
+        return 'TodoListId';
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return $value ? $value->id() : null;
+        return $value->id();
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return $value ? new TeamMemberId($value) : null;
+        return new TodoListId($value);
     }
 }

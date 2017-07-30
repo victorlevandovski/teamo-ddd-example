@@ -1,0 +1,27 @@
+Teamo\Project\Domain\Model\Project\TodoList\Todo:
+  type: entity
+  table: todos
+  id:
+    todoId:
+      type: TodoId
+      column: id
+  fields:
+    todoListId:
+      type: TodoListId
+    creator:
+      type: TeamMemberId
+      column: creator_team_member_id
+    name:
+      type: string
+    assignee:
+      type: TeamMemberId
+      column: assignee_team_member_id
+      nullable: true
+    deadline:
+      type: DateTimeImmutable
+      nullable: true
+    position:
+      type: integer
+    createdOn:
+      type: DateTimeImmutable
+      nullable: false

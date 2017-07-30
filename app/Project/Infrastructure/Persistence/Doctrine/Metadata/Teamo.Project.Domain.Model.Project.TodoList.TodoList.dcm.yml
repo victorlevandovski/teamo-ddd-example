@@ -1,0 +1,36 @@
+Teamo\Project\Domain\Model\Project\TodoList\TodoList:
+  type: entity
+  repositoryClass: Teamo\Project\Infrastructure\Persistence\Doctrine\DoctrineTodoListRepository
+  table: todo_lists
+  id:
+    todoListId:
+      type: TodoListId
+      column: id
+  fields:
+    projectId:
+      type: ProjectId
+    creator:
+      type: TeamMemberId
+      column: creator_team_member_id
+    name:
+      type: string
+    archived:
+      type: boolean
+      column: is_archived
+    createdOn:
+      type: DateTimeImmutable
+      nullable: false
+  manyToMany:
+    todos:
+      targetEntity: Teamo\Project\Domain\Model\Project\TodoList\Todo
+      cascade: [all]
+      orderBy: {position: ASC}
+      joinTable:
+        name: todo_lists_todos
+        joinColumns:
+          todo_list_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          todo_id:
+            referencedColumnName: id
+            unique: true

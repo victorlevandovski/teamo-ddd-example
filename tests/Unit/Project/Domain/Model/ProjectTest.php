@@ -19,9 +19,7 @@ use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
-    /**
-     * @var Project
-     */
+    /** @var Project */
     private $project;
 
     public function setUp()
@@ -58,28 +56,48 @@ class ProjectTest extends TestCase
     public function testProjectCanStartDiscussion()
     {
         $author = new TeamMemberId('id-1');
+        $discussionId = new DiscussionId('1');
         $attachments = new Collection([new Attachment('1', 'attachment.txt')]);
 
-        $discussion = $this->project->startDiscussion(new DiscussionId('1'), $author, 'New Discussion', 'Discussion content', $attachments);
+        $discussion = $this->project->startDiscussion($discussionId, $author, 'New Discussion', 'Discussion content', $attachments);
 
         $this->assertInstanceOf(Discussion::class, $discussion);
+        $this->assertSame($this->project->projectId(), $discussion->projectId());
+        $this->assertSame($discussionId, $discussion->discussionId());
+        $this->assertSame($author, $discussion->author());
+        $this->assertEquals('New Discussion', $discussion->topic());
+        $this->assertEquals('Discussion content', $discussion->content());
+        $this->assertCount(1, $discussion->attachments());
     }
 
     public function testProjectCanCreateTodoList()
     {
         $creator = new TeamMemberId('id-1');
-        $todoList = $this->project->createTodoList(new TodoListId('1'), $creator, 'New Todo List');
+        $todoListId = new TodoListId('1');
+        $todoList = $this->project->createTodoList($todoListId, $creator, 'New Todo List');
 
         $this->assertInstanceOf(TodoList::class, $todoList);
+        $this->assertSame($this->project->projectId(), $todoList->projectId());
+        $this->assertSame($todoListId, $todoList->todoListId());
+        $this->assertSame($creator, $todoList->creator());
+        $this->assertEquals('New Todo List', $todoList->name());
     }
 
     public function testProjectCanScheduleEvent()
     {
         $creator = new TeamMemberId('id-1');
+        $eventId = new EventId('1');
+        $occursOn = new \DateTimeImmutable();
 
-        $event = $this->project->scheduleEvent(new EventId('1'), $creator, 'My Event', 'Event details', new \DateTimeImmutable());
+        $event = $this->project->scheduleEvent($eventId, $creator, 'My Event', 'Event details', $occursOn);
 
         $this->assertInstanceOf(Event::class, $event);
+        $this->assertSame($this->project->projectId(), $event->projectId());
+        $this->assertSame($eventId, $event->eventId());
+        $this->assertSame($creator, $event->creator());
+        $this->assertEquals('My Event', $event->name());
+        $this->assertEquals('Event details', $event->details());
+        $this->assertSame($occursOn, $event->occursOn());
     }
 
     public function testProjectCanBeRenamed()

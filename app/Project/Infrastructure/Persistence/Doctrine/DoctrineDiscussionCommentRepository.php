@@ -24,6 +24,7 @@ class DoctrineDiscussionCommentRepository extends DoctrineRepository implements 
 
     public function ofId(CommentId $commentId, DiscussionId $discussionId): DiscussionComment
     {
+        /** @var DiscussionComment $comment */
         $comment = $this->findOneBy(['commentId' => $commentId, 'discussionId' => $discussionId]);
 
         if (null === $comment) {

@@ -31,23 +31,6 @@ class EventTest extends TestCase
         );
     }
 
-    public function testConstructedEventIsValid()
-    {
-        $projectId = new ProjectId('p-1');
-        $eventId = new EventId('e-1');
-        $creatorId = new TeamMemberId('c-1');
-        $occursOn = new \DateTimeImmutable();
-
-        $event = new Event($projectId, $eventId, $creatorId, 'Name', 'Details', $occursOn);
-
-        $this->assertSame($projectId, $event->projectId());
-        $this->assertSame($eventId, $event->eventId());
-        $this->assertSame($creatorId, $event->creator());
-        $this->assertEquals('Name', $event->name());
-        $this->assertEquals('Details', $event->details());
-        $this->assertSame($occursOn, $event->occursOn());
-    }
-
     public function testEventCanBeCommented()
     {
         $author = new TeamMemberId('id-1');

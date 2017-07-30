@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Domain\Model\Project\TodoList;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
+use Teamo\Common\Domain\UpdatedOn;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
@@ -18,7 +20,7 @@ class TodoList extends Entity
     private $name;
     private $archived;
 
-    /** @var TodoCollection */
+    /** @var ArrayCollection|Todo[] */
     private $todos;
 
     public function __construct(ProjectId $projectId, TodoListId $todoListId, TeamMemberId $creator, string $name)
@@ -28,7 +30,7 @@ class TodoList extends Entity
         $this->setCreator($creator);
         $this->setName($name);
         $this->setArchived(false);
-        $this->setTodos(new TodoCollection());
+        $this->setTodos(new ArrayCollection());
         $this->resetCreatedOn();
     }
 
@@ -52,9 +54,21 @@ class TodoList extends Entity
         return $this->name;
     }
 
-    public function todos(): TodoCollection
+    /** @return Todo[] */
+    public function todos(): array
     {
-        return $this->todos;
+        return $this->todos->toArray();
+    }
+
+    public function todo(TodoId $todoId): Todo
+    {
+        foreach ($this->todos as $todo) {
+            if ($todo->todoId()->equals($todoId)) {
+                return $todo;
+            }
+        }
+
+        throw new \InvalidArgumentException('Invalid todo Id');
     }
 
     public function isArchived(): bool
@@ -77,26 +91,65 @@ class TodoList extends Entity
         $this->archived = false;
     }
 
-    public function addTodo(TodoId $todoId, TeamMemberId $creator, string $name): TodoId
+    public function addTodo(TodoId $todoId, TeamMemberId $creator, string $name)
     {
-        $todo = new Todo($this->todoListId(), $todoId, $creator, $name);
-        $this->todos->put($todo->todoId()->id(), $todo);
+        $todo = new Todo($this->todoListId(), $todoId, $creator, $name, count($this->todos) + 1);
 
-        return $todo->todoId();
+        $this->todos[] = $todo;
     }
 
     public function removeTodo(TodoId $todoId)
     {
-        $this->assertTodoExists($todoId);
-
-        $this->todos->forget($todoId->id());
+        foreach ($this->todos as $key => $todo) {
+            if ($todo->todoId()->equals($todoId)) {
+                unset($this->todos[$key]);
+                break;
+            }
+        }
     }
 
     public function reorderTodo(TodoId $todoId, int $position)
     {
-        $this->assertTodoExists($todoId);
+        $previousPosition = $this->todo($todoId)->position();
 
-        $this->todos->reorder($todoId->id(), $position);
+        foreach ($this->todos as $todo) {
+            $todo->reorder($todoId, $position, $previousPosition);
+        }
+    }
+
+    public function renameTodo(TodoId $todoId, string $name)
+    {
+        $this->todo($todoId)->rename($name);
+    }
+
+    public function completeTodo(TodoId $todoId)
+    {
+        $this->todo($todoId)->complete();
+    }
+
+    public function uncheckTodo(TodoId $todoId)
+    {
+        $this->todo($todoId)->uncheck();
+    }
+
+    public function assignTodoTo(TodoId $todoId, TeamMemberId $assignee)
+    {
+        $this->todo($todoId)->assignTo($assignee);
+    }
+
+    public function addDeadlineToTodo(TodoId $todoId, \DateTimeImmutable $deadline)
+    {
+        $this->todo($todoId)->deadlineOn($deadline);
+    }
+
+    public function removeTodoAssignee(TodoId $todoId)
+    {
+        $this->todo($todoId)->removeAssignee();
+    }
+
+    public function removeTodoDeadline(TodoId $todoId)
+    {
+        $this->todo($todoId)->removeDeadline();
     }
 
     private function setProjectId(ProjectId $projectId)
@@ -126,15 +179,8 @@ class TodoList extends Entity
         $this->archived = $archived;
     }
 
-    private function setTodos(TodoCollection $todos)
+    private function setTodos(ArrayCollection $todos)
     {
         $this->todos = $todos;
-    }
-
-    private function assertTodoExists(TodoId $todoId)
-    {
-        if (!$this->todos->has($todoId->id())) {
-            throw new \InvalidArgumentException('Invalid Todo Id');
-        }
     }
 }

@@ -20,14 +20,16 @@ class Todo extends Entity
     private $assignee;
     private $deadline;
     private $completed;
+    private $position;
 
-    public function __construct(TodoListId $todoListId, TodoId $todoId, TeamMemberId $creator, string $name)
+    public function __construct(TodoListId $todoListId, TodoId $todoId, TeamMemberId $creator, string $name, int $position)
     {
         $this->setTodoListId($todoListId);
         $this->setTodoId($todoId);
         $this->setCreator($creator);
         $this->setName($name);
         $this->setCompleted(false);
+        $this->setPosition($position);
         $this->resetCreatedOn();
     }
 
@@ -35,7 +37,7 @@ class Todo extends Entity
     {
         return $this->todoListId;
     }
-    
+
     public function todoId(): TodoId
     {
         return $this->todoId;
@@ -64,6 +66,11 @@ class Todo extends Entity
     public function isCompleted(): bool
     {
         return $this->completed;
+    }
+
+    public function position(): int
+    {
+        return $this->position;
     }
 
     public function complete()
@@ -99,6 +106,17 @@ class Todo extends Entity
     public function removeDeadline()
     {
         $this->setDeadline(null);
+    }
+
+    public function reorder(TodoId $todoId, int $position, int $previousPosition)
+    {
+        if ($this->todoId()->equals($todoId)) {
+            $this->setPosition($position);
+        } else if ($previousPosition > $position && $previousPosition > $this->position && $this->position >= $position) {
+            $this->setPosition($this->position + 1);
+        } else if ($previousPosition < $position && $previousPosition < $this->position && $this->position <= $position) {
+            $this->setPosition($this->position - 1);
+        }
     }
 
     public function comment(CommentId $commentId, TeamMemberId $author, string $content, Collection $attachments)
@@ -139,5 +157,10 @@ class Todo extends Entity
     private function setCompleted(bool $completed)
     {
         $this->completed = $completed;
+    }
+
+    private function setPosition(int $position)
+    {
+        $this->position = $position;
     }
 }

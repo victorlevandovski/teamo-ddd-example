@@ -24,6 +24,7 @@ class DoctrineEventCommentRepository extends DoctrineRepository implements Event
 
     public function ofId(CommentId $commentId, EventId $eventId): EventComment
     {
+        /** @var EventComment $comment */
         $comment = $this->findOneBy(['commentId' => $commentId, 'eventId' => $eventId]);
 
         if (null === $comment) {

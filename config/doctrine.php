@@ -118,6 +118,8 @@ return [
         'TeamMemberId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineTeamMemberId::class,
         'DiscussionId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineDiscussionId::class,
         'EventId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineEventId::class,
+        'TodoListId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineTodoListId::class,
+        'TodoId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineTodoId::class,
         'CommentId' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineCommentId::class,
         'DateTimeImmutable' => Teamo\Common\Infrastructure\Persistence\DoctrineDateTimeImmutable::class,
         'AttachmentCollection' => Teamo\Project\Infrastructure\Persistence\Doctrine\Type\DoctrineAttachmentCollection::class,

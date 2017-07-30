@@ -15,12 +15,12 @@ class DoctrineDateTimeImmutable extends Type
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return $value->format('Y-m-d H:i:s');
+        return $value ? $value->format('Y-m-d H:i:s') : null;
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return new \DateTimeImmutable($value);
+        return $value ? new \DateTimeImmutable($value) : null;
     }
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
