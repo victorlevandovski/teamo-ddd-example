@@ -6,7 +6,6 @@ namespace Teamo\Project\Domain\Model\Project\TodoList;
 use Doctrine\Common\Collections\ArrayCollection;
 use Teamo\Common\Domain\CreatedOn;
 use Teamo\Common\Domain\Entity;
-use Teamo\Common\Domain\UpdatedOn;
 use Teamo\Project\Domain\Model\Project\ProjectId;
 use Teamo\Project\Domain\Model\Team\TeamMemberId;
 
@@ -137,7 +136,7 @@ class TodoList extends Entity
         $this->todo($todoId)->assignTo($assignee);
     }
 
-    public function addDeadlineToTodo(TodoId $todoId, \DateTimeImmutable $deadline)
+    public function setTodoDeadline(TodoId $todoId, \DateTimeImmutable $deadline)
     {
         $this->todo($todoId)->deadlineOn($deadline);
     }

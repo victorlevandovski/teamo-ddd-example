@@ -4,22 +4,42 @@ declare(strict_types=1);
 namespace Tests\Unit\Project\Application\Command;
 
 use Illuminate\Support\Collection;
+use Teamo\Project\Application\Command\TodoList\AddTodoCommand;
+use Teamo\Project\Application\Command\TodoList\AddTodoHandler;
 use Teamo\Project\Application\Command\TodoList\ArchiveTodoListCommand;
 use Teamo\Project\Application\Command\TodoList\ArchiveTodoListHandler;
+use Teamo\Project\Application\Command\TodoList\AssignTodoCommand;
+use Teamo\Project\Application\Command\TodoList\AssignTodoHandler;
+use Teamo\Project\Application\Command\TodoList\CompleteTodoCommand;
+use Teamo\Project\Application\Command\TodoList\CompleteTodoHandler;
 use Teamo\Project\Application\Command\TodoList\CreateTodoListCommand;
 use Teamo\Project\Application\Command\TodoList\CreateTodoListHandler;
 use Teamo\Project\Application\Command\TodoList\PostTodoCommentCommand;
 use Teamo\Project\Application\Command\TodoList\PostTodoCommentHandler;
 use Teamo\Project\Application\Command\TodoList\RemoveAttachmentOfTodoCommentCommand;
 use Teamo\Project\Application\Command\TodoList\RemoveAttachmentOfTodoCommentHandler;
+use Teamo\Project\Application\Command\TodoList\RemoveTodoAssigneeCommand;
+use Teamo\Project\Application\Command\TodoList\RemoveTodoAssigneeHandler;
+use Teamo\Project\Application\Command\TodoList\RemoveTodoCommand;
 use Teamo\Project\Application\Command\TodoList\RemoveTodoCommentCommand;
 use Teamo\Project\Application\Command\TodoList\RemoveTodoCommentHandler;
+use Teamo\Project\Application\Command\TodoList\RemoveTodoDeadlineCommand;
+use Teamo\Project\Application\Command\TodoList\RemoveTodoDeadlineHandler;
+use Teamo\Project\Application\Command\TodoList\RemoveTodoHandler;
 use Teamo\Project\Application\Command\TodoList\RemoveTodoListCommand;
 use Teamo\Project\Application\Command\TodoList\RemoveTodoListHandler;
+use Teamo\Project\Application\Command\TodoList\RenameTodoCommand;
+use Teamo\Project\Application\Command\TodoList\RenameTodoHandler;
 use Teamo\Project\Application\Command\TodoList\RenameTodoListCommand;
 use Teamo\Project\Application\Command\TodoList\RenameTodoListHandler;
+use Teamo\Project\Application\Command\TodoList\ReorderTodoCommand;
+use Teamo\Project\Application\Command\TodoList\ReorderTodoHandler;
 use Teamo\Project\Application\Command\TodoList\RestoreTodoListCommand;
 use Teamo\Project\Application\Command\TodoList\RestoreTodoListHandler;
+use Teamo\Project\Application\Command\TodoList\SetTodoDeadlineCommand;
+use Teamo\Project\Application\Command\TodoList\SetTodoDeadlineHandler;
+use Teamo\Project\Application\Command\TodoList\UncheckTodoCommand;
+use Teamo\Project\Application\Command\TodoList\UncheckTodoHandler;
 use Teamo\Project\Application\Command\TodoList\UpdateTodoCommentCommand;
 use Teamo\Project\Application\Command\TodoList\UpdateTodoCommentHandler;
 use Teamo\Project\Domain\Model\Project\Attachment\Attachment;
@@ -140,7 +160,132 @@ class TodoListHandlersTest extends TestCase
         $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
     }
 
-    public function testTodoListCommentHandlersDoTheirJob()
+    public function testAddTodoHandlerAddsTodoToRepository()
+    {
+        $command = new AddTodoCommand('p-1', 't-l-1', 't-234', 't-1', 'Added todo');
+        $handler = new AddTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertCount(2, $todoList->todos());
+        $this->assertEquals('Added todo', $todoList->todo(new TodoId('t-234'))->name());
+    }
+
+    public function testRemoveTodoHandlerRemovesTodoFromRepository()
+    {
+        $this->todoList->todo(new TodoId('t-1'));
+
+        $command = new RemoveTodoCommand('p-1', 't-l-1', 't-1', 't-1');
+        $handler = new RemoveTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $todoList->todo(new TodoId('t-1'));
+    }
+
+    public function testReorderTodoHandlerReordersTodo()
+    {
+        $this->todoList->addTodo(new TodoId('t-2'), new TeamMemberId('t-1'), 'Todo 2');
+        $this->assertEquals(1, $this->todoList->todo(new TodoId('t-1'))->position());
+        $this->assertEquals(2, $this->todoList->todo(new TodoId('t-2'))->position());
+
+        $command = new ReorderTodoCommand('p-1', 't-l-1', 't-2', 't-1', 1);
+        $handler = new ReorderTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertEquals(2, $todoList->todo(new TodoId('t-1'))->position());
+        $this->assertEquals(1, $todoList->todo(new TodoId('t-2'))->position());
+    }
+
+    public function testRenameTodoHandlerUpdatesTodoName()
+    {
+        $command = new RenameTodoCommand('p-1', 't-l-1', 't-1', 't-1', 'Renamed todo');
+        $handler = new RenameTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertEquals('Renamed todo', $todoList->todo(new TodoId('t-1'))->name());
+    }
+
+    public function testCompleteTodoHandlerUpdatesTodoStatus()
+    {
+        $this->assertFalse($this->todoList->todo(new TodoId('t-1'))->isCompleted());
+
+        $command = new CompleteTodoCommand('p-1', 't-l-1', 't-1', 't-1');
+        $handler = new CompleteTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertTrue($todoList->todo(new TodoId('t-1'))->isCompleted());
+    }
+
+    public function testUncheckTodoHandlerUpdatesTodoStatus()
+    {
+        $this->todoList->completeTodo(new TodoId('t-1'));
+        $this->assertTrue($this->todoList->todo(new TodoId('t-1'))->isCompleted());
+
+        $command = new UncheckTodoCommand('p-1', 't-l-1', 't-1', 't-1');
+        $handler = new UncheckTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertFalse($todoList->todo(new TodoId('t-1'))->isCompleted());
+    }
+
+    public function testAssignTodoHandlerUpdatesTodoAssignee()
+    {
+        $this->assertNull($this->todoList->todo(new TodoId('t-1'))->assignee());
+
+        $command = new AssignTodoCommand('p-1', 't-l-1', 't-1', 't-1', 't-1');
+        $handler = new AssignTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertEquals('t-1', $todoList->todo(new TodoId('t-1'))->assignee()->id());
+    }
+
+    public function testRemoveTodoAssigneeHandlerRemovesTodoAssignee()
+    {
+        $this->todoList->assignTodoTo(new TodoId('t-1'), new TeamMemberId('a-1'));
+        $this->assertNotNull($this->todoList->todo(new TodoId('t-1'))->assignee());
+
+        $command = new RemoveTodoAssigneeCommand('p-1', 't-l-1', 't-1', 't-1');
+        $handler = new RemoveTodoAssigneeHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertNull($todoList->todo(new TodoId('t-1'))->assignee());
+    }
+
+    public function testSetTodoDeadlineHandlerUpdatesTodoDeadline()
+    {
+        $this->assertNull($this->todoList->todo(new TodoId('t-1'))->deadline());
+
+        $command = new SetTodoDeadlineCommand('p-1', 't-l-1', 't-1', 't-1', '2020-01-01 12:00:00');
+        $handler = new SetTodoDeadlineHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertEquals('2020-01-01', $todoList->todo(new TodoId('t-1'))->deadline()->format('Y-m-d'));
+    }
+
+    public function testRemoveTodoDeadlineHandlerResetsTodoDeadline()
+    {
+        $this->todoList->setTodoDeadline(new TodoId('t-1'), new \DateTimeImmutable());
+        $this->assertNotNull($this->todoList->todo(new TodoId('t-1'))->deadline());
+
+        $command = new RemoveTodoDeadlineCommand('p-1', 't-l-1', 't-1', 't-1');
+        $handler = new RemoveTodoDeadlineHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertNull($todoList->todo(new TodoId('t-1'))->deadline());
+    }
+
+    public function testTodoCommentHandlersDoTheirJob()
     {
         $command = new PostTodoCommentCommand('p-1', 't-l-1', 't-1', 'c-1', 't-1', 'Comment', []);
         $handler = new PostTodoCommentHandler($this->todoListRepository, $this->commentRepository, $this->attachmentManager);

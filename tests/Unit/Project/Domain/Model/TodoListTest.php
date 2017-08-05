@@ -140,7 +140,7 @@ class TodoListTest extends TestCase
         $this->assertNull($this->todoList->todos()[0]->deadline());
 
         $deadline = new \DateTimeImmutable();
-        $this->todoList->addDeadlineToTodo($todoId, $deadline);
+        $this->todoList->setTodoDeadline($todoId, $deadline);
         $this->assertSame($deadline, $this->todoList->todos()[0]->deadline());
 
         $this->todoList->removeTodoDeadline($todoId);
