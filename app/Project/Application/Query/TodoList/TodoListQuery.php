@@ -1,23 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Teamo\Project\Application\Command\TodoList;
+namespace Teamo\Project\Application\Query\TodoList;
 
-class RenameTodoCommand
+class TodoListQuery
 {
     private $projectId;
     private $todoListId;
-    private $todoId;
     private $teamMemberId;
-    private $name;
 
-    public function __construct(string $projectId, string $todoListId, string $todoId, string $teamMemberId, string $name)
+    public function __construct(string $projectId, string $todoListId, string $teamMemberId)
     {
         $this->projectId = $projectId;
         $this->todoListId = $todoListId;
-        $this->todoId = $todoId;
         $this->teamMemberId = $teamMemberId;
-        $this->name = $name;
     }
 
     public function projectId(): string
@@ -30,18 +26,8 @@ class RenameTodoCommand
         return $this->todoListId;
     }
 
-    public function todoId(): string
-    {
-        return $this->todoId;
-    }
-
     public function teamMemberId(): string
     {
         return $this->teamMemberId;
-    }
-
-    public function name(): string
-    {
-        return $this->name;
     }
 }

@@ -87,6 +87,26 @@ function pluralize_ui($count, $transKey)
     return trans($transKey.'_'.$index);
 }
 
+function team_member_name_ui(string $name)
+{
+    $name = explode(' ', $name);
+
+    $name_ui = $name[0];
+
+    if (isset($name[1])) {
+        $name_ui .= '&nbsp;' . mb_substr($name[1], 0, 1) . '.';
+    }
+
+    return $name_ui;
+}
+
+function team_member_short_name_ui(string $name)
+{
+    $name = explode(' ', $name);
+
+    return $name[0];
+}
+
 function save_thumb($file, $directory, $id, $width, $height, $saveAs = null)
 {
     if (is_null($saveAs)) {

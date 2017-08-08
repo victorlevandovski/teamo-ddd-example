@@ -13,6 +13,9 @@ Teamo\Project\Domain\Model\Project\TodoList\Todo:
       column: creator_team_member_id
     name:
       type: string
+    completed:
+      type: boolean
+      column: is_completed
     assignee:
       type: TeamMemberId
       column: assignee_team_member_id

@@ -55,6 +55,25 @@ class CommandBusServiceProvider extends ServiceProvider
             \Teamo\Project\Application\Command\Event\UpdateEventCommentCommand::class => \Teamo\Project\Application\Command\Event\UpdateEventCommentHandler::class,
             \Teamo\Project\Application\Command\Event\RemoveEventCommentCommand::class => \Teamo\Project\Application\Command\Event\RemoveEventCommentHandler::class,
             \Teamo\Project\Application\Command\Event\RemoveAttachmentOfEventCommentCommand::class => \Teamo\Project\Application\Command\Event\RemoveAttachmentOfEventCommentHandler::class,
+
+            // To-do list
+            \Teamo\Project\Application\Command\TodoList\CreateTodoListCommand::class => \Teamo\Project\Application\Command\TodoList\CreateTodoListHandler::class,
+            \Teamo\Project\Application\Command\TodoList\RenameTodoListCommand::class => \Teamo\Project\Application\Command\TodoList\RenameTodoListHandler::class,
+            \Teamo\Project\Application\Command\TodoList\RemoveTodoListCommand::class => \Teamo\Project\Application\Command\TodoList\RemoveTodoListHandler::class,
+            \Teamo\Project\Application\Command\TodoList\ArchiveTodoListCommand::class => \Teamo\Project\Application\Command\TodoList\ArchiveTodoListHandler::class,
+            \Teamo\Project\Application\Command\TodoList\RestoreTodoListCommand::class => \Teamo\Project\Application\Command\TodoList\RestoreTodoListHandler::class,
+
+            // To-do
+            \Teamo\Project\Application\Command\TodoList\AddTodoCommand::class => \Teamo\Project\Application\Command\TodoList\AddTodoHandler::class,
+            \Teamo\Project\Application\Command\TodoList\RemoveTodoCommand::class => \Teamo\Project\Application\Command\TodoList\RemoveTodoHandler::class,
+            \Teamo\Project\Application\Command\TodoList\ReorderTodoCommand::class => \Teamo\Project\Application\Command\TodoList\ReorderTodoHandler::class,
+            \Teamo\Project\Application\Command\TodoList\UpdateTodoCommand::class  => \Teamo\Project\Application\Command\TodoList\UpdateTodoHandler::class,
+            \Teamo\Project\Application\Command\TodoList\AssignTodoCommand::class => \Teamo\Project\Application\Command\TodoList\AssignTodoHandler::class,
+            \Teamo\Project\Application\Command\TodoList\SetTodoDeadlineCommand::class => \Teamo\Project\Application\Command\TodoList\SetTodoDeadlineHandler::class,
+            \Teamo\Project\Application\Command\TodoList\RemoveTodoAssigneeCommand::class => \Teamo\Project\Application\Command\TodoList\RemoveTodoAssigneeHandler::class,
+            \Teamo\Project\Application\Command\TodoList\RemoveTodoDeadlineCommand::class => \Teamo\Project\Application\Command\TodoList\RemoveTodoDeadlineHandler::class,
+            \Teamo\Project\Application\Command\TodoList\CompleteTodoCommand::class => \Teamo\Project\Application\Command\TodoList\CompleteTodoHandler::class,
+            \Teamo\Project\Application\Command\TodoList\UncheckTodoCommand::class => \Teamo\Project\Application\Command\TodoList\UncheckTodoHandler::class,
         ];
     }
 

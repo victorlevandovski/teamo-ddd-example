@@ -3,22 +3,22 @@ declare(strict_types=1);
 
 namespace Teamo\Project\Application\Command\TodoList;
 
-class AddTodoCommand
+class UpdateTodoCommand
 {
     private $projectId;
     private $todoListId;
     private $todoId;
-    private $creator;
+    private $teamMemberId;
     private $name;
     private $assignee;
     private $deadline;
 
-    public function __construct(string $projectId, string $todoListId, string $todoId, string $creator, string $name, string $assignee, string $deadline)
+    public function __construct(string $projectId, string $todoListId, string $todoId, string $teamMemberId, string $name, string $assignee, string $deadline)
     {
         $this->projectId = $projectId;
         $this->todoListId = $todoListId;
         $this->todoId = $todoId;
-        $this->creator = $creator;
+        $this->teamMemberId = $teamMemberId;
         $this->name = $name;
         $this->assignee = $assignee;
         $this->deadline = $deadline;
@@ -39,9 +39,9 @@ class AddTodoCommand
         return $this->todoId;
     }
 
-    public function creator(): string
+    public function teamMemberId(): string
     {
-        return $this->creator;
+        return $this->teamMemberId;
     }
 
     public function name(): string

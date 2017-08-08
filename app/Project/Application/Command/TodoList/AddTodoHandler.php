@@ -14,6 +14,15 @@ class AddTodoHandler extends TodoListHandler
     {
         $todoList = $this->todoListRepository->ofId(new TodoListId($command->todoListId()), new ProjectId($command->projectId()));
 
-        $todoList->addTodo(new TodoId($command->todoId()), new TeamMemberId($command->creator()), $command->name());
+        $todoId = new TodoId($command->todoId());
+        $todoList->addTodo($todoId, new TeamMemberId($command->creator()), $command->name());
+
+        if ($command->assignee()) {
+            $todoList->assignTodoTo($todoId, new TeamMemberId($command->assignee()));
+        }
+
+        if ($command->deadline()) {
+            $todoList->setTodoDeadline($todoId, new \DateTimeImmutable($command->deadline()));
+        }
     }
 }

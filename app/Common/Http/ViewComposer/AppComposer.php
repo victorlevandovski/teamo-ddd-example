@@ -30,7 +30,7 @@ class AppComposer
             return;
         }
 
-        $user = $this->userRepository->ofId(new UserId(Auth::id()));
+        $user = $this->userRepository->ofId(new UserId((string) Auth::id()));
 
         App::setLocale($user->preferences()->language());
 
@@ -42,8 +42,8 @@ class AppComposer
         $view->with('userTimezone', $user->preferences()->timezone());
 
         if ($route = Route::getCurrentRoute()) {
-            if ($route->project) {
-                $project = $this->projectRepository->ofId(new ProjectId($route->project), new TeamMemberId(Auth::id()));
+            if ($route->projectId) {
+                $project = $this->projectRepository->ofId(new ProjectId($route->projectId), new TeamMemberId(Auth::id()));
                 $view->with('selectedProjectId', $project->projectId()->id());
                 $view->with('selectedProjectName', $project->name());
             }

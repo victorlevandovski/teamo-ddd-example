@@ -28,8 +28,8 @@ use Teamo\Project\Application\Command\TodoList\RemoveTodoDeadlineHandler;
 use Teamo\Project\Application\Command\TodoList\RemoveTodoHandler;
 use Teamo\Project\Application\Command\TodoList\RemoveTodoListCommand;
 use Teamo\Project\Application\Command\TodoList\RemoveTodoListHandler;
-use Teamo\Project\Application\Command\TodoList\RenameTodoCommand;
-use Teamo\Project\Application\Command\TodoList\RenameTodoHandler;
+use Teamo\Project\Application\Command\TodoList\UpdateTodoCommand;
+use Teamo\Project\Application\Command\TodoList\UpdateTodoHandler;
 use Teamo\Project\Application\Command\TodoList\RenameTodoListCommand;
 use Teamo\Project\Application\Command\TodoList\RenameTodoListHandler;
 use Teamo\Project\Application\Command\TodoList\ReorderTodoCommand;
@@ -162,13 +162,23 @@ class TodoListHandlersTest extends TestCase
 
     public function testAddTodoHandlerAddsTodoToRepository()
     {
-        $command = new AddTodoCommand('p-1', 't-l-1', 't-234', 't-1', 'Added todo');
+        $command = new AddTodoCommand('p-1', 't-l-1', 't-234', 't-1', 'Added todo', 'a-1', '2020-01-01 12:00:00');
         $handler = new AddTodoHandler($this->todoListRepository);
         $handler->handle($command);
 
         $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
         $this->assertCount(2, $todoList->todos());
+
         $this->assertEquals('Added todo', $todoList->todo(new TodoId('t-234'))->name());
+        $this->assertEquals('a-1', $todoList->todo(new TodoId('t-234'))->assignee()->id());
+        $this->assertEquals('2020-01-01', $todoList->todo(new TodoId('t-234'))->deadline()->format('Y-m-d'));
+
+        $command = new AddTodoCommand('p-1', 't-l-1', 't-345', 't-1', 'Another todo', '', '');
+        $handler = new AddTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertCount(3, $todoList->todos());
     }
 
     public function testRemoveTodoHandlerRemovesTodoFromRepository()
@@ -200,14 +210,24 @@ class TodoListHandlersTest extends TestCase
         $this->assertEquals(1, $todoList->todo(new TodoId('t-2'))->position());
     }
 
-    public function testRenameTodoHandlerUpdatesTodoName()
+    public function testUpdateTodoHandlerUpdatesTodoName()
     {
-        $command = new RenameTodoCommand('p-1', 't-l-1', 't-1', 't-1', 'Renamed todo');
-        $handler = new RenameTodoHandler($this->todoListRepository);
+        $command = new UpdateTodoCommand('p-1', 't-l-1', 't-1', 't-1', 'Renamed todo', 'a-2', '2022-02-02');
+        $handler = new UpdateTodoHandler($this->todoListRepository);
         $handler->handle($command);
 
         $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
         $this->assertEquals('Renamed todo', $todoList->todo(new TodoId('t-1'))->name());
+        $this->assertEquals('a-2', $todoList->todo(new TodoId('t-1'))->assignee()->id());
+        $this->assertEquals('2022-02-02', $todoList->todo(new TodoId('t-1'))->deadline()->format('Y-m-d'));
+
+        $command = new UpdateTodoCommand('p-1', 't-l-1', 't-1', 't-1', 'Renamed todo', '', '');
+        $handler = new UpdateTodoHandler($this->todoListRepository);
+        $handler->handle($command);
+
+        $todoList = $this->todoListRepository->ofId(new TodoListId('t-l-1'), new ProjectId('p-1'));
+        $this->assertNull($todoList->todo(new TodoId('t-1'))->assignee());
+        $this->assertNull($todoList->todo(new TodoId('t-1'))->deadline());
     }
 
     public function testCompleteTodoHandlerUpdatesTodoStatus()

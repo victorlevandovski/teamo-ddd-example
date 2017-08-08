@@ -130,13 +130,13 @@ var todoAjaxEditItem = function (item_id, item_name, item_assignee_id, item_due_
     teamoShowLoading(trans.saving+'...');
 
     $.ajax({
-        url: '/my/ajax_edit_todo_item/'+id,
+        url: '/my/ajax_edit_todo_item/' + projectId + '/' + todoListId + '/' + item_id,
         type: 'POST',
         data: {
-            id: item_id,
             name: item_name,
             assignee_id: item_assignee_id,
             deadline: item_due_date,
+            timezone: userTimezone,
             _token: $('input[name="_token"]').val()
         },
         dataType: 'json',
@@ -163,9 +163,9 @@ var todoAjaxCheckItem = function (obj) {
     teamoShowLoading(trans.saving+'...');
 
     $.ajax({
-        url: '/my/ajax_check_todo_item/'+id,
+        url: '/my/ajax_check_todo_item/' + projectId + '/' + todoListId + '/' + item_id,
         type: 'POST',
-        data: { item_id: item_id, checked: checked, _token: $('input[name="_token"]').val() },
+        data: { checked: checked, _token: $('input[name="_token"]').val() },
         dataType: 'json',
         success: function(response) {
             if (response.status) {
@@ -185,9 +185,9 @@ var todoAjaxSortItem = function (obj) {
     teamoShowLoading(trans.saving+'...');
 
     $.ajax({
-        url: '/my/ajax_sort_todo_item/'+id,
+        url: '/my/ajax_sort_todo_item/' + projectId + '/' + todoListId + '/' + item_id,
         type: 'POST',
-        data: { item_id: item_id, order: order, _token: $('input[name="_token"]').val() },
+        data: { position: order, _token: $('input[name="_token"]').val() },
         dataType: 'json',
         success: function(response) {
             if (response.status) {
@@ -203,9 +203,9 @@ var todoAjaxDeleteItem = function (item_id) {
     teamoShowLoading(trans.saving+'...');
 
     $.ajax({
-        url: '/my/ajax_delete_todo_item/'+id,
+        url: '/my/ajax_delete_todo_item/' + projectId + '/' + todoListId + '/' + item_id,
         type: 'POST',
-        data: { item_id: item_id, _token: $('input[name="_token"]').val() },
+        data: { _token: $('input[name="_token"]').val() },
         dataType: 'json',
         success: function(response) {
             if (response.status) {
@@ -223,12 +223,13 @@ var todoAjaxAddItem = function (item_id, item_name, item_assignee_id, item_due_d
     teamoShowLoading(trans.saving+'...');
 
     $.ajax({
-        url: '/my/ajax_add_todo_item/'+id,
+        url: '/my/ajax_add_todo_item/' + projectId + '/' + todoListId,
         type: 'POST',
         data: {
             name: item_name,
             assignee_id: item_assignee_id,
             deadline: item_due_date,
+            timezone: userTimezone,
             _token: $('input[name="_token"]').val()
         },
         dataType: 'json',
